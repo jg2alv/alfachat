@@ -37,11 +37,11 @@
     <div class="info_div">
         <form method="POST">
             <label for="rg">Matrícula:</label><br>
-            <input id="rg" type="number" name="rg"><br>
+            <input id="rg" type="number" name="rg" required><br>
             <label for="name">Nome completo:</label><br>
-            <input id="name" name="name" type="text"><br>
+            <input id="name" name="name" type="text" required><br>
             <label for="email">E-mail:</label><br>
-            <input id="email" name="email" type="email"><br>
+            <input id="email" name="email" type="email" required><br>
             <label for="password">Senha:</label><br>
             <input type="password" name="password" required>
             <?php

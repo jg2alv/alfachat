@@ -1,6 +1,6 @@
 <?php
     if (!empty($_SESSION["login_success"])) {
-        header("Location: browse/")
+        header("Location: browse/");
     }
 
     if (!empty($_POST["rg"]) && !empty($_POST["password"])) {
