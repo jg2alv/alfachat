@@ -1,6 +1,6 @@
 <?php
-    if (!empty($_SESSION["rg"]) && !empty($_SESSION["password"])) {
-        echo "<h1>You're logged in!</h1>";
+    if (!empty($_SESSION["login_success"])) {
+        header("Location: browse/")
     }
 
     if (!empty($_POST["rg"]) && !empty($_POST["password"])) {
@@ -11,7 +11,10 @@
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_num_rows($sql);
         if ($sql) {
-            echo "Yaaay";
+            $_SESSION["rg"] = $rg;
+            $_SESSION["password"] = $password;
+            $_SESSION["login_success"] = 1;
+            header("Location: index.php");
         } else {
             $error_login = 1;
         }

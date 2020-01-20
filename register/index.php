@@ -13,6 +13,7 @@
         } else {
             $sql = "INSERT INTO `users` (rg, name, email, password) VALUES ('$rg', '$name', '$email', '$password')";
             $sql = mysqli_query($conn, $sql);
+            header("Location: ../browse/");
         }
     }
 ?>
