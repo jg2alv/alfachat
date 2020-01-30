@@ -4,11 +4,11 @@ body {
     max-width: 300px;
     margin: auto;
     padding-top: 30px;
+    font-family: "Didact Gothic", sans-serif;
 }
 
-.logo {
+.logo_image {
     text-align: center;
-    border: 0;
     width: 216px;
     height: 67.5px;
     position: absolute;
@@ -16,7 +16,7 @@ body {
     transform: translateX(-50%);
 }
 
-.info_div {
+main {
     background-color: #f7f7f7;
     box-shadow: 0px 0px 10px #cfcfcf;
     border-radius: 4px;
@@ -26,13 +26,10 @@ body {
     width: 300px;
 }
 
-* {
-    font-family: "Didact Gothic",sans-serif;
-}
-
 input {
     display: block;
-    width: 280px;
+    max-width: 280px;
+    min-width: 254px;
     height: 25px;
     padding: 6px 12px;
     font-size: 14px;
@@ -44,21 +41,20 @@ input {
     border-radius: 4px;
 }
 
-.button {
+.submit {
     height: 37px;
     line-height: 37px;
-    background: #cdcdcd no-repeat url("../img/lock.png");
-    background-position: 13px center;
-    background-size: 20px 20px;
     float: left;
     padding: 0 13px 0 37px;
     box-shadow: 0px 0px 5px #bebebe;
-    font-size: 14px;
-    font-weight: 700;
-    width: 90px;
+    font-size: 16px;
+    font-weight: bold;
+    width: 290px;
     cursor: pointer;
     border: 1px solid rgba(27,31,35,.2);
     border-radius: .25em;
+    color: white;
+    background: rgb(72, 37, 138);
 }
 
 .register {
@@ -73,25 +69,7 @@ a {
     text-decoration: none;
 }
 
-label {
-    font-weight: bold;
-}
-
 footer {
     text-align: center;
-}
-
-.error {
-    color: red;
-    font-size: small;
-}
-
-@media screen and (max-width: 380px) {
-    .info_div {
-        max-width: 280px;
-    }
-
-    input {
-        width: 240px;
-    }
+    color: white;
 }
