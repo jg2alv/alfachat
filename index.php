@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Didact+Gothic">
     <link rel="icon" type="image/png" href="img/logo_short.png">
     <script src="js/jquery-3.4.1.min.js"></script>
-    <script src="js/login.js"></script>
+    <script src="js/account.js"></script>
     <title>AlfaChat - Entrar</title>
 </head>
 <body>
@@ -16,10 +16,15 @@
     ?>
     <main>
         <div class="form">
-            <input name="name" required placeholder="Nome completo" hidden><br hidden><br hidden>
-            <input name="rg" required placeholder="Matr&iacute;cula"><br><br hidden>
-            <input name="email" required placeholder="Email" hidden><br hidden><br hidden>
-            <input name="password" required placeholder="Senha" hidden><br hidden>
+            <input type="text" name="name" placeholder="Nome completo" hidden><br hidden><br hidden>
+            <input type="tel" pattern="[0-9]*" inputmode="numeric" name="rg" placeholder="Matr&iacute;cula"><br><br>
+            <input type="email" name="email" placeholder="Email" hidden><br hidden><br hidden>
+            <input type="password" name="password" placeholder="Senha" hidden><br hidden><br hidden>
+            <select name="grade">
+                <?php
+                    require "includes/html_select.inc.php"
+                ?>
+            </select><br>
             <button>Prosseguir</button>
         </div>
     </main>
