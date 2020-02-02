@@ -26,14 +26,19 @@
             $email = $_POST["email"];
             $password = md5($_POST["password"]);
             $sql = "INSERT INTO `users` (rg, name, email, password, grade) VALUES ($rg, '$name', '$email', '$password', $grade);";
-            mysqli_query($conn, $sql);
-            // ============================= SET COOKIES =========================
-            echo true;
+            $sql = mysqli_query($conn, $sql);
+            $sql = mysqli_fetch_assoc($sql);
+            foreach ($sql as $index => $value) {
+                setcookie($index, $value, (time() + strtotime("+30 days")));
+            }
         } else {
             $sql = "SELECT * FROM `users` WHERE rg = '$rg' AND password = '$password' AND grade = '$grade';";
-            $sql = mysqli_num_rows(mysqli_query($conn, $sql));
-            if ($sql) {
-                // ====================== SET COOKIES ======================
+            $sql = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($sql)) {
+                $sql = mysqli_fetch_assoc($sql);
+                foreach ($sql as $index => $value) {
+                    setcookie($index, $value, (time() + strtotime("+30 days")));
+                }
                 echo true;
             } else {
                 echo false;
@@ -44,9 +49,12 @@
     if ($o == "login") {
         $password = md5($_POST["password"]);
         $sql = "SELECT * FROM `users` WHERE rg = '$rg' AND password = '$password' AND grade = '$grade';";
-        $sql = mysqli_num_rows(mysqli_query($conn, $sql));
-        if ($sql) {
-            // ====================== SET COOKIES ======================
+        $sql = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($sql)) {
+            $sql = mysqli_fetch_assoc($sql);
+            foreach ($sql as $index => $value) {
+                setcookie($index, $value, (time() + strtotime("+30 days")));
+            }
             echo true;
         } else {
             echo false;
