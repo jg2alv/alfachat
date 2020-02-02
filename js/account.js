@@ -35,6 +35,31 @@ function handleLogin() {
         lineBreak[6].removeAttribute("hidden")
         lineBreak[7].removeAttribute("hidden")
         submit.innerHTML = "Entrar"
+        inputs = document.querySelectorAll("input")
+        inputs.forEach(input => {
+            input.addEventListener("focus", () => {
+                input.style.boxShadow = "none"
+            })
+        });
+        submit.addEventListener("click", () => {
+            for (i = 0; i < inputs.length; i++) { // forEach is a function by itself. The return statement would only exit **the forEach**, not the whole eventListener
+                inputs[i].style.boxShadow = "none"
+                if (!inputs[i].value) {
+                    inputs[i].style.boxShadow = "0 0 3pt 2pt red"
+                    if (i == inputs.length - 1) {
+                        return
+                    }
+                }
+            }
+            let password = document.querySelector("input[name='password']")
+            xml.open("POST", "account.php", true)
+            xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+            xml.send("rg=" + rg.value + "&password=" + password.value + "&grade=" + select.value + "&o=login")
+            xml.onload = () => {
+                if (Number(xml.responseText) == 1)
+                    window.location.href = "browse/"
+            }
+        })
     } else {
         children = document.querySelector(".form").children
         for (i = 0; i < children.length; i++) {
@@ -59,7 +84,7 @@ function handleLogin() {
             }
             let name = document.querySelector("input[name='name']")
             let email = document.querySelector("input[name='email']")
-            let password = document.querySelector("input[name='name']")
+            let password = document.querySelector("input[name='password']")
             xml.open("POST", "account.php", true)
             xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
             xml.send("name=" + name.value + "&rg=" + rg.value + "&email=" + email.value + "&password=" + password.value + "&grade=" + select.value + "&o=createAccount")
