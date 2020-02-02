@@ -50,6 +50,45 @@ function colorInputs(method) {
     }
 }
 
+function submitClick() {
+    $("span").remove();
+    $("br[data-dynamic='true']").remove();
+    if (!colorInputs(1)) {
+        return;
+    }
+    let name = document.querySelector("input[name='name']");
+    let email = document.querySelector("input[name='email']");
+    let password = document.querySelector("input[name='password']");
+    xml.open("POST", "account.php", true);
+    xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    if (submit.innerHTML == "Criar conta") {
+        xml.send(
+            "name=" +
+                name.value +
+                "&rg=" +
+                rg.value +
+                "&email=" +
+                email.value +
+                "&password=" +
+                password.value +
+                "&grade=" +
+                select.value +
+                "&o=create"
+        );
+    } else if (submit.innerHTML == "Entrar") {
+        xml.send(
+            "rg=" +
+                rg.value +
+                "&password=" +
+                password.value +
+                "&grade=" +
+                select.value +
+                "&o=login"
+        );
+    }
+    xml.addEventListener("load", redirectFromLogin);
+}
+
 function handleLogin() {
     xml.removeEventListener("load", handleLogin);
     submit.removeEventListener("click", checkUser);
@@ -63,27 +102,7 @@ function handleLogin() {
         lineBreak[7].removeAttribute("hidden");
         submit.innerHTML = "Entrar";
         colorInputs(0);
-        submit.addEventListener("click", () => {
-            if (!colorInputs(1)) {
-                return;
-            }
-            let password = document.querySelector("input[name='password']");
-            xml.open("POST", "account.php", true);
-            xml.setRequestHeader(
-                "Content-type",
-                "application/x-www-form-urlencoded"
-            );
-            xml.send(
-                "rg=" +
-                    rg.value +
-                    "&password=" +
-                    password.value +
-                    "&grade=" +
-                    select.value +
-                    "&o=login"
-            );
-            xml.addEventListener("load", redirectFromLogin);
-        });
+        submit.addEventListener("click", submitClick);
     } else {
         children = document.querySelector(".form").children;
         for (i = 0; i < children.length; i++) {
@@ -91,42 +110,29 @@ function handleLogin() {
         }
         submit.innerHTML = "Criar conta";
         colorInputs(0);
-        submit.addEventListener("click", () => {
-            if (!colorInputs(1)) {
-                return;
-            }
-            let name = document.querySelector("input[name='name']");
-            let email = document.querySelector("input[name='email']");
-            let password = document.querySelector("input[name='password']");
-            xml.open("POST", "account.php", true);
-            xml.setRequestHeader(
-                "Content-type",
-                "application/x-www-form-urlencoded"
-            );
-            xml.send(
-                "name=" +
-                    name.value +
-                    "&rg=" +
-                    rg.value +
-                    "&email=" +
-                    email.value +
-                    "&password=" +
-                    password.value +
-                    "&grade=" +
-                    select.value +
-                    "&o=create"
-            );
-            xml.addEventListener("load", redirectFromLogin);
-        });
+        submit.addEventListener("click", submitClick);
     }
 }
 
 function redirectFromLogin() {
-    xml.removeEventListener("load", redirectFromLogin);
-    if (Number(xml.responseText)) {
+    if (xml.responseText) {
         window.location.href = "browse/";
     } else {
-        alert("Wrong login!");
-        return false;
+        password = document.querySelector("input[type='password'");
+        submitText = submit.innerHTML;
+        submitButton = document.createElement("button");
+        submitButton.innerHTML = submitText;
+        submitButton.addEventListener("click", submitClick);
+        wrongLogin = document.createElement("span");
+        wrongLogin.style = "color: red; font-size: small";
+        wrongLogin.innerHTML =
+            "N&uacute;mero de matr&iacute;cula ou senha inv&aacute;lida(s)!";
+        lineBreak = document.createElement("br");
+        lineBreak.setAttribute("data-dynamic", "true")
+        $("button").remove();
+        password.value = "";
+        $("div.form").append(wrongLogin);
+        $("div.form").append(lineBreak);
+        $("div.form").append(submitButton);
     }
 }
