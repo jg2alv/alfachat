@@ -17,7 +17,7 @@
     <main>
         <div class="form">
             <input type="text" name="name" placeholder="Nome completo" hidden><br hidden><br hidden>
-            <input type="tel" pattern="[0-9]*" inputmode="numeric" name="rg" placeholder="Matr&iacute;cula"><br><br>
+            <input type="tel" name="rg" placeholder="Matr&iacute;cula"><br><br>
             <input type="email" name="email" placeholder="Email" hidden><br hidden><br hidden>
             <input type="password" name="password" placeholder="Senha" hidden><br hidden><br hidden>
             <select name="grade">
