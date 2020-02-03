@@ -1,0 +1,32 @@
+body {
+    display: flex;
+}
+
+.chat-list {
+    justify-self: left;
+    width: 40vw;
+    min-height: 100vh;
+    background: black;
+}
+
+header {
+    height: 7vh;
+    background: red;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+header input {
+    width: 85%;
+    margin-right: 15px;
+    height: calc(7vh*0.6);
+    font-size: 14px;
+}
+
+.chats {
+    justify-self: right;
+    width: 60vw;
+    min-height: 100vh;
+    background: grey;
+}
