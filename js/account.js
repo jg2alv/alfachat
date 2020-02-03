@@ -16,12 +16,12 @@ function checkUser() {
         rg.style.boxShadow = "0 0 3pt 2pt red";
     } else {
         xml.addEventListener("load", handleLogin);
-        xml.open("POST", "account.php", true);
+        xml.open("POST", "xmlhttprequest/account.php", true);
         xml.setRequestHeader(
             "Content-type",
             "application/x-www-form-urlencoded"
         );
-        xml.send("rg=" + rg.value + "&grade=" + select.value + "&o=check");
+        xml.send("rg=" + rg.value + "&class=" + select.value + "&o=check");
     }
 }
 
@@ -59,7 +59,7 @@ function submitClick() {
     let name = document.querySelector("input[name='name']");
     let email = document.querySelector("input[name='email']");
     let password = document.querySelector("input[name='password']");
-    xml.open("POST", "account.php", true);
+    xml.open("POST", "xmlhttprequest/account.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     if (submit.innerHTML == "Criar conta") {
         xml.send(
@@ -71,7 +71,7 @@ function submitClick() {
                 email.value +
                 "&password=" +
                 password.value +
-                "&grade=" +
+                "&class=" +
                 select.value +
                 "&o=create"
         );
@@ -81,7 +81,7 @@ function submitClick() {
                 rg.value +
                 "&password=" +
                 password.value +
-                "&grade=" +
+                "&class=" +
                 select.value +
                 "&o=login"
         );
@@ -116,7 +116,7 @@ function handleLogin() {
 
 function redirectFromLogin() {
     if (xml.responseText) {
-        window.location.href = "browse/";
+        window.location.href = "chats/";
     } else {
         password = document.querySelector("input[type='password'");
         submitText = submit.innerHTML;
@@ -128,7 +128,7 @@ function redirectFromLogin() {
         wrongLogin.innerHTML =
             "N&uacute;mero de matr&iacute;cula ou senha inv&aacute;lida(s)!";
         lineBreak = document.createElement("br");
-        lineBreak.setAttribute("data-dynamic", "true")
+        lineBreak.setAttribute("data-dynamic", "true");
         $("button").remove();
         password.value = "";
         $("div.form").append(wrongLogin);
