@@ -1,10 +1,24 @@
 <?php
-    if (empty($_COOKIE["id"])) {
+    if (empty($_COOKIE)) {
         header("Location: ../");
     }
 
+    require "../includes/db.inc.php";
+    $sql = "SELECT * FROM `users` WHERE ";
     foreach ($_COOKIE as $index => $value) {
-        setcookie($index, $value, (time() + strtotime("+30 days")));
+        $sql .= "$index = '$value' ";
+        if (!($value == end($_COOKIE))) {
+            $sql .= "AND ";
+        }
+    }
+    $sql = mysqli_query($conn, $sql);
+    $sql = mysqli_num_rows($sql);
+    if ($sql) {
+        foreach ($_COOKIE as $index => $value) {
+            setcookie($index, $value, (time() + strtotime("+30 days")), "/");
+        }
+    } else {
+        setcookie($index, $value, (time() - 3600), "/");
     }
 ?>
 
