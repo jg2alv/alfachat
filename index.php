@@ -24,11 +24,9 @@
             <input required type="number" pattern="[0-9]*" inputmode="numeric" name="rg" placeholder="Matr&iacute;cula"><br><br>
             <input type="email" name="email" placeholder="Email" hidden><br hidden><br hidden>
             <input type="password" name="password" placeholder="Senha" hidden><br hidden><br hidden>
-            <select name="class">
-                <?php
-                    require "includes/select.inc.php"
-                ?>
-            </select><br>
+            <?php
+                require "includes/select.inc.php"
+            ?>
             <input type="submit" value="Prosseguir">
         </form>
     </main>
