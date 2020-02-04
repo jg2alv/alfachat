@@ -65,25 +65,39 @@ function handleOperation(event) {
 }
 
 function redirectFromLogin() {
-    if (xml.responseText) {
-        window.location.href = "chats/";
-    } else {
-        password = document.querySelector("input[type='password'");
+    if (xml.responseText == "User already exist") {
         submitText = submit.value;
         submitButton = document.createElement("input");
         submitButton.value = submitText;
         submitButton.type = "submit";
         form.addEventListener("submit", handleOperation);
-        wrongLogin = document.createElement("span");
-        wrongLogin.style = "color: red; font-size: small";
-        wrongLogin.innerHTML =
+        error = document.createElement("span");
+        error.style = "color: red; font-size: small";
+        error.innerHTML =
+            "Usu&aacute;rio j&aacute; existe!";
+        lineBreak = document.createElement("br");
+        lineBreak.setAttribute("data-dynamic", "true");
+        $("input[type='submit']").remove();
+        $("form").append(error);
+        $("form").append(lineBreak);
+        $("form").append(submitButton);
+    } else if (xml.responseText) {
+        window.location.href = "chats/";
+    } else {
+        submitText = submit.value;
+        submitButton = document.createElement("input");
+        submitButton.value = submitText;
+        submitButton.type = "submit";
+        form.addEventListener("submit", handleOperation);
+        error = document.createElement("span");
+        error.style = "color: red; font-size: small";
+        error.innerHTML =
             "N&uacute;mero de matr&iacute;cula ou senha inv&aacute;lida(s)!";
         lineBreak = document.createElement("br");
         lineBreak.setAttribute("data-dynamic", "true");
         $("input[type='submit']").remove();
-        password.value = "";
-        $("div.form").append(wrongLogin);
-        $("div.form").append(lineBreak);
-        $("div.form").append(submitButton);
+        $("form").append(error);
+        $("form").append(lineBreak);
+        $("form").append(submitButton);
     }
 }
