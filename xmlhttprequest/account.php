@@ -31,7 +31,7 @@
             $sql = checkUser($conn, $rg, $class);
             $sql = mysqli_fetch_assoc($sql);
             foreach ($sql as $index => $value) {
-                setcookie($index, $value, (time() + strtotime("+30 days")));
+                setcookie($index, $value, (time() + strtotime("+30 days")), "/");
             }
             echo true;
             // $sql = "SELECT * FROM `classes` WHERE id = '$class';";
@@ -53,17 +53,7 @@
             // echo $sql;
             // die();
         } else {
-            $sql = "SELECT * FROM `users` WHERE rg = '$rg' AND password = '$password' AND class = '$class';";
-            $sql = mysqli_query($conn, $sql);
-            if (mysqli_num_rows($sql)) {
-                $sql = mysqli_fetch_assoc($sql);
-                foreach ($sql as $index => $value) {
-                    setcookie($index, $value, (time() + strtotime("+30 days")));
-                }
-                echo true;
-            } else {
-                echo false;
-            }
+            echo "User already exist";
             die();
         }
     }
@@ -75,7 +65,7 @@
         if (mysqli_num_rows($sql)) {
             $sql = mysqli_fetch_assoc($sql);
             foreach ($sql as $index => $value) {
-                setcookie($index, $value, (time() + strtotime("+30 days")));
+                setcookie($index, $value, (time() + strtotime("+30 days")), "/");
             }
             echo true;
         } else {
