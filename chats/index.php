@@ -13,12 +13,12 @@
     }
     $sql = mysqli_query($conn, $sql);
     $sql = mysqli_num_rows($sql);
-    if ($sql) {
-        foreach ($_COOKIE as $index => $value) {
+    foreach ($_COOKIE as $index => $value) {
+        if ($sql) {
             setcookie($index, $value, (time() + strtotime("+30 days")), "/");
+        } else {
+            setcookie($index, $value, (time() - 3600), "/");
         }
-    } else {
-        setcookie($index, $value, (time() - 3600), "/");
     }
 ?>
 
