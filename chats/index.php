@@ -38,9 +38,11 @@
         <header>
             <input type="text" name="query" placeholder="Busca">
         </header>
+        <div class="chat_result_list" hidden></div>
     </div>
 
     <div class="chats">
+        <div class="choose_chat">Escolha uma conversa para entrar</div>
     </div>
 </body>
 </html>
