@@ -1,12 +1,13 @@
 body {
     display: flex;
+    overflow-y: hidden;
 }
 
 .chat-list {
     justify-self: left;
     width: 40vw;
     min-height: 100vh;
-    background: black;
+    background: gray;
 }
 
 header {
@@ -18,15 +19,65 @@ header {
 }
 
 header input {
-    width: 85%;
+    width: 83%;
     margin-right: 15px;
     height: calc(7vh*0.6);
-    font-size: 14px;
+    font-size: 16px;
+}
+
+.chat_result_list {
+    max-height: 100vh;
+}
+
+.chat_result {
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    transition: 100ms all;
+    cursor: pointer;
+}
+
+.chat_result:hover {
+    background: blue;
+}
+
+.no_result {
+    height: 3vh;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    background: blue;
+}
+
+.chat_result_pic {
+    flex: 1;
+    justify-self: left;
+}
+
+.chat_result_pic img {
+    border-radius: 50%;
+    width: 100%;
+}
+
+.chat_result_name {
+    flex: 7;
+    justify-self: right;
 }
 
 .chats {
     justify-self: right;
     width: 60vw;
     min-height: 100vh;
-    background: grey;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+}
+
+.choose_chat {
+    border: 1px solid white;
+    background: white;
+    padding: 3px 20px;
+    border-radius: 20px;
 }

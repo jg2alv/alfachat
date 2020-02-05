@@ -34,10 +34,6 @@ input:not([type='submit']) {
     box-sizing: border-box;
 }
 
-[hidden] {
-    display: none;
-}
-
 input[type='submit'] {
     font-weight: bold;
     margin-top: 20px;
