@@ -14,10 +14,10 @@ $(document).ready(() => {
 
 function checkUser(event) {
     event.preventDefault();
-    xml.addEventListener("load", handleLogin);
     xml.open("POST", "xmlhttprequest/account.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xml.send("rg=" + rg.value + "&class=" + select.value + "&o=check");
+    xml.addEventListener("load", handleLogin);
 }
 
 function handleLogin() {
@@ -37,7 +37,7 @@ function handleLogin() {
         children = document.querySelector("form").children;
         for (i = 0; i < children.length; i++) {
             children[i].removeAttribute("hidden");
-            if (children[i].placeholder != "") {
+            if (children[i].placeholder != undefined) {
                 children[i].setAttribute("required", "");
             }
         }
@@ -54,7 +54,6 @@ function handleOperation(event) {
     let name = document.querySelector("input[name='name']");
     let email = document.querySelector("input[name='email']");
     let password = document.querySelector("input[name='password']");
-    xml.addEventListener("load", redirectFromLogin);
     xml.open("POST", "xmlhttprequest/account.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     if (submit.value == "Criar conta") {
@@ -62,6 +61,7 @@ function handleOperation(event) {
     } else if (submit.value == "Entrar") {
         xml.send("rg=" + rg.value + "&password=" + password.value + "&class=" + select.value + "&o=login");
     }
+    xml.addEventListener("load", redirectFromLogin);
 }
 
 function redirectFromLogin() {

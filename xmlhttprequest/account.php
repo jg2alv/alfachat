@@ -33,25 +33,22 @@
             foreach ($sql as $index => $value) {
                 setcookie($index, $value, (time() + strtotime("+30 days")), "/");
             }
+            $sql = "SELECT * FROM `classes` WHERE id = '$class';";
+            $sql = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($sql)) {
+                $members = mysqli_fetch_assoc($sql)["members"] . "," . $rg;
+                $sql = "UPDATE `classes` SET members='$members' WHERE id = '$class';";
+            } else {
+                if ($class < 10) {
+                    $name = $class . "° Ano - Ensino Fundamental";
+                } else {
+                    $name = ($class-9) . "° Ano - Ensino Médio";
+                }
+                $sql = "INSERT INTO `classes` (id, name, description, members, created) VALUES ($class, '$name', 'Grupo do $name.', '$rg', $joined);";
+            }
+            $sql = mysqli_query($conn, $sql);
             echo true;
-            // $sql = "SELECT * FROM `classes` WHERE id = '$class';";
-            // $sql = mysqli_query($conn, $sql);
-            // if (mysqli_num_rows($sql)) {
-            //     $sql = "SELECT members FROM `classes` WHERE name = '$class';";
-            //     $sql = mysqli_query($conn, $sql);
-            //     $members = mysqli_fetch_assoc($sql)["members"] . "," . $rg;
-            //     $sql = "UPDATE `classes` members='$members';";
-            // } else {
-            //     if ($class < 10) {
-            //         $name = $class . "° Ano - Ensino Fundamental";
-            //     } else {
-            //         $name = ($class-9) . "° - Ensino Médio";
-            //     }
-            //     $sql = "INSERT INTO `classes` (name, description, members, created) VALUES ('$name', 'Grupo do $name.', '$rg', $joined);";
-            // }
-            // $sql = mysqli_query($conn, $sql);
-            // echo $sql;
-            // die();
+            die();
         } else {
             echo "User already exist";
             die();

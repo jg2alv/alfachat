@@ -1,5 +1,5 @@
 <?php
-    if (!empty($_COOKIE["id"])) {
+    if (!empty($_COOKIE)) {
         header("Location: chats/");
     }
 ?>
@@ -21,9 +21,9 @@
     <main>
         <form>
             <input type="text" name="name" placeholder="Nome completo" hidden><br hidden><br hidden>
-            <input required type="number" pattern="[0-9]*" inputmode="numeric" name="rg" placeholder="Matr&iacute;cula"><br><br>
+            <input required minlength="8" maxlength="8" pattern="[0-9]*" inputmode="numeric" name="rg" placeholder="Matr&iacute;cula"><br><br>
             <input type="email" name="email" placeholder="Email" hidden><br hidden><br hidden>
-            <input type="password" name="password" placeholder="Senha" hidden><br hidden><br hidden>
+            <input minlength="8" maxlength="16" type="password" name="password" placeholder="Senha" hidden><br hidden><br hidden>
             <?php
                 require "includes/select.inc.php"
             ?>
