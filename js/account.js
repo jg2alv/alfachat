@@ -1,4 +1,4 @@
-let xml = new XMLHttpRequest();
+const xml = new XMLHttpRequest();
 let rg;
 let submit;
 let form;
@@ -16,7 +16,7 @@ function checkUser(event) {
     event.preventDefault();
     xml.open("POST", "xmlhttprequest/account.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xml.send("rg=" + rg.value + "&class=" + select.value + "&o=check");
+    xml.send(`rg=${rg.value}&class=${select.value}&o=check`);
     xml.addEventListener("load", handleLogin);
 }
 
@@ -57,9 +57,9 @@ function handleOperation(event) {
     xml.open("POST", "xmlhttprequest/account.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     if (submit.value == "Criar conta") {
-        xml.send("name=" + name.value + "&rg=" + rg.value + "&email=" + email.value + "&password=" + password.value + "&class=" + select.value + "&o=create");
+        xml.send(`name=${name.value}&rg=${rg.value}&email=${email.value}&password=${password.value}&class=${select.value}&o=create`);
     } else if (submit.value == "Entrar") {
-        xml.send("rg=" + rg.value + "&password=" + password.value + "&class=" + select.value + "&o=login");
+        xml.send(`rg=${rg.value}&password=${password.value}&class=${select.value}&o=login`);
     }
     xml.addEventListener("load", redirectFromLogin);
 }
