@@ -37,14 +37,15 @@
             $sql = mysqli_query($conn, $sql);
             if (mysqli_num_rows($sql)) {
                 $members = mysqli_fetch_assoc($sql)["members"] . "," . $rg;
-                $sql = "UPDATE `classes` SET members='$members' WHERE id = '$class';";
+                $member_count = sizeof(explode(",", $members));
+                $sql = "UPDATE `classes` SET members='$members', member_count=$member_count WHERE id = '$class';";
             } else {
                 if ($class < 10) {
                     $name = $class . "° Ano - Ensino Fundamental";
                 } else {
                     $name = ($class-9) . "° Ano - Ensino Médio";
                 }
-                $sql = "INSERT INTO `classes` (id, name, description, members, created) VALUES ($class, '$name', 'Grupo do $name.', '$rg', $joined);";
+                $sql = "INSERT INTO `classes` (id, name, members, member_count, created) VALUES ($class, '$name', '$rg', 1, $joined);";
             }
             $sql = mysqli_query($conn, $sql);
             echo true;
