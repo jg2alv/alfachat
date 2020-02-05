@@ -7,6 +7,7 @@
 <!doctype html>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
     <?php
         require "includes/head.inc.php";
     ?>

@@ -25,6 +25,7 @@
 <!doctype html>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="/AlfaChat/css/normalize.css">
     <?php
         require "../includes/head.inc.php";
     ?>
