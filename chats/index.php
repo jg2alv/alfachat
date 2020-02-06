@@ -30,7 +30,7 @@
         require "../includes/head.inc.php";
     ?>
     <link rel="stylesheet" type="text/css" href="/AlfaChat/css/chats.css">
-    <script src="../js/chats/search_input.js"></script>
+    <script src="../js/chats/chat_search.js"></script>
     <title>AlfaChat</title>
 </head>
 <body>
