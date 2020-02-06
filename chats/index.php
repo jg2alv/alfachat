@@ -18,7 +18,13 @@
             setcookie($index, $value, (time() + strtotime("+30 days")), "/");
         } else {
             setcookie($index, $value, (time() - 3600), "/");
+            $refresh = 1;
         }
+    }
+
+    if (!empty($refresh)) {
+        header("Refresh: 0");
+        die();
     }
 ?>
 
@@ -34,11 +40,14 @@
     <title>AlfaChat</title>
 </head>
 <body>
-    <div class="chat-list">
+    <div class="chat_selector">
         <header>
             <input type="text" name="query" placeholder="Busca">
         </header>
         <div class="chat_result_list" hidden></div>
+        <?php
+            require "../includes/chat_loader.php";
+        ?>
     </div>
 
     <div class="chats">
