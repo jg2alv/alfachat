@@ -84,3 +84,19 @@ header input {
     padding: 3px 20px;
     border-radius: 20px;
 }
+
+@media only screen and (max-width: 729px) {
+    .chats {
+        display: none;
+    }
+
+    .chat-list {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 619px) {
+    header input {
+        height: calc(6vh*0.6);
+    }
+}
