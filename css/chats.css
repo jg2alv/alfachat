@@ -27,6 +27,7 @@ header input {
 
 .chat_result_list {
     max-height: 100vh;
+    overflow-y: auto;
 }
 
 .chat_result {
@@ -73,6 +74,7 @@ header input {
     justify-content: center;
     align-items: center;
     font-weight: 700;
+    max-height: 100vh;
 }
 
 .choose_chat {
