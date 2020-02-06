@@ -5,10 +5,7 @@ $(document).ready(() => {
     const chat_result_list = $(".chat_result_list")[0];
     header_input.value = "";
     header_input.addEventListener("keyup", k => {
-        if (
-            !header_input.value ||
-            (header_input.value.length == 1 && k.keyCode == 78)
-        ) {
+        if (!header_input.value || (header_input.value.length == 1 && k.keyCode == 78) || header_input.value == " ") {
             chat_result_list.setAttribute("hidden", "");
             return;
         }
