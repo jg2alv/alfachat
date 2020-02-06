@@ -26,7 +26,7 @@
         $password = md5($_POST["password"]);
         if (!mysqli_num_rows(checkUser($conn, $rg, $class))) {
             $joined = time();
-            $sql = "INSERT INTO `users` (rg, name, email, password, class, joined) VALUES ($rg, '$name', '$email', '$password', $class, $joined);";
+            $sql = "INSERT INTO `users` (rg, name, email, password, class, photo, joined) VALUES ($rg, '$name', '$email', '$password', $class, '/AlfaChat/chats/assets/avatar.png', $joined);";
             $sql = mysqli_query($conn, $sql);
             $sql = checkUser($conn, $rg, $class);
             $sql = mysqli_fetch_assoc($sql);
