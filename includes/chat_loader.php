@@ -6,7 +6,10 @@
         $photo = $sql["photo"];
         $name = $sql["name"];
         $description = "Turma do ". str_replace("-", "do", $name);
-        echo "<div class='chat'><div class='chat_pic'><img src='". str_replace($photo, "null", "/chats/assets/avatar.png") ."'></div><div class='chat_info'><div>$name</div><div>$description</div></div></div>";
+        if ($class > 10) {
+            $class -= 10;
+        }
+        echo "<div class='chat'><div class='chat_pic'><img style='border-radius: 0;' src='/chats/assets/class_avatars/$class.png'></div><div class='chat_info'><div>$name</div><div>$description</div></div></div>";
     }
 
     require "db.inc.php";
