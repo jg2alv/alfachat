@@ -78,16 +78,8 @@ header input {
     box-sizing: border-box;
     flex: 7;
     display: flex;
-}
-
-.chat_result_info_name,
-.chat_info_name {
-    align-self: start;
-}
-
-.chat_result_info_desc,
-.chat_info_desc {
-    align-self: end;
+    justify-content: space-evenly;
+    flex-direction: column;
 }
 
 .chats {
