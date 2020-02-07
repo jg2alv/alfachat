@@ -8,6 +8,7 @@ $(document).ready(() => {
         chat_result_list.style.overflowY = "auto";
         if (!header_input.value || (header_input.value.length == 1 && k.keyCode == 78) || header_input.value == " ") {
             chat_result_list.setAttribute("hidden", "");
+            document.querySelector(".chat").removeAttribute("hidden");
             return;
         }
         xml.open("POST", "../xmlhttprequest/chat_search.php", true);
@@ -23,8 +24,9 @@ $(document).ready(() => {
                 response = JSON.parse(xml.responseText);
                 chat_result_list.removeAttribute("hidden");
                 chat_result_list.innerHTML = "";
+                document.querySelector(".chat").setAttribute("hidden", "")
                 for (let i = 0; i < Object.keys(response).length; i++) {
-                    chat_result_list.innerHTML += `<div class="chat_result"><div class="chat_result_pic"><img src="${String(response[i]["photo"]).replace("null", "/AlfaChat/chats/assets/avatar.png")}"></div><div class="chat_result_info"><div class='chat_result_info_name'>${response[i]["name"]}</div><div class='chat_result_info_desc'>${String(response[i]["description"]).replace(null, "my desc")}</div></div></div>`;
+                    chat_result_list.innerHTML += `<div class="chat_result"><div class="chat_result_pic"><img src="${String(response[i]["photo"]).replace("null", "/AlfaChat/chats/assets/avatar.png")}"></div><div class="chat_result_info"><div>${response[i]["name"]}</div><div>${String(response[i]["description"]).replace(null, "")}</div></div></div>`;
                 }
             } else {
                 chat_result_list.innerHTML += `<div style="height: calc(93vh - 20px)"><div class="no_result">Nenhum resultado encontrado.</div></div>`;
