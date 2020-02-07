@@ -6,7 +6,7 @@
         $photo = $sql["photo"];
         $name = $sql["name"];
         $description = "Turma do ". str_replace("-", "do", $name);
-        echo "<div class='chat'><div class='chat_pic'><img src='". str_replace($photo, "null", "/AlfaChat/chats/assets/avatar.png") ."'></div><div class='chat_info'><div>$name</div><div>$description</div></div></div>";
+        echo "<div class='chat'><div class='chat_pic'><img src='". str_replace($photo, "null", "/chats/assets/avatar.png") ."'></div><div class='chat_info'><div>$name</div><div>$description</div></div></div>";
     }
 
     require "db.inc.php";
@@ -26,7 +26,7 @@
             $photo = $chat_info["photo"];
             $name = $chat_info["name"];
             $description = $chat_info["description"];
-            echo "<div class='chat'><div class='chat_pic'><img src='". str_replace($photo, "null", "/AlfaChat/chats/assets/avatar.png") ."'></div><div class='chat_info'><div>$name</div><div>$description</div></div></div>";
+            echo "<div class='chat'><div class='chat_pic'><img src='". str_replace($photo, "null", "/chats/assets/avatar.png") ."'></div><div class='chat_info'><div>$name</div><div>$description</div></div></div>";
         }
         echo "</div>";
     }

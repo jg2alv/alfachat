@@ -31,11 +31,11 @@
 <!doctype html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="/AlfaChat/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
     <?php
-        require "../includes/head.inc.php";
+        require "/includes/head.inc.php";
     ?>
-    <link rel="stylesheet" type="text/css" href="/AlfaChat/css/chats.css">
+    <link rel="stylesheet" type="text/css" href="/css/chats.css">
     <script src="../js/chats/chat_search.js"></script>
     <title>AlfaChat</title>
 </head>
@@ -46,7 +46,7 @@
         </header>
         <div class="chat_result_list" hidden></div>
         <?php
-            require "../includes/chat_loader.php";
+            require "/includes/chat_loader.php";
         ?>
     </div>
 
