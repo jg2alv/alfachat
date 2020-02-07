@@ -16,9 +16,11 @@
     <title>AlfaChat - Entrar</title>
 </head>
 <body>
-    <?php
-        require "includes/header.inc.php"
-    ?>
+    <header>
+        <a href="http://alfaonline.com.br/alfa/" target="_blank">
+            <img src="img/logo_long.png" alt="Alfa Rede de Ensino">
+        </a>
+    </header>
     <main>
         <form>
             <input type="text" name="name" placeholder="Nome completo" hidden><br hidden><br hidden>
@@ -31,8 +33,12 @@
             <input type="submit" value="Prosseguir">
         </form>
     </main>
-    <?php
-        require "includes/footer.inc.php"
-    ?>
+    <footer>
+        <p>AlfaChat <?php echo date("Y");?><br>
+            Todos os direitos reservados<br><br>
+            Dúvidas?<br>
+            <a href='https://t.me/bored_user' target='_blank'>Telegram</a> ou <a href='https://github.com/bored-user' target='_blank'>Github</a>.
+        </p>
+    </footer>
 </body>
 </html>

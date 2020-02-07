@@ -2,8 +2,9 @@
     if (empty($_COOKIE)) {
         header("Location: ../");
     }
-
-    require "../includes/db.inc.php";
+    require "../AlfaChat.php";
+    $ac = new AlfaChat();
+    $conn = $ac->DB_CONN();
     $sql = "SELECT * FROM `users` WHERE ";
     foreach ($_COOKIE as $index => $value) {
         $sql .= "$index = '$value' ";
@@ -31,12 +32,12 @@
 <!doctype html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="<?php $ac->GLOBAL_ROOT(); ?>/css/normalize.css">
     <?php
-        require "../includes/head.inc.php";
+        require $ac->GLOBAL_ROOT() . "/includes/head.inc.php";
     ?>
-    <link rel="stylesheet" type="text/css" href="/css/chats.css">
-    <script src="../js/chats/chat_search.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?php $ac->GLOBAL_ROOT(); ?>/css/chats.css">
+    <script src="<?php $ac->GLOBAL_ROOT(); ?>/js/chats/chat_search.js"></script>
     <title>AlfaChat</title>
 </head>
 <body>
@@ -46,7 +47,8 @@
         </header>
         <div class="chat_result_list" hidden></div>
         <?php
-            require "../includes/chat_loader.php";
+            define("CHAT_LOADER", 1);
+            require $ac->GLOBAL_ROOT() . "/includes/chat_loader.php";
         ?>
     </div>
 
