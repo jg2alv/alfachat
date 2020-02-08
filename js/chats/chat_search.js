@@ -5,7 +5,7 @@ $(document).ready(() => {
     const chat_result_list = $(".chat_result_list")[0];
     header_input.value = "";
     header_input.addEventListener("keyup", k => {
-        chat_result_list.style.overflowY = "auto";
+        chat_result_list.removeAttribute("style");
         if (!header_input.value || (header_input.value.length == 1 && k.keyCode == 78) || header_input.value == " ") {
             chat_result_list.setAttribute("hidden", "");
             document.querySelector(".chat").removeAttribute("hidden");
