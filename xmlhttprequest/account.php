@@ -12,8 +12,8 @@
         $o = $_POST["o"];
     }
 
-    $rg = addslashes($_POST["rg"]);
-    $class = addslashes($_POST["class"]);
+    $rg = mysqli_real_escape_string($conn, $_POST["rg"]);
+    $class = mysqli_real_escape_string($conn, $_POST["class"]);
 
     if ($o == "check") {
         echo mysqli_num_rows(checkUser($conn, $rg, $class));
@@ -21,8 +21,8 @@
     }
 
     if ($o == "create") {
-        $name = addslashes($_POST["name"]);
-        $email = addslashes($_POST["email"]);
+        $name = mysqli_real_escape_string($conn, $_POST["name"]);
+        $email = mysqli_real_escape_string($conn, $_POST["email"]);
         $password = md5($_POST["password"]);
         if (!mysqli_num_rows(checkUser($conn, $rg, $class))) {
             $joined = time();
