@@ -5,6 +5,9 @@
 
     require "db.inc.php";
 
+    $files = array_values(array_diff(scandir("../chats/assets/user_avatars"), array(".", "..")));
+    echo "<div class='chat_list' data-files='" . sizeof($files) . "'>";
+
     function getClassChat($class, $conn) {
         $sql = "SELECT * FROM `classes` WHERE id = '$class'";
         $sql = mysqli_query($conn, $sql);
@@ -21,8 +24,6 @@
     $class = $sql["class"];
     getClassChat($class, $conn);
     if ($sql["chats"]) {
-        $files = array_values(array_diff(scandir("../chats/assets/user_avatars"), array(".", "..")));
-        echo "<div class='chat_list' data-files='" . sizeof($files) . "'>";
         $chats = explode(",", $sql["chats"]);
         foreach ($chats as $chat) {
             $sql = "SELECT * FROM `chats` WHERE id = '$chat'";
@@ -37,6 +38,6 @@
             $description = $chat_info["description"];
             echo "<div class='chat'><div class='chat_pic'><img src='$photo'></div><div class='chat_info'><div>$name</div><div>$description</div></div></div>";
         }
-        echo "</div>";
     }
+    echo "</div>";
 ?>
