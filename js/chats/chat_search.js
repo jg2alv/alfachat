@@ -27,7 +27,7 @@ $(document).ready(() => {
                 document.querySelector(".chat").setAttribute("hidden", "");
                 const files = document.querySelector(".chat_list").getAttribute("data-files");
                 for (let i = 0; i < Object.keys(response).length; i++) {
-                    chat_result_list.innerHTML += `<div class="chat_result"><div class="chat_result_pic"><img src="${String(response[i]["photo"]).replace("null","/chats/assets/user_avatars/Avatar_" + ('0' + Math.floor((Math.random() * files) + 1)).slice(-2) + ".png")}"></div><div class="chat_result_info"><div>${response[i]["name"]}</div><div>${String(response[i]["description"]).replace(null,"")}</div></div></div>`;
+                    chat_result_list.innerHTML += `<div class="chat_result"><div class="chat_result_pic"><img src="${String(response[i]["photo"]).replace("null","assets/user_avatars/Avatar_" + ('0' + Math.floor((Math.random() * files) + 1)).slice(-2) + ".png")}"></div><div class="chat_result_info"><div>${response[i]["name"]}</div><div>${String(response[i]["description"]).replace(null,"")}</div></div></div>`;
                 }
             } else {
                 chat_result_list.innerHTML += `<div style="height: calc(93vh - 20px)"><div class="no_result">Nenhum resultado encontrado.</div></div>`;

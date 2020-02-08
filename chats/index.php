@@ -2,9 +2,9 @@
     if (empty($_COOKIE)) {
         header("Location: ../");
     }
-    require "../AlfaChat.php";
-    $ac = new AlfaChat();
-    $conn = $ac->DB_CONN();
+
+    require "../includes/db.inc.php";
+    
     $sql = "SELECT * FROM `users` WHERE ";
     foreach ($_COOKIE as $index => $value) {
         $sql .= "$index = '$value' ";
@@ -32,13 +32,16 @@
 <!doctype html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="<?php $ac->GLOBAL_ROOT(); ?>/css/normalize.css">
-    <?php
-        require $ac->GLOBAL_ROOT() . "/includes/head.inc.php";
-    ?>
-    <link rel="stylesheet" type="text/css" href="<?php $ac->GLOBAL_ROOT(); ?>/css/chats.css">
-    <script src="<?php $ac->GLOBAL_ROOT(); ?>/js/chats/chat_search.js"></script>
-    <title>AlfaChat</title>
+    <link rel="stylesheet" type="text/css" href="../css/normalize.css">
+    <meta charset='utf-8'>
+    <meta name='viewport' content='initial-scale=1, maximum-scale=1'>
+    <link rel='stylesheet' type='text/css' href='../css/default.css'>
+    <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Didact+Gothic'>
+    <link rel='icon' type='image/png' href='../img/logo_short.png'>
+    <script src='../js/jquery-3.4.1.min.js'></script>
+    <link rel="stylesheet" type="text/css" href="../css/chats.css">
+    <script src="../js/chats/chat_search.js"></script>
+    <title>AlfaChat | Conversas</title>
 </head>
 <body>
     <div class="chat_selector">
@@ -48,7 +51,7 @@
         <div class="chat_result_list" hidden></div>
         <?php
             define("CHAT_LOADER", 1);
-            require $ac->GLOBAL_ROOT() . "/includes/chat_loader.php";
+            require "../includes/chat_loader.php";
         ?>
     </div>
 
