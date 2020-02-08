@@ -1,8 +1,5 @@
 <?php
-    require "../AlfaChat.php";
-    $ac = new AlfaChat();
-
-    $conn = $ac->DB_CONN();
+    require "../includes/db.inc.php";
 
     function checkUser($conn, $rg, $class) {
         $sql = "SELECT * from `users` WHERE rg='$rg' AND class='$class'";
