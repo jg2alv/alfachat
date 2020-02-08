@@ -32,6 +32,11 @@ header input {
 .chat_result_list,
 .chat_list {
     max-height: calc(93vh - 20px);
+    overflow-y: hidden;
+}
+
+.chat_result_list:hover,
+.chat_list:hover {
     overflow-y: auto;
 }
 
