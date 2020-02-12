@@ -1,6 +1,6 @@
 <?php
     if (!empty($_COOKIE)) {
-        header("Location: chats/");
+        header("Location: chats/"); // If user is already logged in.
     }
 ?>
 
@@ -49,7 +49,7 @@
         </form>
     </main>
     <footer>
-        <p>AlfaChat <?php echo date("Y");?><br>
+        <p>AlfaChat <?php echo date("Y");?><br> <!-- Setting footer copyright year -->
             Todos os direitos reservados<br><br>
             Dúvidas?<br>
             <a href='https://t.me/bored_user' target='_blank'>Telegram</a> ou <a href='https://github.com/bored-user' target='_blank'>Github</a>.
