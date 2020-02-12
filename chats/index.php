@@ -1,12 +1,12 @@
 <?php
     if (empty($_COOKIE)) {
-        header("Location: ../");
+        header("Location: ../"); // If user isn't logged in
     }
 
-    require "../includes/db.inc.php";
+    $conn = mysqli_connect('localhost', 'root', '', 'AlfaChat');
     
     $sql = "SELECT * FROM `users` WHERE ";
-    foreach ($_COOKIE as $index => $value) {
+    foreach ($_COOKIE as $index => $value) { // Filling SQL query lol
         $sql .= "$index = '$value' ";
         if (!($value == end($_COOKIE))) {
             $sql .= "AND ";
@@ -16,15 +16,15 @@
     $sql = mysqli_num_rows($sql);
     foreach ($_COOKIE as $index => $value) {
         if ($sql) {
-            setcookie($index, $value, (time() + strtotime("+30 days")), "/");
+            setcookie($index, $value, (time() + strtotime("+30 days")), "/"); // Resetting cookies
         } else {
-            setcookie($index, $value, (time() - 3600), "/");
-            $refresh = 1;
+            setcookie($index, $value, (time() - 3600), "/"); // Deleting cookies
+            $refresh = 1; // I tired to use a 'break' here but it doesn't work. So just let PHP finish it's loop :)
         }
     }
 
     if (!empty($refresh)) {
-        header("Refresh: 0");
+        header("Refresh: 0"); // Refresh page to redirect user to login page.
         die();
     }
 ?>
@@ -50,7 +50,7 @@
         </header>
         <div class="chat_result_list" hidden></div>
         <?php
-            define("CHAT_LOADER", 1);
+            define("CHAT_LOADER", 1); // Security measure
             require "../includes/chat_loader.php";
         ?>
     </div>
