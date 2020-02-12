@@ -88,7 +88,7 @@ header input {
     color: black;
     width: 60vw;
     min-height: 100vh;
-    background: #ffffff;
+    background: #291a46;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -97,10 +97,10 @@ header input {
 }
 
 .choose_chat {
-    border: 1px solid #291a46;
-    background: #291a46;
+    border: 1px solid #35215a;
+    background: #35215a;
     color: white;
-    padding: 3px 20px;
+    padding: 5px 20px;
     border-radius: 20px;
 }
 
