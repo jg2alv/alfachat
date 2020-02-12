@@ -6,7 +6,7 @@ $(document).ready(() => {
     const chat_list = $(".chat_list")[0];
     header_input.value = ""; // Removing input's value
     header_input.addEventListener("keyup", k => {
-        chat_result_list.removeAttribute("style"); // When user press any key, the result list will appear
+        // When user press any key, the result list will appear
         if (
             !header_input.value ||
             (header_input.value.length == 1 && k.keyCode == 78) ||
@@ -30,24 +30,24 @@ $(document).ready(() => {
             if (xml.responseText) {
                 // If there's a valid response text
                 response = JSON.parse(xml.responseText); // Parsing JSON's server response text
-                for (let i = 0; i < Object.keys(response).length; i++) {
-                    // Looping on response
-                    let user = response[i];
+                response.forEach(user => {
+                    if (!isNaN(header_input.value)) {
+                        user["bio"] = user["rg"]; // If user is searching other user's RG
+                    }
+
                     if (user["photo"] == "0") {
                         // If user don't have a profile pic
                         user["photo"] = "assets/user_avatars/default.png";
                     } else {
                         user["photo"] = user["photo"].substr(9); // Removing extra path
                     }
-                    chat_result_list.innerHTML += `<div class="chat_result"><div class="chat_result_pic"><img src="${
-                        user["photo"]
-                    }"></div><div class="chat_result_info"><div>${
-                        user["name"]
-                    }</div><div>${String(user["bio"]).replace(
-                        "null",
-                        ""
-                    )}</div></div></div>`;
-                }
+
+                    if (!user["bio"]) {
+                        user["bio"] = "";
+                    }
+
+                    chat_result_list.innerHTML += `<div class="chat_result"><div class="chat_result_pic"><img src="${user["photo"]}"></div><div class="chat_result_info"><div>${user["name"]}</div><div>${user["bio"]}</div></div></div>`;
+                });
             } else {
                 chat_result_list.innerHTML += `<div style="height: calc(93vh - 20px)"><div class="no_result">Nenhum resultado encontrado.</div></div>`; // Showing "no result" banner
                 chat_result_list.style.overflowY = "hidden";
