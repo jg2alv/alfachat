@@ -41,7 +41,7 @@
     <script src='../js/jquery-3.4.1.min.js'></script>
     <link rel="stylesheet" type="text/css" href="../css/chats.css">
     <script src="../js/chats/chat_search.js"></script>
-    <title>AlfaChat | Conversas</title>
+    <title>AlfaChat  |  Conversas</title>
 </head>
 <body>
     <div class="chat_selector">
