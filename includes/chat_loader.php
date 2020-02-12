@@ -11,7 +11,7 @@
         $sql = mysqli_fetch_assoc($sql);
         $name = $sql["name"];
         $description = "Turma do ". str_replace("-", "do", $name);
-        return "<div class='chat'><div class='chat_pic'><img style='border-radius: 0;' src='../chats/assets/class_avatars/$class.png'></div><div class='chat_info'><div>$name</div><div>$description</div></div></div>";
+        return "<div class='chat' data-id='" . base64_encode("class") . "'><div class='chat_pic'><img style='border-radius: 0;' src='../chats/assets/class_avatars/$class.png'></div><div class='chat_info'><div>$name</div><div>$description</div></div></div>";
     }
 
     $id = $_COOKIE["id"]; // Getting user id
@@ -34,7 +34,7 @@
             }
             $name = $user_info["name"];
             $bio = $user_info["bio"]; // Users now have a bio :)
-            echo "<div class='chat'><div class='chat_pic'><img src='$photo'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
+            echo "<div class='chat' data-id='" . base64_encode($user_info["rg"]) . "'><div class='chat_pic'><img src='$photo'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
         }
     }
     echo "</div>"; // Close chat_list div.

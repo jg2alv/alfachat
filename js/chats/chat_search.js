@@ -1,6 +1,5 @@
-const xml = new XMLHttpRequest(); // Setting constant
-
 $(document).ready(() => {
+    const xml = new XMLHttpRequest(); // Setting constant
     const header_input = document.querySelector("header input");
     const chat_result_list = $(".chat_result_list")[0];
     const chat_list = $(".chat_list")[0];
@@ -46,7 +45,8 @@ $(document).ready(() => {
                         user["bio"] = "";
                     }
 
-                    chat_result_list.innerHTML += `<div class="chat_result"><div class="chat_result_pic"><img src="${user["photo"]}"></div><div class="chat_result_info"><div>${user["name"]}</div><div>${user["bio"]}</div></div></div>`;
+                    chat_result_list.innerHTML += `<div class="chat" data-id="${btoa(user["rg"])}"><div class="chat_pic"><img src="${user["photo"]}"></div><div class="chat_info"><div>${user["name"]}</div><div>${user["bio"]}</div></div></div>`;
+                    addChatsEventListeners();
                 });
             } else {
                 chat_result_list.innerHTML += `<div style="height: calc(93vh - 20px)"><div class="no_result">Nenhum resultado encontrado.</div></div>`; // Showing "no result" banner
