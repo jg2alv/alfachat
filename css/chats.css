@@ -42,7 +42,6 @@ header input {
     overflow-y: auto;
 }
 
-.chat_result,
 .chat {
     width: 100%;
     height: 10vh;
@@ -51,7 +50,6 @@ header input {
     cursor: pointer;
 }
 
-.chat_result:hover,
 .chat:hover {
     background: #0daaff;
 }
@@ -64,7 +62,6 @@ header input {
     background: #0daaff;;
 }
 
-.chat_result_pic,
 .chat_pic {
     flex: 1;
     display: flex;
@@ -72,14 +69,12 @@ header input {
     align-items: center;
 }
 
-.chat_result_pic img,
 .chat_pic img {
     border-radius: 50%;
     max-width: 75%;
     height: auto;
 }
 
-.chat_result_info,
 .chat_info {
     padding-left: 10px;
     box-sizing: border-box;
