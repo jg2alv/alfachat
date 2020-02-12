@@ -1,19 +1,21 @@
 body {
+    border: 1px solid #fcba03;
     display: flex;
     overflow-y: hidden;
+    color: white;
 }
 
 .chat_selector {
     width: 40vw;
     min-height: 100vh;
-    background: gray;
+    background: #35215A;
 }
 
 header {
     height: 7vh;
-    background: red;
+    background: #35215A;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     margin-bottom: 20px;
 }
@@ -51,7 +53,7 @@ header input {
 
 .chat_result:hover,
 .chat:hover {
-    background: blue;
+    background: #0daaff;
 }
 
 .no_result {
@@ -88,9 +90,10 @@ header input {
 }
 
 .chats {
+    color: black;
     width: 60vw;
     min-height: 100vh;
-    background: black;
+    background: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
