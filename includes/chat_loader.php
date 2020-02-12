@@ -1,43 +1,41 @@
 <?php
     if (!defined("CHAT_LOADER")) {
-        header("Location: ../");
+        header("Location: ../"); // If user tries to access directly
     }
 
-    require "db.inc.php";
-
-    $files = array_values(array_diff(scandir("../chats/assets/user_avatars"), array(".", "..")));
-    echo "<div class='chat_list' data-files='" . sizeof($files) . "'>";
+    $conn = mysqli_connect('localhost', 'root', '', 'AlfaChat'); // Database connection
 
     function getClassChat($class, $conn) {
-        $sql = "SELECT * FROM `classes` WHERE id = '$class'";
+        $sql = "SELECT * FROM `classes` WHERE id = '$class'"; // Get user's class
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_assoc($sql);
-        $photo = $sql["photo"];
         $name = $sql["name"];
         $description = "Turma do ". str_replace("-", "do", $name);
-        echo "<div class='chat'><div class='chat_pic'><img style='border-radius: 0;' src='../chats/assets/class_avatars/$class.png'></div><div class='chat_info'><div>$name</div><div>$description</div></div></div>";
+        return "<div class='chat'><div class='chat_pic'><img style='border-radius: 0;' src='../chats/assets/class_avatars/$class.png'></div><div class='chat_info'><div>$name</div><div>$description</div></div></div>";
     }
-    $id = $_COOKIE["id"];
-    $sql = "SELECT * FROM `users` WHERE id = '$id'";
+
+    $id = $_COOKIE["id"]; // Getting user id
+    $sql = "SELECT * FROM `users` WHERE id = '$id'"; // Selecting logged user
     $sql = mysqli_query($conn, $sql);
     $sql = mysqli_fetch_assoc($sql);
     $class = $sql["class"];
-    getClassChat($class, $conn);
-    if ($sql["chats"]) {
-        $chats = explode(",", $sql["chats"]);
-        foreach ($chats as $chat) {
-            $sql = "SELECT * FROM `chats` WHERE id = '$chat'";
+    echo "<div class='chat_list'>"; // Starts div. **JS will break if this is removed**
+    echo getClassChat($class, $conn);
+    if ($sql["chats"]) { // 'chats' is either NULL or a specific value. DO NOT USE !empty() because it'll never be empty.
+        $chats = explode(",", $sql["chats"]); // Getting all chats
+        foreach ($chats as $user) {
+            $sql = "SELECT * FROM `users` WHERE id = '$user'"; // 'chats' row will now store user IDs.
             $sql = mysqli_query($conn, $sql);
-            $chat_info = mysqli_fetch_assoc($sql);
-            $photo = $chat_info["photo"];
-            if(!$photo) {
-                $num = rand(0, (sizeof($files) - 1));
-                $photo = "../chats/assets/user_avatars/" . $files[$num] . "'" . "style='border-radius: 0;";
+            $user_info = mysqli_fetch_assoc($sql);
+            if (!$user_info["photo"]) {
+                $photo = "../chats/assets/user_avatars/default.png"; // If user doesn't have a photo
+            } else {
+                $photo = $user_info["photo"];
             }
-            $name = $chat_info["name"];
-            $description = $chat_info["description"];
-            echo "<div class='chat'><div class='chat_pic'><img src='$photo'></div><div class='chat_info'><div>$name</div><div>$description</div></div></div>";
+            $name = $user_info["name"];
+            $bio = $user_info["bio"]; // Users now have a bio :)
+            echo "<div class='chat'><div class='chat_pic'><img src='$photo'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
         }
     }
-    echo "</div>";
+    echo "</div>"; // Close chat_list div.
 ?>
