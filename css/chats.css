@@ -12,7 +12,6 @@ body {
 
 header {
     height: 7vh;
-    background: #35215a;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -20,6 +19,8 @@ header {
 }
 
 header input {
+    background: #291a46;
+    color: white;
     width: 83%;
     margin-right: 15px;
     height: calc(7vh * 0.7);
@@ -60,7 +61,7 @@ header input {
     display: flex;
     align-items: center;
     margin-top: 10px;
-    background: blue;
+    background: #0daaff;;
 }
 
 .chat_result_pic,
@@ -101,8 +102,8 @@ header input {
 }
 
 .choose_chat {
-    border: 1px solid black;
-    background: black;
+    border: 1px solid #291a46;
+    background: #291a46;
     color: white;
     padding: 3px 20px;
     border-radius: 20px;
