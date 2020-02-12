@@ -15,7 +15,7 @@ header {
     height: 7vh;
     background: #35215A;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     margin-bottom: 20px;
 }
