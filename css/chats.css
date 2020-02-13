@@ -1,16 +1,20 @@
 body {
     display: flex;
-    overflow-y: hidden;
+    overflow: hidden;
     color: white;
+    margin: 0;
+    padding: 0;
+    font-family: "Didact Gothic", sans-serif;
 }
 
 .chat_selector {
-    width: 40vw;
+    width: calc(40vw - 1px);
     min-height: 100vh;
     background: #35215a;
+    border-right: 1px solid black;
 }
 
-header {
+.chat_selector header {
     height: 7vh;
     display: flex;
     justify-content: flex-end;
@@ -18,7 +22,7 @@ header {
     margin-bottom: 20px;
 }
 
-header input {
+.chat_selector header input {
     background: #291a46;
     color: white;
     width: 83%;
@@ -89,12 +93,10 @@ header input {
     color: black;
     width: 60vw;
     min-height: 100vh;
-    background: #291a46;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 700;
     max-height: 100vh;
+    background: #291a46;
+    display: grid;
+    font-weight: 700;
 }
 
 .choose_chat {
@@ -103,6 +105,41 @@ header input {
     color: white;
     padding: 5px 20px;
     border-radius: 20px;
+    margin: auto;
+}
+
+.input_area {
+    display: none;
+    max-height: 400px;
+    align-self: flex-end;
+}
+
+.input_area img {
+    margin-bottom: -60px;
+    max-width: 5.2%;
+    height: auto;
+    align-self: flex-end;
+    justify-self: left;
+    background: #35215a;
+    cursor: pointer;
+}
+
+.input_area input {
+    overflow-y: hidden;
+    max-height: 400px;
+    min-height: 6vh;
+    min-width: 94.8%;
+    background: #35215a;
+    border: none;
+    justify-self: right;
+    align-self: flex-end;
+    padding-left: 15px;
+    color: white;
+    box-sizing: border-box;
+}
+
+.input_area input:hover {
+    overflow-y: auto;
 }
 
 @media only screen and (max-width: 999px) {
