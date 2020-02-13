@@ -58,6 +58,13 @@
 
     <div class="chats">
         <div class="choose_chat">Escolha uma conversa para entrar</div>
+        <div class="input_area">
+            <input id="file_input" type="file" style="display: none">
+            <label for="file_input" style="height: 16px;">
+                <img src="assets/icons/file.png" alt="Load file">
+            </label>
+            <input placeholder="Escreva sua mensagem..." type="text">
+        </div>
     </div>
 </body>
 </html>
