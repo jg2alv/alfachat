@@ -36,16 +36,20 @@ $(document).ready(() => {
 
                     if (user["photo"] == "0") {
                         // If user don't have a profile pic
-                        user["photo"] = "assets/user_avatars/default.png";
-                    } else {
-                        user["photo"] = user["photo"].substr(9); // Removing extra path
+                        user["photo"] = "assets/avatars/user/default.png";
                     }
 
                     if (!user["bio"]) {
                         user["bio"] = "";
                     }
 
-                    chat_result_list.innerHTML += `<div class="chat" data-id="${btoa(user["rg"])}"><div class="chat_pic"><img src="${user["photo"]}"></div><div class="chat_info"><div>${user["name"]}</div><div>${user["bio"]}</div></div></div>`;
+                    chat_result_list.innerHTML += `<div class="chat" data-id="${btoa(
+                        user["rg"]
+                    )}"><div class="chat_pic"><img src="${
+                        user["photo"]
+                    }"></div><div class="chat_info"><div>${
+                        user["name"]
+                    }</div><div>${user["bio"]}</div></div></div>`;
                     addChatsEventListeners();
                 });
             } else {
