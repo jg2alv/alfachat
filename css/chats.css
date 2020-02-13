@@ -51,15 +51,16 @@ header input {
 }
 
 .chat:hover {
-    background: #0daaff;
+    background: #291a46;
 }
 
 .no_result {
-    height: 3vh;
+    height: 4vh;
     display: flex;
     align-items: center;
     margin-top: 10px;
-    background: #0daaff;;
+    background: #291a46;
+    padding-left: 15px;
 }
 
 .chat_pic {
