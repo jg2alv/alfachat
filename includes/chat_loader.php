@@ -5,13 +5,14 @@
 
     $conn = mysqli_connect('localhost', 'root', '', 'AlfaChat'); // Database connection
 
-    function getClassChat($class, $conn) {
+    function getClassChat($class, $conn)
+    {
         $sql = "SELECT * FROM `classes` WHERE id = '$class'"; // Get user's class
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_assoc($sql);
         $name = $sql["name"];
         $description = "Turma do ". str_replace("-", "do", $name);
-        return "<div class='chat' data-id='" . base64_encode("class") . "'><div class='chat_pic'><img style='border-radius: 0;' src='../chats/assets/class_avatars/$class.png'></div><div class='chat_info'><div>$name</div><div>$description</div></div></div>";
+        return "<div class='chat' data-id='" . base64_encode("class") . "'><div class='chat_pic'><img style='border-radius: 0;' src='../chats/assets/avatars/class/$class.png'></div><div class='chat_info'><div>$name</div><div>$description</div></div></div>";
     }
 
     $id = $_COOKIE["id"]; // Getting user id
@@ -28,7 +29,7 @@
             $sql = mysqli_query($conn, $sql);
             $user_info = mysqli_fetch_assoc($sql);
             if (!$user_info["photo"]) {
-                $photo = "../chats/assets/user_avatars/default.png"; // If user doesn't have a photo
+                $photo = "../chats/assets/avatars/user/default.png"; // If user doesn't have a photo
             } else {
                 $photo = $user_info["photo"];
             }
@@ -38,4 +39,3 @@
         }
     }
     echo "</div>"; // Close chat_list div.
-?>
