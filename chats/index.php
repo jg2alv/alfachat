@@ -35,14 +35,13 @@
     <link rel="stylesheet" type="text/css" href="../css/normalize.css">
     <meta charset='utf-8'>
     <meta name='viewport' content='initial-scale=1, maximum-scale=1'>
-    <link rel='stylesheet' type='text/css' href='../css/default.css'>
     <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Didact+Gothic'>
     <link rel='icon' type='image/png' href='../img/logo_short.png'>
     <script src='../js/jquery-3.4.1.min.js'></script>
     <link rel="stylesheet" type="text/css" href="../css/chats.css">
     <script src="../js/chats/chat_search.js"></script>
     <script src="../js/chats/open_chat.js"></script>
-    <script src="../js/chats/send_message.js"></script>
+    <script src="../js/chats/message_sender.js"></script>
     <title>AlfaChat | Conversas</title>
 </head>
 <body>
