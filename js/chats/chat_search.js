@@ -1,6 +1,6 @@
 $(document).ready(() => {
     const xml = new XMLHttpRequest(); // Setting constant
-    const header_input = document.querySelector("header input");
+    const header_input = document.querySelector(".chat_selector header input[type='text']");
     const chat_result_list = $(".chat_result_list")[0];
     const chat_list = $(".chat_list")[0];
     header_input.value = ""; // Removing input's value
