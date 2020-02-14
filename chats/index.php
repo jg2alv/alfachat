@@ -49,23 +49,21 @@
     <div class="chat_selector">
         <header>
             <nav role="navigation">
-  <div id="menuToggle">
+                <div id="menuToggle">
+                    <input type="checkbox" />
+    
+                    <span></span>
+                    <span></span>
+                    <span></span>
 
-    <input type="checkbox" />
-    
-    <span></span>
-    <span></span>
-    <span></span>
-    
-    <ul id="menu">
-      <a href="#"><li>Notas</li></a>
-      <a href="#"><li>Chat</li></a>
-      <a href="#"><li>Tarefas</li></a>
-      <a href="#"><li>Sair</li></a>
-    </ul>
-    <!--<img src="assets/icons/menu.png" alt="Menu icon">-->
-  </div>
-</nav>
+                    <ul id="menu">
+                        <a href="#"><li>Notas</li></a>
+                        <a href="#"><li>Chat</li></a>
+                        <a href="#"><li>Tarefas</li></a>
+                        <a href="#"><li>Sair</li></a>
+                    </ul>
+                </div>
+            </nav>
             <input type="text" name="query" placeholder="Busca">
         </header>
         <div class="chat_result_list" hidden></div>
