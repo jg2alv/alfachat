@@ -14,7 +14,8 @@ body {
     border-right: 1px solid black;
 }
 
-.chat_selector header {
+.chat_selector header,
+.chats header {
     height: 7vh;
     display: flex;
     justify-content: flex-end;
@@ -50,7 +51,7 @@ body {
 
 .chat_result_list:hover,
 .chat_list:hover {
-    overflow-y: auto;
+    overflow-y: auto !important;
 }
 
 .chat {
@@ -62,7 +63,7 @@ body {
 }
 
 .chat:hover {
-    background: #291a46;
+    background: #291a46 !important;
 }
 
 .no_result {
@@ -113,6 +114,58 @@ body {
     padding: 5px 20px;
     border-radius: 20px;
     margin: auto;
+}
+
+.chats header {
+    display: none;
+    align-self: flex-start;
+    background: #35215a;
+    padding-bottom: 20px;
+    margin: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
+    color: white;
+    font-size: 18px;
+}
+
+.chats header div {
+    margin: 15px 0 0 15px;
+}
+
+.message_area {
+    min-height: calc(87vh - 36px);
+    width: 100%;
+    display: none;
+    background: #291a46;
+    align-items: flex-end;
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-content: flex-end;
+}
+
+.message {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    background: #35215a;
+    color: white;
+    max-width: 70%;
+    padding: 10px 35px;
+    margin: 5px 0;
+    font-size: 18px;
+}
+
+.mine {
+    justify-self: flex-end;
+    margin-right: 20px;
+    border-bottom-right-radius: 0;
+}
+
+.their {
+    justify-self: flex-start;
+    margin-left: 20px;
+    border-bottom-left-radius: 0;
 }
 
 .input_area {
