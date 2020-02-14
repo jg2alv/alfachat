@@ -13,7 +13,7 @@ function addChatsEventListeners() {
 
 function openChat(e) {
     const xml = new XMLHttpRequest();
-    xml.open("POST", "../xmlhttprequest/recieve_message.php", true);
+    xml.open("POST", "../xmlhttprequest/message_reciever.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     $(".choose_chat").attr("style", "display: none");
     $(".input_area").attr("style", "display: grid");
@@ -36,45 +36,37 @@ function openChat(e) {
     parent.style.background = "#291a46";
     id = parent.attributes["data-id"].value;
 
-    if (id === "class") {
-        xml.send("c=class");
-    } else {
-        xml.send("c=" + id);
-    }
+    xml.send("c=" + id);
 
     xml.onload = () => {
-        const M = [];
-        const T = [];
         const U = parent.children[1].children[0].innerHTML;
         if (!(xml.responseText === "[]")) {
             const response = JSON.parse(xml.responseText);
-            response.forEach(m => {
-                if (m.sender == atob(id)) {
-                    T.push(m);
-                } else {
-                    M.push(m);
-                }
-            });
-            loadMessages(M, T, U);
+            loadMessages(response, U);
         } else {
-            loadMessages(false, false, U);
+            loadMessages(false, U);
         }
     };
 }
 
-function loadMessages(M, T, U) {
+function loadMessages(R, U) {
     const ma = $(".message_area")[0];
     $(".chats header div").html(U);
     $(".input_area input").focus();
-    if (M && T) {
+    if (R) {
         if (!$(".chats:visible").length) {
             console.log("not visible");
             return;
         }
 
-        M.forEach(message => {
-            ma.innerHTML +=
-                "<div class='message mine'>" + message.content + "</div>";
+        R.forEach(message => {
+            if (message.reciever == atob(id)) {
+                ma.innerHTML +=
+                    "<div class='message mine'>" + message.content + "</div>";
+            } else {
+                ma.innerHTML +=
+                    "<div class='message their'>" + message.content + "</div>";
+            }
         });
     }
 }
