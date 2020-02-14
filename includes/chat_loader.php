@@ -5,8 +5,7 @@
 
     $conn = mysqli_connect('localhost', 'root', '', 'AlfaChat'); // Database connection
 
-    function getClassChat($class, $conn)
-    {
+    function getClassChat($class, $conn) {
         $sql = "SELECT * FROM `classes` WHERE id = '$class'"; // Get user's class
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_assoc($sql);
