@@ -125,7 +125,7 @@ body {
     justify-content: flex-start;
     align-items: flex-start;
     color: white;
-    font-size: 18px;
+    font-size: 20px;
 }
 
 .chats header div {
@@ -134,6 +134,7 @@ body {
 
 .message_area {
     min-height: calc(87vh - 36px);
+    max-height: calc(87vh - 36px);
     width: 100%;
     display: none;
     background: #291a46;
@@ -150,10 +151,11 @@ body {
     border-radius: 50px;
     background: #35215a;
     color: white;
-    max-width: 70%;
     padding: 10px 35px;
     margin: 5px 0;
     font-size: 18px;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
 }
 
 .mine {
