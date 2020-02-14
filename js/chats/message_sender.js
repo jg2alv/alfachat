@@ -12,8 +12,9 @@ $(document).ready(() => {
         xml.send(`m=${input.value}&id=${id}`); // XML content is user input
         xml.onload = () => {
             input.value = "";
+            const d = new Date();
             document.querySelector(".message_area").innerHTML +=
-                "<div class='message mine'>" + xml.responseText + "</div>";
+                "<div class='message mine'>" + xml.responseText + "<div class='message_time'>" + d.getHours() + ":" + d.getMinutes() + "</div></div>";
         };
     });
 });
