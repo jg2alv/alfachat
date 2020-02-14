@@ -7,9 +7,10 @@
 
     $conn = mysqli_connect("localhost", "root", "", "AlfaChat");
     $user = $_COOKIE["rg"];
-    $sql = "(SELECT * FROM `messages` WHERE sender = '$user' AND reciever = '$c')
+    $class = $_COOKIE["class"];
+    $sql = "(SELECT * FROM `messages` WHERE sender = '$user' AND reciever = '$c' AND class = '$class')
             UNION
-            (SELECT * FROM `messages` WHERE sender = '$c' AND reciever = '$user') ORDER BY time;";
+            (SELECT * FROM `messages` WHERE sender = '$c' AND reciever = '$user' AND class = '$class') ORDER BY time;";
     $sql = mysqli_query($conn, $sql);
     print_r(json_encode(mysqli_fetch_all($sql, MYSQLI_ASSOC)));
     die();
