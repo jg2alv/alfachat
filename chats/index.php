@@ -60,10 +60,14 @@
 
     <div class="chats">
         <div class="choose_chat">Escolha uma conversa para entrar</div>
+        <header>
+            <div></div>
+        </header>
+        <div class="message_area"></div>
         <form class="input_area" enctype="multipart/form-data">
             <input id="file_input" type="file" style="display: none">
             <label for="file_input" style="height: 16px;">
-                <img src="assets/icons/file.png" alt="Load file">
+                <img src="assets/icons/file.png" alt="Carregar arquivo">
             </label>
             <input placeholder="Escreva sua mensagem..." type="text">
         </form>
