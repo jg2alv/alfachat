@@ -42,11 +42,13 @@
     <link rel="stylesheet" type="text/css" href="../css/chats.css">
     <script src="../js/chats/chat_search.js"></script>
     <script src="../js/chats/open_chat.js"></script>
+    <script src="../js/chats/send_message.js"></script>
     <title>AlfaChat | Conversas</title>
 </head>
 <body>
     <div class="chat_selector">
         <header>
+            <img src="assets/icons/menu.png" alt="Menu icon">
             <input type="text" name="query" placeholder="Busca">
         </header>
         <div class="chat_result_list" hidden></div>
@@ -58,13 +60,13 @@
 
     <div class="chats">
         <div class="choose_chat">Escolha uma conversa para entrar</div>
-        <div class="input_area">
+        <form class="input_area" enctype="multipart/form-data">
             <input id="file_input" type="file" style="display: none">
             <label for="file_input" style="height: 16px;">
                 <img src="assets/icons/file.png" alt="Load file">
             </label>
             <input placeholder="Escreva sua mensagem..." type="text">
-        </div>
+        </form>
     </div>
 </body>
 </html>
