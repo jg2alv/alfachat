@@ -1,9 +1,11 @@
+let id;
+
 $(document).ready(() => {
     addChatsEventListeners();
 });
 
 function addChatsEventListeners() {
-    chats = Array.from($(".chat:visible"));
+    const chats = Array.from($(".chat:visible"));
     chats.forEach(chat => {
         chat.addEventListener("click", openChat);
     });
@@ -11,14 +13,28 @@ function addChatsEventListeners() {
 
 function openChat(e) {
     const xml = new XMLHttpRequest();
-    xml.open("POST", "../xmlhttprequest/get_chat_messages.php", true);
+    xml.open("POST", "../xmlhttprequest/recieve_message.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    $(".choose_chat").attr("style", "display: none");
+    $(".input_area").attr("style", "display: grid");
+    $(".message_area").attr("style", "display: grid");
+    $(".message_area").html("");
+    $(".chats header").attr("style", "display: flex");
+    const clip = $(".input_area label img")[0];
+    clip.addEventListener("mouseover", () => {
+        clip.src = "assets/icons/file_hover.png";
+    });
+    clip.addEventListener("mouseout", () => {
+        clip.src = "assets/icons/file.png";
+    });
     let parent = e.target.parentNode;
     while (parent.classList.value != "chat") {
         parent = parent.parentNode;
     }
+
+    $(".chat").attr("style", "background: #35215a");
     parent.style.background = "#291a46";
-    const id = parent.attributes["data-id"].value;
+    id = parent.attributes["data-id"].value;
 
     if (id === "class") {
         xml.send("c=class");
@@ -29,7 +45,8 @@ function openChat(e) {
     xml.onload = () => {
         const M = [];
         const T = [];
-        if (!xml.responseText === "[]") {
+        const U = parent.children[1].children[0].innerHTML;
+        if (!(xml.responseText === "[]")) {
             const response = JSON.parse(xml.responseText);
             response.forEach(m => {
                 if (m.sender == atob(id)) {
@@ -38,22 +55,26 @@ function openChat(e) {
                     M.push(m);
                 }
             });
-            loadMessages(M, T);
+            loadMessages(M, T, U);
         } else {
-            loadMessages(false, false);
+            loadMessages(false, false, U);
         }
     };
 }
 
-function loadMessages(M, T) {
-    $(".choose_chat").eq(0).remove();
-    $(".input_area").attr("style", "display: grid");
+function loadMessages(M, T, U) {
+    const ma = $(".message_area")[0];
+    $(".chats header div").html(U);
     $(".input_area input").focus();
     if (M && T) {
         if (!$(".chats:visible").length) {
             console.log("not visible");
             return;
         }
-        // show messages
+
+        M.forEach(message => {
+            ma.innerHTML +=
+                "<div class='message mine'>" + message.content + "</div>";
+        });
     }
 }
