@@ -63,10 +63,10 @@ function loadMessages(R, U) {
             const d = new Date(Number(message.time) * 1000);
             if (message.reciever == atob(id)) {
                 ma.innerHTML +=
-                    "<div class='message mine'>" + message.content + "<div class='message_time'>" + d.getHours() + ":" + d.getMinutes() + "</div></div>";
+                    "<div class='message mine'>" + atob(message.content) + "<div class='message_time'>" + d.getHours() + ":" + d.getMinutes() + "</div></div>";
             } else {
                 ma.innerHTML +=
-                    "<div class='message their'>" + message.content + "<div class='message_time'>" + d.getHours() + ":" + d.getMinutes() + "</div></div>";
+                    "<div class='message their'>" + atob(message.content) + "<div class='message_time'>" + d.getHours() + ":" + d.getMinutes() + "</div></div>";
             }
         });
     }
