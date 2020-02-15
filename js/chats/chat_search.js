@@ -54,7 +54,7 @@ $(document).ready(() => {
                 });
             } else {
                 chat_result_list.innerHTML += `<div style="height: calc(93vh - 20px)"><div class="no_result">Nenhum resultado encontrado.</div></div>`; // Showing "no result" banner
-                chat_result_list.style.overflowY = "hidden";
+                chat_result_list.style = "overflow-y: hidden !important";
             }
         };
     });
