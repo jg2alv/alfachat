@@ -11,45 +11,45 @@
 
     $s = $_SESSION["rg"];
     $r = base64_decode($_POST["id"]);
-    $m = filter_input(INPUT_POST, "m", FILTER_SANITIZE_SPECIAL_CHARS);
+    $m = base64_encode(filter_input(INPUT_POST, "m", FILTER_SANITIZE_SPECIAL_CHARS));
     $c = $_SESSION["class"];
     $t = time();
 
     $sql = "INSERT INTO `messages` (sender, reciever, content, class, seen, time) VALUES ('$s', '$r', '$m', '$c', 0, '$t');";
     $sql = mysqli_query($conn, $sql);
 
-    echo $m;
+    echo base64_decode($m);
 
 
     if ($r !== "class") {
-        $myID = $_SESSION["id"];
+        $mid = $_SESSION["id"];
         $sql = "SELECT * FROM `users` WHERE rg = '$r' AND class = '$c'"; // Person I'm talking to.
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_assoc($sql);
         $rg = $sql["rg"]; // Their RG
-        $theirID = $sql["id"]; // Their ID
+        $tid = $sql["id"]; // Their ID
 
-        if ($sql["chats"] == NULL) { // If their chats are NULL
-            $sql = "UPDATE `users` SET chats = $myID WHERE rg = $rg";
+        if (!$sql["chats"]) { // If their chats are NULL
+            $sql = "UPDATE `users` SET chats = $mid WHERE rg = $rg";
             mysqli_query($conn, $sql);
         } else {
             $chats = $sql["chats"];
-            if (strpos($chats, $myID) === false) { // If I'm not on his chat list AND his chat list isn't NULL.
-                $chats .= "," . $myID;
+            if (strpos($chats, $mid) === false) { // If I'm not on his chat list AND his chat list isn't NULL.
+                $chats .= "," . $mid;
                 $sql = "UPDATE `users` SET chats = $chats WHERE rg = $rg";
             }
         }
 
-        if ($_SESSION["chats"] == NULL) { // If my chats are NULL
-            $sql = "UPDATE `users` SET chats = $theirID WHERE id = $myID";
+        if (!$_SESSION["chats"]) { // If my chats are NULL
+            $sql = "UPDATE `users` SET chats = $tid WHERE id = $mid";
             mysqli_query($conn, $sql);
         } else {
-            $chats = $_SESSION["chats"] . "," . $theirID;
-            $sql = "UPDATE `users` SET chats = $chats WHERE id = $myID";
+            $chats = $_SESSION["chats"] . "," . $tid;
+            $sql = "UPDATE `users` SET chats = $chats WHERE id = $mid";
             mysqli_query($conn, $sql);
         }
 
-        $sql = "SELECT * FROM `users` WHERE id = '$myID'";
+        $sql = "SELECT * FROM `users` WHERE id = '$mid'";
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_assoc($sql);
         foreach($sql as $index => $value) {
