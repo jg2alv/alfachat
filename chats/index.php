@@ -30,7 +30,6 @@
         <?php
             $conn = mysqli_connect('localhost', 'root', '', 'AlfaChat'); // Database connection
 
-<<<<<<< HEAD
             function getClassChat($class, $conn)
             {
                 $sql = "SELECT * FROM `groups` WHERE id = '$class'"; // Get user's class
@@ -42,18 +41,6 @@
             }
         
             $id = $_SESSION["id"]; // Getting user id
-=======
-            function getClassChat($class, $conn) {
-                $sql = "SELECT * FROM `classes` WHERE id = '$class'"; // Get user's class
-                $sql = mysqli_query($conn, $sql);
-                $sql = mysqli_fetch_assoc($sql);
-                $name = $sql["name"];
-                $description = "Turma do ". str_replace("-", "do", $name);
-                return "<div class='chat' data-id='" . base64_encode("class") . "'><div class='chat_pic'><img style='border-radius: 0;' src='../chats/assets/avatars/class/$class.png'></div><div class='chat_info'><div>$name</div><div>$description</div></div></div>";
-            }
-        
-            $id = $_COOKIE["id"]; // Getting user id
->>>>>>> b0222c32be3f88d56b6e17b5118207937ed46723
             $sql = "SELECT * FROM `users` WHERE id = '$id'"; // Selecting logged user
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_assoc($sql);
@@ -61,7 +48,6 @@
             echo "<div class='chat_list'>"; // Starts div. **JS will break if this is removed**
             echo getClassChat($class, $conn);
             if ($sql["chats"]) { // 'chats' is either NULL or a specific value. DO NOT USE !empty() because it'll never be empty.
-<<<<<<< HEAD
                 if (strlen($sql["chats"]) > 1) {
                     $chats = explode(",", $sql["chats"]); // Getting all chats
                     foreach ($chats as $user) {
@@ -79,11 +65,6 @@
                     }
                 } else {
                     $sql = "SELECT * FROM `users` WHERE id = '$chats'"; // 'chats' row will now store user IDs.
-=======
-                $chats = explode(",", $sql["chats"]); // Getting all chats
-                foreach ($chats as $user) {
-                    $sql = "SELECT * FROM `users` WHERE id = '$user'"; // 'chats' row will now store user IDs.
->>>>>>> b0222c32be3f88d56b6e17b5118207937ed46723
                     $sql = mysqli_query($conn, $sql);
                     $user_info = mysqli_fetch_assoc($sql);
                     if (!$user_info["photo"]) {
