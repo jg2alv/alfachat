@@ -60,7 +60,7 @@ function loadMessages(R, U) {
         }
 
         R.forEach(message => {
-            const d = new Date(Number(message.time));
+            const d = new Date(Number(message.time) * 1000);
             if (message.reciever == atob(id)) {
                 ma.innerHTML +=
                     "<div class='message mine'>" + message.content + "<div class='message_time'>" + d.getHours() + ":" + d.getMinutes() + "</div></div>";

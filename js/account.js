@@ -58,7 +58,7 @@ function handleOperation(event) {
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     if (submit.value == "Criar conta") {
         xml.send(`name=${name.value}&rg=${rg.value}&email=${email.value}&password=${password.value}&class=${select.value}&o=create`);
-    } else if (submit.value == "Entrar") {
+    } else {
         xml.send(`rg=${rg.value}&password=${password.value}&class=${select.value}&o=login`);
     }
     xml.addEventListener("load", redirectFromLogin);

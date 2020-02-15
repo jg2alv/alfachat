@@ -1,5 +1,6 @@
 <?php
-    if (!empty($_COOKIE)) {
+    session_start();
+    if (!empty($_SESSION)) {
         header("Location: chats/"); // If user is already logged in.
     }
 ?>
@@ -51,7 +52,7 @@
         <p>AlfaChat <?php echo date("Y");?><br> <!-- Setting footer copyright year -->
             Todos os direitos reservados<br><br>
             Dúvidas?<br>
-            <a href='https://t.me/bored_user' target='_blank'>Telegram</a> ou <a href='https://github.com/bored-user' target='_blank'>Github</a>.
+            <a href='https://t.me/bored_user' target='_blank'>Telegram</a> ou <a href='https://github.com/bored-user/AlfaChat/issues' target='_blank'>Github</a>.
         </p>
     </footer>
 </body>
