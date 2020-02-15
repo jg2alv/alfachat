@@ -1,4 +1,6 @@
 <?php
+    session_start();
+
     $conn = mysqli_connect('localhost', 'root', '', 'AlfaChat'); // Database connection
 
     function checkUser($conn, $rg, $class) {
@@ -7,14 +9,14 @@
     }
 
     if (empty($_POST["o"])) {
-        header("Location: /"); // If someone tries to access through browser.
-    } else {
-        $o = $_POST["o"];
+        header("Location: ../"); // If someone tries to access through browser.
     }
+
+    $o = $_POST["o"];
 
     // ============= SAFETY MEASURES
     $rg = mysqli_real_escape_string($conn, $_POST["rg"]);
-    $class = mysqli_real_escape_string($conn, $_POST["class"]);
+    $class = $_POST["class"];
 
     if ($o == "check") {
         echo mysqli_num_rows(checkUser($conn, $rg, $class)); // If the intended operation is a check one.
@@ -29,28 +31,22 @@
             $joined = time();
             // ============= CREATING USER
             $sql = "INSERT INTO `users` (rg, name, email, password, class, photo, joined) VALUES ($rg, '$name', '$email', '$password', $class, 0, $joined);";
+            mysqli_query($conn, $sql);
+            $sql = "SELECT * FROM `groups` WHERE id = '$class';";
             $sql = mysqli_query($conn, $sql);
             $sql = checkUser($conn, $rg, $class); // Get user info.
             $sql = mysqli_fetch_assoc($sql);
             foreach ($sql as $index => $value) {
-                setcookie($index, $value, (time() + strtotime("+30 days")), "/"); // Setting cookies.
+                $_SESSION[$index] = $value;
             }
-            $sql = "SELECT * FROM `classes` WHERE id = '$class';";
-            $sql = mysqli_query($conn, $sql);
-            if (mysqli_num_rows($sql)) {
-                $members = mysqli_fetch_assoc($sql)["members"] . "," . $rg;
-                // ============= UPDATING USER'S CLASS
-                $sql = "UPDATE `classes` SET members='$members' WHERE id = '$class';"; // Updating class' members.
+            if (strpos($sql["members"], ",") !== false) {
+                $members = $sql["members"] . "," . $rg;
             } else {
-                if ($class < 10) { // If user is on HS or regular.
-                    $name = $class . "° Ano - Ensino Fundamental";
-                } else {
-                    $name = ($class-9) . "° Ano - Ensino Médio";
-                }
-                // ============= CREATING USER'S CLASS
-                $sql = "INSERT INTO `classes` (id, name, members, created) VALUES ($class, '$name', '$rg', $joined);";
+                $members = $rg;
             }
-            $sql = mysqli_query($conn, $sql);
+            // ============= UPDATING USER'S CLASS
+            $sql = "UPDATE `groups` SET members='$members' WHERE id = '$class';"; // Updating class' members.
+            mysqli_query($conn, $sql);
             echo true;
             die();
         } else { // If user exist.
@@ -66,7 +62,7 @@
         if (mysqli_num_rows($sql)) {
             $sql = mysqli_fetch_assoc($sql);
             foreach ($sql as $index => $value) {
-                setcookie($index, $value, (time() + strtotime("+30 days")), "/"); // Setting cookies.
+                $_SESSION[$index] = $value;
             }
             echo true;
         } else {
