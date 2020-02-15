@@ -45,11 +45,12 @@
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_assoc($sql);
             $class = $sql["class"];
+            $chats = $sql["chats"];
             echo "<div class='chat_list'>"; // Starts div. **JS will break if this is removed**
             echo getClassChat($class, $conn);
-            if ($sql["chats"]) { // 'chats' is either NULL or a specific value. DO NOT USE !empty() because it'll never be empty.
-                if (strlen($sql["chats"]) > 1) {
-                    $chats = explode(",", $sql["chats"]); // Getting all chats
+            if ($chats) { // 'chats' is either NULL or a specific value. DO NOT USE !empty() because it'll never be empty.
+                if (strlen($chats) > 1) {
+                    $chats = explode(",", $chats); // Getting all chats
                     foreach ($chats as $user) {
                         $sql = "SELECT * FROM `users` WHERE id = '$user'"; // 'chats' row will now store user IDs.
                         $sql = mysqli_query($conn, $sql);
