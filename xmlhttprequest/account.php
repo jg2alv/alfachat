@@ -32,17 +32,19 @@
             // ============= CREATING USER
             $sql = "INSERT INTO `users` (rg, name, email, password, class, photo, joined) VALUES ($rg, '$name', '$email', '$password', $class, 0, $joined);";
             mysqli_query($conn, $sql);
-            $sql = "SELECT * FROM `groups` WHERE id = '$class';";
-            $sql = mysqli_query($conn, $sql);
             $sql = checkUser($conn, $rg, $class); // Get user info.
             $sql = mysqli_fetch_assoc($sql);
             foreach ($sql as $index => $value) {
                 $_SESSION[$index] = $value;
             }
-            if (strpos($sql["members"], ",") !== false) {
-                $members = $sql["members"] . "," . $rg;
+            $sql = "SELECT * FROM `groups` WHERE id = '$class';";
+            $sql = mysqli_query($conn, $sql);
+            $sql = mysqli_fetch_assoc($sql);
+
+            if (!$sql["members"]) {
+                $members = $_SESSION["id"];
             } else {
-                $members = $rg;
+                $members = $sql["members"] . "," . $_SESSION["id"];
             }
             // ============= UPDATING USER'S CLASS
             $sql = "UPDATE `groups` SET members='$members' WHERE id = '$class';"; // Updating class' members.
