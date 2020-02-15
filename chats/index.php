@@ -1,6 +1,14 @@
 <?php
     session_start();
-    if (empty($_SESSION)) {
+
+    $conn = mysqli_connect('localhost', 'root', '', 'AlfaChat'); // Database connection
+    $id = $_SESSION["id"];
+    $sql = "SELECT * FROM `users` WHERE id = $id;";
+    $sql = mysqli_query($conn, $sql);
+
+    if (empty($_SESSION) || !(mysqli_num_rows($sql))) {
+        session_unset();
+        session_destroy();
         header("Location: ../"); // If user isn't logged in
     }
 ?>
@@ -28,10 +36,7 @@
         </header>
         <div class="chat_result_list" hidden></div>
         <?php
-            $conn = mysqli_connect('localhost', 'root', '', 'AlfaChat'); // Database connection
-
-            function getClassChat($class, $conn)
-            {
+            function getClassChat($class, $conn) {
                 $sql = "SELECT * FROM `groups` WHERE id = '$class'"; // Get user's class
                 $sql = mysqli_query($conn, $sql);
                 $sql = mysqli_fetch_assoc($sql);
