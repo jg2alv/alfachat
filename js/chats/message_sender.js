@@ -14,7 +14,20 @@ $(document).ready(() => {
             input.value = "";
             const d = new Date();
             document.querySelector(".message_area").innerHTML +=
-                "<div class='message mine'>" + xml.responseText + "<div class='message_time'>" + d.getHours() + ":" + d.getMinutes() + "</div></div>";
+                "<div class='message mine'>" +
+                xml.responseText +
+                "<div class='message_time'>" +
+                addZero(d.getHours()) +
+                ":" +
+                addZero(d.getMinutes()) +
+                "</div></div>";
         };
     });
 });
+
+function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+}
