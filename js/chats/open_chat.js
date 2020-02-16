@@ -1,5 +1,3 @@
-let id;
-
 $(document).ready(() => {
     addChatsEventListeners();
 });
@@ -34,7 +32,9 @@ function openChat(e) {
 
     $(".chat").attr("style", "background: #35215a");
     parent.style.background = "#291a46";
-    id = parent.attributes["data-id"].value;
+
+    const id = parent.attributes["data-id"].value;
+    setStatus(id);
 
     xml.send("c=" + id);
 
@@ -42,16 +42,16 @@ function openChat(e) {
         const U = parent.children[1].children[0].innerHTML;
         if (xml.responseText !== "[]") {
             const response = JSON.parse(xml.responseText);
-            loadMessages(response, U);
+            loadMessages(response, id, U);
         } else {
-            loadMessages(false, U);
+            loadMessages(false, id, U);
         }
     };
 }
 
-function loadMessages(R, U) {
+function loadMessages(R, I, U) {
     const ma = $(".message_area")[0];
-    $(".chats header div").html(U);
+    $(".chats header div")[0].innerHTML = U
     $(".input_area input").focus();
     if (R) {
         if (!$(".chats:visible").length) {
@@ -61,12 +61,24 @@ function loadMessages(R, U) {
 
         R.forEach(message => {
             const d = new Date(Number(message.time) * 1000);
-            if (message.reciever == atob(id)) {
+            if (message.reciever == atob(I)) {
                 ma.innerHTML +=
-                    "<div class='message mine'>" + atob(message.content) + "<div class='message_time'>" + d.getHours() + ":" + d.getMinutes() + "</div></div>";
+                    "<div class='message mine'>" +
+                    atob(message.content) +
+                    "<div class='message_time'>" +
+                    d.getHours() +
+                    ":" +
+                    d.getMinutes() +
+                    "</div></div>";
             } else {
                 ma.innerHTML +=
-                    "<div class='message their'>" + atob(message.content) + "<div class='message_time'>" + d.getHours() + ":" + d.getMinutes() + "</div></div>";
+                    "<div class='message their'>" +
+                    atob(message.content) +
+                    "<div class='message_time'>" +
+                    d.getHours() +
+                    ":" +
+                    d.getMinutes() +
+                    "</div></div>";
             }
         });
     }
