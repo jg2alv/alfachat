@@ -9,34 +9,33 @@
 
     $conn = mysqli_connect("localhost", "root", "", "AlfaChat");
 
-    $s = $_SESSION["rg"];
+    $s = $_SESSION["id"];
     $r = base64_decode($_POST["id"]);
-    $m = base64_encode(filter_input(INPUT_POST, "m", FILTER_SANITIZE_SPECIAL_CHARS));
-    $c = $_SESSION["class"];
+    $c = base64_encode(filter_input(INPUT_POST, "m", FILTER_SANITIZE_SPECIAL_CHARS));
     $t = time();
 
-    $sql = "INSERT INTO `messages` (sender, reciever, content, class, seen, time) VALUES ('$s', '$r', '$m', '$c', 0, '$t');";
+    $sql = "INSERT INTO `messages` (sender, reciever, content, seen, time) VALUES ('$s', '$r', '$c', 0, '$t');";
     $sql = mysqli_query($conn, $sql);
 
-    echo base64_decode($m);
+    echo base64_decode($c);
 
 
     if ($r !== "class") {
         $mid = $_SESSION["id"];
-        $sql = "SELECT * FROM `users` WHERE rg = '$r' AND class = '$c'"; // Person I'm talking to.
+        $sql = "SELECT * FROM `users` WHERE id = '$r'"; // Person I'm talking to.
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_assoc($sql);
-        $rg = $sql["rg"]; // Their RG
+        $id = $sql["id"]; // Their RG
         $tid = $sql["id"]; // Their ID
 
         if (!$sql["chats"]) { // If their chats are NULL
-            $sql = "UPDATE `users` SET chats = $mid WHERE rg = $rg";
+            $sql = "UPDATE `users` SET chats = $mid WHERE id = $id";
             mysqli_query($conn, $sql);
         } else {
             $chats = $sql["chats"];
             if (strpos($chats, $mid) === false) { // If I'm not on his chat list AND his chat list isn't NULL.
                 $chats .= "," . $mid;
-                $sql = "UPDATE `users` SET chats = $chats WHERE rg = $rg";
+                $sql = "UPDATE `users` SET chats = $chats WHERE id = $id";
             }
         }
 

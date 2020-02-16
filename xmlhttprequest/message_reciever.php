@@ -8,13 +8,12 @@
     session_start();
 
     $conn = mysqli_connect("localhost", "root", "", "AlfaChat");
-    $user = $_SESSION["rg"];
-    $class = $_SESSION["class"];
-    $sql = "(SELECT * FROM `messages` WHERE sender = '$user' AND reciever = '$c' AND class = '$class') UNION (SELECT * FROM `messages` WHERE sender = '$c' AND reciever = '$user' AND class = '$class') ORDER BY time;";
+    $user = $_SESSION["id"];
+    $sql = "(SELECT * FROM `messages` WHERE sender = '$user' AND reciever = '$c') UNION (SELECT * FROM `messages` WHERE sender = '$c' AND reciever = '$user' AND seen = 0) ORDER BY time;";
     $sql = mysqli_query($conn, $sql);
     print_r(json_encode(mysqli_fetch_all($sql, MYSQLI_ASSOC)));
     if ($c !== "class") {
-        $sql = "SELECT * FROM `users` WHERE rg = '$c' AND class = '$class'";
+        $sql = "SELECT * FROM `users` WHERE id = '$c'";
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_assoc($sql);
         $chats = $sql["chats"];

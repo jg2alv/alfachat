@@ -67,7 +67,7 @@
                         }
                         $name = $user_info["name"];
                         $bio = $user_info["bio"]; // Users now have a bio :)
-                        echo "<div class='chat' data-id='" . base64_encode($user_info["rg"]) . "'><div class='chat_pic'><img src='$photo'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
+                        echo "<div class='chat' data-id='" . base64_encode($user_info["id"]) . "'><div class='chat_pic'><img src='$photo'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
                     }
                 } else {
                     $sql = "SELECT * FROM `users` WHERE id = '$chats'"; // 'chats' row will now store user IDs.
@@ -80,7 +80,7 @@
                     }
                     $name = $user_info["name"];
                     $bio = $user_info["bio"]; // Users now have a bio :)
-                    echo "<div class='chat' data-id='" . base64_encode($user_info["rg"]) . "'><div class='chat_pic'><img src='$photo'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
+                    echo "<div class='chat' data-id='" . base64_encode($user_info["id"]) . "'><div class='chat_pic'><img src='$photo'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
                 }
             }
             echo "</div>"; // Close chat_list div.
