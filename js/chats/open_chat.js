@@ -40,7 +40,7 @@ function openChat(e) {
 
     xml.onload = () => {
         const U = parent.children[1].children[0].innerHTML;
-        if (!(xml.responseText === "[]")) {
+        if (xml.responseText !== "[]") {
             const response = JSON.parse(xml.responseText);
             loadMessages(response, U);
         } else {
