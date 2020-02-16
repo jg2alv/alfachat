@@ -44,7 +44,7 @@ $(document).ready(() => {
                     }
 
                     chat_result_list.innerHTML += `<div class="chat" data-id="${btoa(
-                        user["rg"]
+                        user["id"]
                     )}"><div class="chat_pic"><img src="${
                         user["photo"]
                     }"></div><div class="chat_info"><div>${
