@@ -127,10 +127,16 @@ body {
     color: white;
     font-size: 20px;
     border-bottom: 1px solid black;
+    flex-direction: column;
 }
 
-.chats header div {
-    margin: 15px 0 0 15px;
+.chats header div:nth-of-type(1) {
+    margin: 15px 0 10px 15px;
+}
+
+.chats header div:nth-of-type(2) {
+    margin-left: 15px;
+    font-size: 16px;
 }
 
 .message_area {
