@@ -34,7 +34,7 @@ $(document).ready(() => {
                         user["bio"] = user["rg"]; // If user is searching other user's RG
                     }
 
-                    if (user["photo"] == "0") {
+                    if (!user["photo"]) {
                         // If user don't have a profile pic
                         user["photo"] = "assets/avatars/user/default.png";
                     }
