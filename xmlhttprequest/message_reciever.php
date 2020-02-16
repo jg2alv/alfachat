@@ -17,7 +17,7 @@
     $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
     print_r(json_encode($sql));
 
-    if ($c !== "class") {
+    if ($c !== "group:class") {
         // Select all messages he sent me and I didn't see yet.
         $sql = "SELECT * FROM `messages` WHERE sender = $c AND seen = 0";
         $sql = mysqli_query($conn, $sql);

@@ -13,7 +13,7 @@
 
         session_start();
         $i = base64_decode($_POST["i"]);
-        if ($i === "class") {
+        if ($i === "group:class") {
             $class = $_SESSION["class"];
             $sql = "SELECT * FROM `groups` WHERE id = $class";
             $sql = mysqli_query($conn, $sql);

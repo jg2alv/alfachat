@@ -20,7 +20,7 @@
     echo base64_decode($c);
 
 
-    if ($r !== "class") {
+    if ($r !== "group:class") {
         $id = $_SESSION["id"];
         // $id is my ID
         // $r is their ID
