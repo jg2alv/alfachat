@@ -1,3 +1,5 @@
+let id;
+
 $(document).ready(() => {
     addChatsEventListeners();
 });
@@ -33,8 +35,8 @@ function openChat(e) {
     $(".chat").attr("style", "background: #35215a");
     parent.style.background = "#291a46";
 
-    const id = parent.attributes["data-id"].value;
-    setStatus(id);
+    id = parent.attributes["data-id"].value;
+    setStatusFront(id);
 
     xml.send("c=" + id);
 
@@ -42,42 +44,42 @@ function openChat(e) {
         const U = parent.children[1].children[0].innerHTML;
         if (xml.responseText !== "[]") {
             const response = JSON.parse(xml.responseText);
-            loadMessages(response, id, U);
+            loadMessages(response, U);
         } else {
-            loadMessages(false, id, U);
+            loadMessages(false, U);
         }
     };
 }
 
-function loadMessages(R, I, U) {
+function loadMessages(R, U) {
     const ma = $(".message_area")[0];
-    $(".chats header div")[0].innerHTML = U
+    $(".chats header div")[0].innerHTML = U;
     $(".input_area input").focus();
     if (R) {
         if (!$(".chats:visible").length) {
-            console.log("not visible");
+            // Replace chat list with chat. The return needs to be there.
             return;
         }
 
         R.forEach(message => {
             const d = new Date(Number(message.time) * 1000);
-            if (message.reciever == atob(I)) {
+            if (message.reciever == atob(id)) {
                 ma.innerHTML +=
                     "<div class='message mine'>" +
                     atob(message.content) +
                     "<div class='message_time'>" +
-                    d.getHours() +
+                    addZero(d.getHours()) +
                     ":" +
-                    d.getMinutes() +
+                    addZero(d.getMinutes()) +
                     "</div></div>";
             } else {
                 ma.innerHTML +=
                     "<div class='message their'>" +
                     atob(message.content) +
                     "<div class='message_time'>" +
-                    d.getHours() +
+                    addZero(d.getHours()) +
                     ":" +
-                    d.getMinutes() +
+                    addZero(d.getMinutes()) +
                     "</div></div>";
             }
         });
