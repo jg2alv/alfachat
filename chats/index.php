@@ -23,9 +23,12 @@
     <link rel='icon' type='image/png' href='../img/logo_short.png'>
     <script src='../js/jquery-3.4.1.min.js'></script>
     <link rel="stylesheet" type="text/css" href="../css/chats.css">
-    <script src="../js/chats/open_chat.js"></script>
-    <script src="../js/chats/chat_search.js"></script>
-    <script src="../js/chats/message_sender.js"></script>
+    <?php
+        $files = array_diff(scandir("../js/chats"), array(".", ".."));
+        foreach($files as $file) {
+            echo "<script src='../js/chats/" . $file . "'></script>";   // Load JS files
+        }
+    ?>
     <title>AlfaChat | Conversas</title>
 </head>
 <body>
@@ -90,6 +93,7 @@
     <div class="chats">
         <div class="choose_chat">Escolha uma conversa para entrar</div>
         <header>
+            <div></div>
             <div></div>
         </header>
         <div class="message_area"></div>
