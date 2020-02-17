@@ -45,7 +45,7 @@
                 $sql = mysqli_fetch_assoc($sql);
                 $name = $sql["name"];
                 $bio = "Turma do ". str_replace("-", "do", $name);
-                return "<div class='chat' data-id='" . base64_encode("group:class") . "'><div class='chat_pic'><img style='border-radius: 0;' src='../chats/assets/avatars/class/$class.png'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
+                return "<div class='chat' data-id='" . base64_encode("group") . "'><div class='chat_pic'><img style='border-radius: 0;' src='../chats/assets/avatars/class/$class.png'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
             }
         
             $id = $_SESSION["id"]; // Getting user id
