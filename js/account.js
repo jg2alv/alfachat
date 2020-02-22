@@ -57,15 +57,19 @@ function handleOperation(event) {
     xml.open("POST", "xmlhttprequest/account.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     if (submit.value == "Criar conta") {
-        xml.send(`name=${name.value}&rg=${rg.value}&email=${email.value}&password=${password.value}&class=${select.value}&o=create`);
+        xml.send(
+            `name=${name.value}&rg=${rg.value}&email=${email.value}&password=${password.value}&class=${select.value}&o=create`
+        );
     } else {
-        xml.send(`rg=${rg.value}&password=${password.value}&class=${select.value}&o=login`);
+        xml.send(
+            `rg=${rg.value}&password=${password.value}&class=${select.value}&o=login`
+        );
     }
     xml.addEventListener("load", redirectFromLogin);
 }
 
 function redirectFromLogin() {
-    if (xml.responseText == "User already exist") {
+    if (xml.responseText === "User already exist") {
         submitText = submit.value;
         submitButton = document.createElement("input");
         submitButton.value = submitText;
@@ -73,15 +77,19 @@ function redirectFromLogin() {
         form.addEventListener("submit", handleOperation);
         error = document.createElement("span");
         error.style = "color: red; font-size: small";
-        error.innerHTML =
-            "Usu&aacute;rio j&aacute; existe!";
+        error.innerHTML = "Usu&aacute;rio j&aacute; existe!";
         lineBreak = document.createElement("br");
         lineBreak.setAttribute("data-dynamic", "true");
         $("input[type='submit']").remove();
         $("form").append(error);
         $("form").append(lineBreak);
         $("form").append(submitButton);
-    } else if (xml.responseText) {
+    } else if (xml.responseText != "false") {
+        const response = JSON.parse(xml.responseText);
+        const keys = Object.keys(response);
+        keys.forEach(key => {
+            sessionStorage[btoa(key)] = btoa(response[key]);
+        });
         window.location.href = "chats/";
     } else {
         submitText = submit.value;
