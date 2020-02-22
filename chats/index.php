@@ -25,7 +25,7 @@
     <link rel="stylesheet" type="text/css" href="../css/chats.css">
     <?php
         $files = array_diff(scandir("../js/chats"), array(".", ".."));
-        foreach($files as $file) {
+        foreach ($files as $file) {
             echo "<script src='../js/chats/" . $file . "'></script>";   // Load JS files
         }
     ?>
@@ -39,15 +39,6 @@
         </header>
         <div class="chat_result_list" hidden></div>
         <?php
-            function getClassChat($class, $conn) {
-                $sql = "SELECT * FROM `groups` WHERE id = '$class'"; // Get user's class
-                $sql = mysqli_query($conn, $sql);
-                $sql = mysqli_fetch_assoc($sql);
-                $name = $sql["name"];
-                $bio = "Turma do ". str_replace("-", "do", $name);
-                return "<div class='chat' data-id='" . base64_encode("group") . "'><div class='chat_pic'><img style='border-radius: 0;' src='../chats/assets/avatars/class/$class.png'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
-            }
-        
             $id = $_SESSION["id"]; // Getting user id
             $sql = "SELECT * FROM `users` WHERE id = '$id'"; // Selecting logged user
             $sql = mysqli_query($conn, $sql);
@@ -55,7 +46,12 @@
             $class = $sql["class"];
             $chats = $sql["chats"];
             echo "<div class='chat_list'>"; // Starts div. **JS will break if this is removed**
-            echo getClassChat($class, $conn);
+            $sql = "SELECT * FROM `groups` WHERE id = '$class'"; // Get user's class
+            $sql = mysqli_query($conn, $sql);
+            $sql = mysqli_fetch_assoc($sql);
+            $name = $sql["name"];
+            $bio = "Turma do ". str_replace("-", "do", $name);
+            echo "<div class='chat' data-id='" . base64_encode("group:$class") . "'><div class='chat_pic'><img style='border-radius: 0;' src='../chats/assets/avatars/class/$class.png'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
             if ($chats) { // 'chats' is either NULL or a specific value. DO NOT USE !empty() because it'll never be empty.
                 if (strlen($chats) > 1) {
                     $chats = explode(",", $chats); // Getting all chats
