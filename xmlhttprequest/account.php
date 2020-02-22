@@ -41,15 +41,18 @@
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_assoc($sql);
 
+            // ============= UPDATING USER'S CLASS
             if (!$sql["members"]) {
                 $members = $_SESSION["id"];
             } else {
                 $members = $sql["members"] . "," . $_SESSION["id"];
             }
-            // ============= UPDATING USER'S CLASS
             $sql = "UPDATE `groups` SET members='$members' WHERE id = '$class';"; // Updating class' members.
             mysqli_query($conn, $sql);
-            echo true;
+
+            // ============= RETURNING USER DATA
+            $sql = checkUser($conn, $rg, $class);
+            print_r(json_encode(mysqli_fetch_assoc($sql)));
             die();
         } else { // If user exist.
             echo "User already exist";
@@ -66,7 +69,7 @@
             foreach ($sql as $index => $value) {
                 $_SESSION[$index] = $value;
             }
-            echo true;
+            print_r(json_encode($sql));
         } else {
             echo false; // If user doesn't exist.
         }
