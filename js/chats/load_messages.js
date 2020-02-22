@@ -4,22 +4,14 @@ function loadMessages(R, U) {
     $(".input_area input").focus();
     if (R) {
         if (!$(".chats:visible").length) {
-            // Replace chat list with chat. The return needs to be there.
+            // Replace chat list with chat. The 'return' command needs to be there.
             return;
         }
 
         R.forEach(message => {
             const d = new Date(Number(message.time) * 1000);
-            if (message.reciever == atob(id)) {
-                ma.innerHTML +=
-                    "<div class='message mine'>" +
-                    atob(message.content) +
-                    "<div class='message_time'>" +
-                    addZero(d.getHours()) +
-                    ":" +
-                    addZero(d.getMinutes()) +
-                    "</div></div>";
-            } else {
+            if (message.sender !== atob(sessionStorage[btoa("id")])) {
+                // Add group sender photo
                 ma.innerHTML +=
                     "<div class='message their'>" +
                     atob(message.content) +
@@ -27,7 +19,16 @@ function loadMessages(R, U) {
                     addZero(d.getHours()) +
                     ":" +
                     addZero(d.getMinutes()) +
-                    "</div></div>";
+                    "</div></<div>";
+            } else {
+                ma.innerHTML +=
+                    "<div class='message mine'>" +
+                    atob(message.content) +
+                    "<div class='message_time'>" +
+                    addZero(d.getHours()) +
+                    ":" +
+                    addZero(d.getMinutes()) +
+                    "</div></<div>";
             }
         });
     }
