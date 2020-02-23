@@ -104,7 +104,6 @@ body {
     max-height: 100vh;
     background: #291a46;
     display: grid;
-    font-weight: 700;
 }
 
 .choose_chat {
@@ -114,6 +113,7 @@ body {
     padding: 5px 20px;
     border-radius: 20px;
     margin: auto;
+    font-weight: 700;
 }
 
 .chats header {
@@ -228,6 +228,10 @@ body {
 
 .input_area input:hover {
     overflow-y: auto;
+}
+
+.input_area input:focus {
+    outline: none;
 }
 
 @media only screen and (max-width: 999px) {

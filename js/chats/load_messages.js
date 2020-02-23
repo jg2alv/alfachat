@@ -37,8 +37,8 @@ function load_info(message, o) {
     } else if (o === "name") {
         xml.onload = () => {
             const message = document.querySelector("[inc]");
-            message.innerHTML = message.innerHTML.replace("undefined", `<span style='color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px'>${xml.responseText}</span><br>`);
-            message.removeAttribute("inc")
+            message.innerHTML = message.innerHTML.replace("undefined", `<span style='color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold'>${xml.responseText}</span>`);
+            message.removeAttribute("inc");
         };
     }
 }
