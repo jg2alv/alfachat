@@ -15,7 +15,7 @@ function openChat(e) {
     const xml = new XMLHttpRequest();
     xml.open("POST", "../xmlhttprequest/message_reciever.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    $(".choose_chat").attr("style", "display: none");
+    $(".choose_chat").remove();
     $(".input_area").attr("style", "display: grid");
     $(".message_area").attr("style", "display: grid");
     $(".message_area").html("");
