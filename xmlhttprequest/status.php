@@ -1,5 +1,5 @@
 <?php
-    if (empty($_POST["o"])) {
+    if (empty($_POST["o"]) || empty($_POST["i"])) {
         header("Location: ../");
     } else {
         $conn = mysqli_connect("localhost", "root", "", "AlfaChat");
@@ -7,10 +7,6 @@
     }
 
     function check($conn) {
-        if (empty($_POST["i"])) {
-            header("Location: ../");
-        }
-
         session_start();
         $i = base64_decode($_POST["i"]);
         if (strpos($i, "group") !== false) {
@@ -36,14 +32,10 @@
     }
 
     function set($conn) {
-        if (empty($_POST["s"])) {
-            header("Location: ../");
-        }
-
         session_start();
         $id = $_SESSION["id"];
-        $s = $_POST["s"];
-        $sql = "UPDATE `users` SET `status` = '$s' WHERE id = $id";
+        $i = $_POST["i"];
+        $sql = "UPDATE `users` SET `status` = '$i' WHERE id = $id";
         mysqli_query($conn, $sql);
     }
 
