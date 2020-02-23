@@ -36,7 +36,7 @@ function setStatusBack(arg) {
     const xml = new XMLHttpRequest();
     xml.open("POST", "../xmlhttprequest/status.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xml.send(arg); // Send request with message
+    xml.send(`i=${arg}&o=set`); // Send request with message
 }
 
 function setStatusFront(id) {
