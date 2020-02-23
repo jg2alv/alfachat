@@ -14,7 +14,7 @@ function loadMessages(R, U) {
                 if (atob(id).indexOf("group") !== -1) {
                     ma.innerHTML += `<div class="their"><div class="message" style="border-bottom-left-radius: 0;" inc>${load_info(message, "name") + atob(message.content)}<div class="message_time">${d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div></div><img class="profile_img" src="${load_info(message, "img")}"></div>`;
                 } else {
-                    ma.innerHTML += `<div class="message their">${atob(message.content)}<div class="message_time">${d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div></div>`;
+                    ma.innerHTML += `<div class="message their" style="margin-left: 20px">${atob(message.content)}<div class="message_time">${d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div></div>`;
                 }
             } else {
                 ma.innerHTML += `<div class="message mine">${atob(message.content)}<div class="message_time">${d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div></div>`;
