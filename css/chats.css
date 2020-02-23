@@ -155,32 +155,42 @@ body {
     display: grid;
     align-items: center;
     justify-content: center;
-    border-radius: 50px;
+    border-radius: 15px;
     background: #35215a;
     color: white;
-    padding: 10px 35px;
-    margin: 5px 0;
+    padding: 10px 35px 10px 25px;
+    margin: 5px 0 5px 85px;
     font-size: 18px;
-    word-wrap: break-word;
     overflow-wrap: anywhere;
+    word-wrap: break-word;
 }
 
 .mine {
     justify-self: flex-end;
-    margin-right: 20px;
+    display: grid;
     border-bottom-right-radius: 0;
+    margin-right: 20px;
 }
 
 .their {
     justify-self: flex-start;
-    margin-left: 20px;
+    display: grid;
     border-bottom-left-radius: 0;
+}
+
+.profile_img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: none;
+    justify-self: flex-start;
+    align-self: flex-end;
+    margin: -60px 0 0 20px;
 }
 
 .message_time {
     font-size: 14px;
-    margin-top: 5px;
-    margin-right: -20px;
+    margin: 5px -20px 5px 0;
     justify-self: end;
     color: #cccccc;
 }
