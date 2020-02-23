@@ -46,12 +46,13 @@
             $class = $sql["class"];
             $chats = $sql["chats"];
             echo "<div class='chat_list'>"; // Starts div. **JS will break if this is removed**
-            $sql = "SELECT * FROM `groups` WHERE id = '$class'"; // Get user's class
-            $sql = mysqli_query($conn, $sql);
-            $sql = mysqli_fetch_assoc($sql);
-            $name = $sql["name"];
+            if ($_SESSION["class"] > 9) {
+                $name = ($_SESSION["class"] - 9) . "° Ano - Ensino Médio";
+            } else {
+                $name = $_SESSION["class"] . "° Ano - Ensino Fundamental";
+            }
             $bio = "Turma do ". str_replace("-", "do", $name);
-            echo "<div class='chat' data-id='" . base64_encode("group:$class") . "'><div class='chat_pic'><img style='border-radius: 0;' src='../chats/assets/avatars/class/$class.png'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
+            echo "<div class='chat' data-id='" . base64_encode("group:" . $_SESSION["class"]) . "'><div class='chat_pic'><img style='border-radius: 0;' src='assets/avatars/class/$class.png'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
             if ($chats) { // 'chats' is either NULL or a specific value. DO NOT USE !empty() because it'll never be empty.
                 if (strlen($chats) > 1) {
                     $chats = explode(",", $chats); // Getting all chats
@@ -60,7 +61,7 @@
                         $sql = mysqli_query($conn, $sql);
                         $user_info = mysqli_fetch_assoc($sql);
                         if (!$user_info["photo"]) {
-                            $photo = "../chats/assets/avatars/user/default.png"; // If user doesn't have a photo
+                            $photo = "assets/avatars/user/default.png"; // If user doesn't have a photo (setting according to js/chats relative path)
                         } else {
                             $photo = $user_info["photo"];
                         }
@@ -73,7 +74,7 @@
                     $sql = mysqli_query($conn, $sql);
                     $user_info = mysqli_fetch_assoc($sql);
                     if (!$user_info["photo"]) {
-                        $photo = "../chats/assets/avatars/user/default.png"; // If user doesn't have a photo
+                        $photo = "assets/avatars/user/default.png"; // If user doesn't have a photo
                     } else {
                         $photo = $user_info["photo"];
                     }
