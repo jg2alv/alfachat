@@ -36,11 +36,20 @@ body {
     padding: 6px;
 }
 
+.chat_selector header input:focus {
+    border-color: white;
+}
+
 .chat_selector header img {
     height: 5.5vh;
     margin-right: 10px;
     margin-left: 10px;
     cursor: pointer;
+    filter: brightness(60%);
+}
+
+.chat_selector header img:hover {
+    filter: brightness(100%);
 }
 
 .chat_result_list,
@@ -176,6 +185,7 @@ body {
     justify-self: flex-start;
     display: grid;
     border-bottom-left-radius: 0;
+    margin-right: 85px;
 }
 
 .profile_img {
@@ -203,19 +213,19 @@ body {
 
 .input_area img {
     margin-bottom: -60px;
-    max-width: 5.2%;
-    height: auto;
+    max-height: 375%;
+    width: auto;
     align-self: flex-end;
     justify-self: left;
     background: #35215a;
     cursor: pointer;
 }
 
-.input_area input[type="text"] {
+.input_area input[type='text'] {
     overflow-y: hidden;
     max-height: 400px;
     min-height: 6vh;
-    min-width: 94.8%;
+    width: calc(100% - 60.15px);
     background: #35215a;
     border: none;
     justify-self: right;
@@ -226,12 +236,12 @@ body {
     font-size: 18px;
 }
 
-.input_area input:hover {
+.input_area input[type='text']:hover {
     overflow-y: auto;
 }
 
-.input_area input:focus {
-    outline: none;
+.input_area input[type='text']:focus {
+    outline: 0;
 }
 
 @media only screen and (max-width: 999px) {
