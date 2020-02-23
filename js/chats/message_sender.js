@@ -4,6 +4,7 @@ $(document).ready(() => {
     const input = $(".input_area input[type='text']")[0];
     form.addEventListener("submit", e => {
         e.preventDefault();
+        setStatusBack("online")
         xml.open("POST", "../xmlhttprequest/message_sender.php", true);
         xml.setRequestHeader(
             "Content-type",
