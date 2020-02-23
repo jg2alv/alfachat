@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 22, 2020 at 06:43 PM
+-- Generation Time: Feb 23, 2020 at 07:55 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -68,6 +68,23 @@ CREATE TABLE `messages` (
   `time` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`id`, `sender`, `reciever`, `content`, `seen`, `time`) VALUES
+(1, 1, 'group:11', 'dGVzdGFuZG8=', 1, 1582478432),
+(2, 1, '2', 'b2ksIEVyaWMh', 1, 1582478633),
+(3, 2, 'group:11', 'b2ksIEpvYW8=', 1, 1582478719),
+(4, 1, 'group:11', 'YXF1aSBlaCBvIEpvYW8sIHRlc3RhbmRvIHBlbG8gbW96aWxsYSBmaXJlZm94', 1, 1582478781),
+(5, 2, 'group:11', 'YXF1aSBlaCBvIEVyaWMsIHBlbG8gQnJhdmU=', 1, 1582478832),
+(6, 1, 'group:11', 'cGFyZWNlIHF1ZSBlc3RhIHR1ZG8gZnVuY2lvbmFuZG8=', 1, 1582478850),
+(7, 2, 'group:11', 'Y3JlaW8gcXVlIHNpbQ==', 1, 1582478862),
+(8, 2, '1', 'b2ksIEpvYW8h', 1, 1582479819),
+(9, 1, 'group:11', 'Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0', 1, 1582480143),
+(10, 1, '2', 'Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dA==', 1, 1582480380),
+(11, 1, '2', 'Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHRnaWFudCB0ZXh0Z2lhbnQgdGV4dGdpYW50IHRleHQ=', 1, 1582480386);
+
 -- --------------------------------------------------------
 
 --
@@ -93,8 +110,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `rg`, `name`, `email`, `password`, `class`, `chats`, `bio`, `photo`, `status`, `joined`) VALUES
-(1, 10155597, 'Joao Vaz', 'joao@gmail.com', 'e19d5cd5af0378da05f63f891c7467af', 11, '2', NULL, NULL, 'Visto pela última vez agora mesmo', 1581809654),
-(2, 10155598, 'Eric', 'eric@gmail.com', 'e19d5cd5af0378da05f63f891c7467af', 11, '1', NULL, NULL, 'online', 1581809680);
+(1, 10155597, 'Joao Vaz', 'joao@gmail.com', 'e19d5cd5af0378da05f63f891c7467af', 11, '2', NULL, NULL, 's=online', 1581809654),
+(2, 10155598, 'Eric', 'eric@gmail.com', 'e19d5cd5af0378da05f63f891c7467af', 11, '1', NULL, NULL, 'offline', 1581809680);
 
 --
 -- Indexes for dumped tables
@@ -132,7 +149,7 @@ ALTER TABLE `groups`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `users`
