@@ -16,7 +16,7 @@
             $sql = mysqli_fetch_assoc($sql);
             $members = $sql["members"];
             $members = explode(",", $members);
-            if (sizeof($members) > 2) {
+            if (sizeof($members) > 1) {
                 echo sizeof($members) . " membros";
             } else {
                 echo "1 membro";
