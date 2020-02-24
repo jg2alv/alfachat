@@ -6,7 +6,7 @@
         $_POST["o"]($conn);
     }
 
-    function check($conn) {
+    function get($conn) {
         session_start();
         $i = base64_decode($_POST["i"]);
         if (strpos($i, "group") !== false) {
