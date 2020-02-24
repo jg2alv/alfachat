@@ -5,6 +5,26 @@ $(document).ready(() => {
     chats.forEach(chat => {
         chat.addEventListener("click", openChat); // Adding event to open chat on click
     });
+    const xml = new XMLHttpRequest();
+    const form = $("form.input_area")[0];
+    const input = $(".input_area input[type='text']")[0];
+    form.addEventListener("submit", e => {
+        e.preventDefault();
+        statusBackend("o=set&i=online")
+        xml.open("POST", "../xmlhttprequest/message_sender.php", true);
+        xml.setRequestHeader(
+            "Content-type",
+            "application/x-www-form-urlencoded"
+        );
+        xml.send(`m=${input.value}&id=${id}`); // XML content is user input
+        xml.onload = () => {
+            input.value = "";
+            const d = new Date();
+            const messageTime = `<div class="message_time">${addZero(d.getDate()) + "/" + addZero(d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div>`;
+            document.querySelector(".message_area").innerHTML +=
+                `<div class='message mine'>${xml.responseText + messageTime}</div>`;
+        };
+    });
 });
 
 function openChat(e) {
@@ -61,4 +81,11 @@ function openChat(e) {
             });
         }
     };
+}
+
+function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
 }
