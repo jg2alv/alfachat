@@ -4,7 +4,7 @@ $(document).ready(() => {
     const input = $(".input_area input[type='text']")[0];
     form.addEventListener("submit", e => {
         e.preventDefault();
-        setStatusBack("online")
+        statusBackend("o=set&i=online")
         xml.open("POST", "../xmlhttprequest/message_sender.php", true);
         xml.setRequestHeader(
             "Content-type",
@@ -14,8 +14,9 @@ $(document).ready(() => {
         xml.onload = () => {
             input.value = "";
             const d = new Date();
+            const messageTime = `<div class="message_time">${addZero(d.getDate()) + "/" + addZero(d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div>`;
             document.querySelector(".message_area").innerHTML +=
-                `<div class='message mine'>${xml.responseText}<div class='message_time'>${addZero(d.getDate()) + "/" + addZero(d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div></div>`;
+                `<div class='message mine'>${xml.responseText + messageTime}</div>`;
         };
     });
 });

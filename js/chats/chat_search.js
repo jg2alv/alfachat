@@ -1,6 +1,8 @@
 $(document).ready(() => {
     const xml = new XMLHttpRequest(); // Setting constant
-    const header_input = document.querySelector(".chat_selector header input[type='text']");
+    const header_input = document.querySelector(
+        ".chat_selector header input[type='text']"
+    );
     const chat_result_list = $(".chat_result_list")[0];
     const chat_list = $(".chat_list")[0];
     header_input.value = ""; // Removing input's value
@@ -50,7 +52,10 @@ $(document).ready(() => {
                     }"></div><div class="chat_info"><div>${
                         user["name"]
                     }</div><div>${user["bio"]}</div></div></div>`;
-                    addChatsEventListeners();
+                    const chats = Array.from($(".chat:visible"));
+                    chats.forEach(chat => {
+                        chat.addEventListener("click", openChat);
+                    });
                 });
             } else {
                 chat_result_list.innerHTML += `<div style="height: calc(93vh - 20px)"><div class="no_result">Nenhum resultado encontrado.</div></div>`; // Showing "no result" banner
