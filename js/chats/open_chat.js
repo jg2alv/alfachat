@@ -49,9 +49,9 @@ function openChat(e) {
             JSON.parse(xml.responseText).forEach(message => { // ForEach message
                 const d = new Date(Number(message.time) * 1000);
                 const messageTime = `<div class="message_time">${addZero(d.getDate()) + "/" + addZero(d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div>`;
-                if (message.sender !== atob(sessionStorage[btoa("id")])) { // If message sender is not the same as the chat user clicked (if user didn't send the msg)
+                if (message.sender !== atob(sessionStorage[btoa("id")])) { // If user didn't send the message
                     if (atob(id).indexOf("group") > -1) { // If this chat is a group chat
-                        message_area.innerHTML += `<div class="their"><div class="message" style="border-bottom-left-radius: 0;" inc>${load_info(message, "name") + atob(message.content) + messageTime}</div><img class="profile_img" src="${load_info(message, "img")}"></div>`;
+                        message_area.innerHTML += `<div class="their"><div class="message" style="border-bottom-left-radius: 0;">${"<span style='color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold'>" + message["name"] + "</span>" + atob(message.content) + messageTime}</div><img class="profile_img" src="${message["photo"]}"></div>`;
                     } else { // If chat isn't a group chat
                         message_area.innerHTML += `<div class="message their" style="margin-left: 20px">${atob(message.content) + messageTime}</div>`;
                     }
@@ -59,24 +59,6 @@ function openChat(e) {
                     message_area.innerHTML += `<div class="message mine">${atob(message.content) + messageTime}</div>`;
                 }
             });
-        }
-    };
-}
-
-function load_info(message, operation) { // IMPROVE THIS. REPLACE undefined IN MEMORY AND AFTER WRITE IT TO DOCUMENT
-    const xml = new XMLHttpRequest();
-    xml.open("POST", "../xmlhttprequest/load_info.php", true);
-    xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xml.send(`g=${message.sender}&o=${operation}`); // XML content is user input
-    xml.onload = () => {
-        if (operation === "img") {
-            const img = document.querySelector("img[src=undefined]");
-            img.src = xml.responseText;
-            img.style.display = "grid";
-        } else {
-            const message = document.querySelector("[inc]");
-            message.innerHTML = message.innerHTML.replace("undefined", `<span style='color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold'>${xml.responseText}</span>`);
-            message.removeAttribute("inc");
         }
     };
 }
