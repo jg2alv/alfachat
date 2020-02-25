@@ -116,13 +116,16 @@ body {
 }
 
 .choose_chat {
-    border: 1px solid #35215a;
+    font-weight: 700;
+    display: flex;
+    align-content: center;
+    align-self: center;
+    justify-self: center;
+    box-sizing: border-box;
     background: #35215a;
     color: white;
-    padding: 5px 20px;
+    padding: 10px 20px;
     border-radius: 20px;
-    margin: auto;
-    font-weight: 700;
 }
 
 .chats header {
