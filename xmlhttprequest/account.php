@@ -30,7 +30,7 @@
         if (!mysqli_num_rows(checkUser($conn, $rg, $class))) { // If don't user exist.
             $joined = time();
             // ============= CREATING USER
-            $sql = "INSERT INTO `users` (rg, name, email, password, class, chats, photo, joined) VALUES ($rg, '$name', '$email', '$password', $class, 'group:$class', 0, $joined);";
+            $sql = "INSERT INTO `users` (rg, name, email, password, class, chats, joined) VALUES ($rg, '$name', '$email', '$password', $class, 'group:$class', $joined);";
             mysqli_query($conn, $sql);
             $sql = checkUser($conn, $rg, $class); // Get user info.
             $sql = mysqli_fetch_assoc($sql);
