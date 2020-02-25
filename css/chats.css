@@ -76,12 +76,12 @@ body {
 }
 
 .no_result {
-    height: 4vh;
+    height: 5vh;
     display: flex;
     align-items: center;
-    margin-top: 10px;
     background: #291a46;
     padding-left: 15px;
+    font-size: 17px;
 }
 
 .chat_pic {
@@ -220,7 +220,7 @@ body {
     cursor: pointer;
 }
 
-.input_area input[type='text'] {
+.input_area input[type="text"] {
     overflow-y: hidden;
     max-height: 400px;
     min-height: 6vh;
@@ -235,11 +235,11 @@ body {
     font-size: 18px;
 }
 
-.input_area input[type='text']:hover {
+.input_area input[type="text"]:hover {
     overflow-y: auto;
 }
 
-.input_area input[type='text']:focus {
+.input_area input[type="text"]:focus {
     outline: 0;
 }
 
