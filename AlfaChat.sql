@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 24, 2020 at 08:42 PM
+-- Generation Time: Feb 25, 2020 at 03:10 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -32,6 +32,7 @@ CREATE TABLE `groups` (
   `id` int(11) NOT NULL,
   `name` text NOT NULL,
   `members` text DEFAULT NULL,
+  `description` varchar(256) DEFAULT NULL,
   `created` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -39,19 +40,19 @@ CREATE TABLE `groups` (
 -- Dumping data for table `groups`
 --
 
-INSERT INTO `groups` (`id`, `name`, `members`, `created`) VALUES
-(1, '1° Ano - Ensino Fundamental', NULL, 0),
-(2, '2° Ano - Ensino Fundamental', NULL, 0),
-(3, '3° Ano - Ensino Fundamental', NULL, 0),
-(4, '4° Ano - Ensino Fundamental', NULL, 0),
-(5, '5° Ano - Ensino Fundamental', NULL, 0),
-(6, '6° Ano - Ensino Fundamental', NULL, 0),
-(7, '7° Ano - Ensino Fundamental', NULL, 0),
-(8, '8° Ano - Ensino Fundamental', NULL, 0),
-(9, '9° Ano - Ensino Fundamental', NULL, 0),
-(10, '1° Ano - Ensino Médio', NULL, 0),
-(11, '2° Ano - Ensino Médio', '1,2', 0),
-(12, '3° Ano - Ensino Médio', NULL, 0);
+INSERT INTO `groups` (`id`, `name`, `members`, `description`, `created`) VALUES
+(1, '1° Ano - Ensino Fundamental', NULL, NULL, 0),
+(2, '2° Ano - Ensino Fundamental', NULL, NULL, 0),
+(3, '3° Ano - Ensino Fundamental', NULL, NULL, 0),
+(4, '4° Ano - Ensino Fundamental', NULL, NULL, 0),
+(5, '5° Ano - Ensino Fundamental', NULL, NULL, 0),
+(6, '6° Ano - Ensino Fundamental', NULL, NULL, 0),
+(7, '7° Ano - Ensino Fundamental', NULL, NULL, 0),
+(8, '8° Ano - Ensino Fundamental', NULL, NULL, 0),
+(9, '9° Ano - Ensino Fundamental', NULL, NULL, 0),
+(10, '1° Ano - Ensino Médio', NULL, NULL, 0),
+(11, '2° Ano - Ensino Médio', '1,2', NULL, 0),
+(12, '3° Ano - Ensino Médio', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -114,8 +115,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `rg`, `name`, `email`, `password`, `class`, `chats`, `bio`, `photo`, `status`, `joined`) VALUES
-(1, 10155597, 'Joao Vaz', 'joao@gmail.com', 'e19d5cd5af0378da05f63f891c7467af', 11, '2', NULL, 'assets/avatars/user/uploads/11/10155597/profile_pic.png', 'Visto pela última vez há 6 minutos', 1581809654),
-(2, 10155598, 'Eric', 'eric@gmail.com', 'e19d5cd5af0378da05f63f891c7467af', 11, '1', NULL, 'assets/avatars/user/uploads/11/10155598/profile_pic.png', 'online', 1581809680);
+(1, 10155597, 'Joao Vaz', 'joao@gmail.com', 'e19d5cd5af0378da05f63f891c7467af', 11, 'group:11,2', NULL, 'assets/avatars/user/uploads/11/10155597/profile_pic.png', 'online', 1581809654),
+(2, 10155598, 'Eric', 'eric@gmail.com', 'e19d5cd5af0378da05f63f891c7467af', 11, 'group:11,1', NULL, 'assets/avatars/user/uploads/11/10155598/profile_pic.png', 'Visto pela última vez há 1 minuto', 1581809680);
 
 --
 -- Indexes for dumped tables
@@ -147,7 +148,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `messages`
