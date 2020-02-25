@@ -38,53 +38,51 @@
             <input type="text" name="query" placeholder="Busca">
         </header>
         <div class="chat_result_list" hidden></div>
-        <?php
-            $id = $_SESSION["id"]; // Getting user id
-            $sql = "SELECT * FROM `users` WHERE id = '$id'"; // Selecting logged user
-            $sql = mysqli_query($conn, $sql);
-            $sql = mysqli_fetch_assoc($sql);
-            $class = $sql["class"];
-            $chats = $sql["chats"];
-            echo "<div class='chat_list'>"; // Starts div. **JS will break if this is removed**
-            if ($_SESSION["class"] > 9) {
-                $name = ($_SESSION["class"] - 9) . "° Ano - Ensino Médio";
-            } else {
-                $name = $_SESSION["class"] . "° Ano - Ensino Fundamental";
-            }
-            $bio = "Turma do ". str_replace("-", "do", $name);
-            echo "<div class='chat' data-id='" . base64_encode("group:" . $_SESSION["class"]) . "'><div class='chat_pic'><img style='border-radius: 0;' src='assets/avatars/class/$class.png'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
-            if ($chats) { // 'chats' is either NULL or a specific value. DO NOT USE !empty() because it'll never be empty.
-                if (strlen($chats) > 1) {
-                    $chats = explode(",", $chats); // Getting all chats
-                    foreach ($chats as $user) {
-                        $sql = "SELECT * FROM `users` WHERE id = '$user'"; // 'chats' row will now store user IDs.
+        <div class="chat_list">
+            <?php
+                $id = $_SESSION["id"]; // Getting user id
+                $sql = "SELECT * FROM `users` WHERE id = '$id'"; // Selecting logged user
+                $sql = mysqli_query($conn, $sql);
+                $sql = mysqli_fetch_assoc($sql);
+                $chats = explode(",", $sql["chats"]);
+                foreach ($chats as $chat) {
+                    if (strpos($chat, ":") === false) { // If that's not a group
+                        $sql = "SELECT * FROM `users` WHERE id = '$chat'";
                         $sql = mysqli_query($conn, $sql);
-                        $user_info = mysqli_fetch_assoc($sql);
-                        if (!$user_info["photo"]) {
+                        $chat_info = mysqli_fetch_assoc($sql);
+                        $photo = $chat_info["photo"];
+                        if (!$photo) {
                             $photo = "assets/avatars/user/default.png"; // If user doesn't have a photo (setting according to js/chats relative path)
-                        } else {
-                            $photo = $user_info["photo"];
                         }
-                        $name = $user_info["name"];
-                        $bio = $user_info["bio"]; // Users now have a bio :)
-                        echo "<div class='chat' data-id='" . base64_encode($user_info["id"]) . "'><div class='chat_pic'><img src='$photo'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
+                        $name = $chat_info["name"];
+                        $bio = $chat_info["bio"];
+                        echo "<div class='chat' data-id='" . base64_encode($chat_info["id"]) . "'><div class='chat_pic'><img style='border-radius: 50%;' src='$photo'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
+                    } else { // If that's a group
+                        $chat = explode(":", $chat)[1];
+                        if ($chat < 13) { // If it's a class group (group:1 to group:12)
+                            if ($chat > 9) {
+                                $chat = ($chat-9) . "° Ano - Ensino M&eacute;dio";
+                            } else {
+                                $chat = $chat . "° Ano - Ensino Fundamental";
+                            }
+                            $bio = "Turma do " . str_replace("-", "do", $chat);
+                            echo "<div class='chat' data-id='" . base64_encode("group:" . $_SESSION["class"]) . "'><div class='chat_pic'><img style='border-radius: 0;' src='assets/avatars/groups/class/" . $_SESSION["class"] . ".png'></div><div class='chat_info'><div>$chat</div><div>$bio</div></div></div>";
+                        } else { // If that's not a class group
+                            $sql = "SELECT * FROM `groups` WHERE id = '$chat'";
+                            $sql = mysqli_query($conn, $sql);
+                            $chat_info = mysqli_fetch_assoc($sql);
+                            $photo = $chat_info["photo"];
+                            if (!$photo) {
+                                $photo = "assets/avatars/groups/default.png"; // If group doesn't have a photo (setting according to js/chats relative path)
+                            }
+                            $name = $chat_info["name"];
+                            $bio = $chat_info["description"];
+                            echo "<div class='chat' data-id='" . base64_encode("group:" . $_chat_info["id"]) . "'><div class='chat_pic'><img style='border-radius: 0;' src='$photo'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
+                        }
                     }
-                } else {
-                    $sql = "SELECT * FROM `users` WHERE id = '$chats'"; // 'chats' row will now store user IDs.
-                    $sql = mysqli_query($conn, $sql);
-                    $user_info = mysqli_fetch_assoc($sql);
-                    if (!$user_info["photo"]) {
-                        $photo = "assets/avatars/user/default.png"; // If user doesn't have a photo
-                    } else {
-                        $photo = $user_info["photo"];
-                    }
-                    $name = $user_info["name"];
-                    $bio = $user_info["bio"]; // Users now have a bio :)
-                    echo "<div class='chat' data-id='" . base64_encode($user_info["id"]) . "'><div class='chat_pic'><img src='$photo'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
                 }
-            }
-            echo "</div>"; // Close chat_list div.
-        ?>
+            ?>
+        </div>
     </div>
 
     <div class="chats">
