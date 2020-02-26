@@ -27,7 +27,7 @@
     } else { // If that's a personal chat
         session_start();
         $user = $_SESSION["id"];
-        // Select all messages sent by me to him AND sent by him to me which 'seen' value is 0. Order by time.
+        // Select all messages sent by me to him AND sent by him to me. Order by time.
         $sql = "(SELECT * FROM `messages` WHERE sender = '$user' AND reciever = '$c') UNION (SELECT * FROM `messages` WHERE sender = '$c' AND reciever = '$user') ORDER BY time;";
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
