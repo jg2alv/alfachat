@@ -3,6 +3,8 @@
         header("Location: ../");
     }
 
+    error_reporting(0); // DISABLING ERROR REPORTING
+
     $conn = mysqli_connect("localhost", "root", "", "AlfaChat");
     $_POST["o"]($conn); // Executing function which has the same name as given argument
 
