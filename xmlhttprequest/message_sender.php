@@ -10,7 +10,7 @@
     $conn = mysqli_connect("localhost", "root", "", "AlfaChat");
 
     $s = $_SESSION["id"];
-    $r = base64_decode($_POST["id"]);
+    $r = base64_decode($_POST["id"]); // ID of the person I'm talking to
     $c = base64_encode(filter_input(INPUT_POST, "m", FILTER_SANITIZE_SPECIAL_CHARS));
     $t = time();
 
@@ -21,34 +21,28 @@
 
 
     if (strpos($r, "group") === false) {
-        $id = $_SESSION["id"];
-        // $id is my ID
-        // $r is their ID
-        $sql = "SELECT * FROM `users` WHERE id = '$r'"; // Person I'm talking to.
+        $id = $_SESSION["id"]; // My ID
+        $sql = "SELECT * FROM `users` WHERE id = '$r'"; // Info on person I'm talking to.
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_assoc($sql);
-
-        if (!$sql["chats"]) { // If their chats are NULL
-            $sql = "UPDATE `users` SET chats = $id WHERE id = $r";
-            mysqli_query($conn, $sql);          // The if strpos() isn't always true, so I ued two queries.
-        } else {
-            $chats = $sql["chats"];
-            if (strpos($chats, $id) === false) { // If I'm not on his chat list AND his chat list isn't NULL.
-                $chats .= "," . $id;
-                $sql = "UPDATE `users` SET chats = $chats WHERE id = $id";
-                mysqli_query($conn, $sql);      // The if strpos() isn't always true, so I ued two queries.
-            }
+        $chats = $sql["chats"]; // Their chat-list
+        if (strpos($chats, ",$id") === false) { // If I'm not on his chat list.
+            $chats .= ",$id"; // Adding me to their chat-list
+            $sql = "UPDATE `users` SET chats = '$chats' WHERE id = $r"; // DB update
+            mysqli_query($conn, $sql);
         }
         
-        if (!$_SESSION["chats"]) { // If my chats are NULL
-            $sql = "UPDATE `users` SET chats = $r WHERE id = $id";
-        } else {
-            $chats = $_SESSION["chats"] . "," . $r;
-            $sql = "UPDATE `users` SET chats = $chats WHERE id = $id";
+        $sql = "SELECT * FROM `users` WHERE id = '$id'"; // Me.
+        $sql = mysqli_query($conn, $sql);
+        $sql = mysqli_fetch_assoc($sql);
+        $chats = $sql["chats"]; // My chat-list
+        if (strpos($chats, ",$r") === false) { // If they're not on my chat-list. It needs to be ',$r' to avoid issues like "searching for an ID of '1' and finding 'group:11'"
+            $chats .= ",$r"; // Adding them to my chat-list
+            $sql = "UPDATE `users` SET chats = '$chats' WHERE id = $id"; // DB update
+            mysqli_query($conn, $sql);
         }
-        mysqli_query($conn, $sql);
 
-        $sql = "SELECT * FROM `users` WHERE id = '$id'";
+        $sql = "SELECT * FROM `users` WHERE id = '$id'"; // Resetting session data (since I based the chat list on session variable.)
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_assoc($sql);
         foreach($sql as $index => $value) {
