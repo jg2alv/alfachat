@@ -33,13 +33,16 @@ function statusTimer() {
     };
 }
 
-function statusBackend(arg) {
+function statusBackend(arg, parent = false) {
     const xml = new XMLHttpRequest();
     xml.open("POST", "../xmlhttprequest/status.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xml.send(arg); // Sending request with given args
     if (arg.indexOf("get") > -1) { // If this is a GET operation
         xml.onload = () => {
+            if (parent) {
+                $(".chats header div")[0].innerHTML = parent.children[1].children[0].innerHTML; // Setting header status to the name of chat user clicked
+            }
             document.querySelectorAll(".chats header div")[1].innerHTML = xml.responseText; // Setting result on frontend
         };
     }
