@@ -1,6 +1,8 @@
 let id; // Setting global ID
 
 $(document).ready(() => {
+    statusTimer(); // Start timer when window (chats) loads
+    statusBackend("i=online&o=set"); // Setting MY status to online
     const xml = new XMLHttpRequest();
     const chats = Array.from($(".chat:visible"));
     chats.forEach(chat => {
@@ -131,12 +133,12 @@ function openChat(e) {
             const messageTime = `<div class="message_time">${addZero(d.getDate()) + "/" + addZero(d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div>`;
             if (message.sender !== atob(sessionStorage[btoa("id")])) { // If user didn't send the message
                 if (atob(id).indexOf("group") > -1) { // If this chat is a group chat
-                    message_area.innerHTML += `<div class="their"><div class="message" style="border-bottom-left-radius: 0;">${"<span style='color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold'>" + message["name"] + "</span>" + atob(message.content) + messageTime}</div><img class="profile_img" src="${message["photo"]}"></div>`;
+                    message_area.innerHTML += `<div class="their"><div class="message" style="border-bottom-left-radius: 0;">${"<span style='color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold'>" + message["name"] + "</span>" + message.content + messageTime}</div><img class="profile_img" src="${message["photo"]}"></div>`;
                 } else { // If chat isn't a group chat
-                    message_area.innerHTML += `<div class="message their" style="margin-left: 20px">${atob(message.content) + messageTime}</div>`;
+                    message_area.innerHTML += `<div class="message their" style="margin-left: 20px">${message.content + messageTime}</div>`;
                 }
             } else { // If user sent the message
-                message_area.innerHTML += `<div class="message mine">${atob(message.content) + messageTime}</div>`;
+                message_area.innerHTML += `<div class="message mine">${message.content + messageTime}</div>`;
             }
         });
     };
@@ -159,4 +161,49 @@ function addClipsEffect() {
     clip.addEventListener("mouseout", () => {
         clip.src = "assets/icons/file.png";
     });
+}
+
+function statusTimer() {
+    let timer = 0;
+    const msg = "o=set&i=Visto%20pela%20última%20vez%20há%20"; // Setting default message
+    setInterval(() => {
+        statusBackend(`i=${id}&o=get`); // Getting user's/ classe's status & setting on frontend.
+        timer += 10; // Adding to timer (seconds)
+        switch (true) {
+            case timer >= 30 && timer < 60:
+                statusBackend(
+                    "i=Visto%20pela%20última%20vez%20agora%20mesmo&o=set" // Override default message
+                );
+                break;
+            case timer >= 60 && timer < 120:
+                statusBackend(`${msg}1%20minuto`); // Seen one minute ago
+                break;
+            case timer >= 120 && timer < 600:
+                statusBackend(`${msg + Math.floor(timer / 60)}%20minutos`); // Seen N minutes ago
+                break;
+            case timer >= 600:
+                statusBackend("i=offline&o=set"); // Offline if user isn't present for 10 minutes.
+                break;
+        }
+    }, 10000);
+    document.onmousemove = document.onkeypress = document.onclick = () => {
+        timer = 0;
+        statusBackend("i=online&o=set"); // Setting MY status to online
+        statusBackend(`i=${id}&o=get`); // Refreshing frontend
+    };
+}
+
+function statusBackend(arg, parent = false) {
+    const xml = new XMLHttpRequest();
+    xml.open("POST", "../xmlhttprequest/status.php", true);
+    xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xml.send(arg); // Sending request with given args
+    if (arg.indexOf("get") > -1) { // If this is a GET operation
+        xml.onload = () => {
+            if (parent) {
+                $(".chats header div")[0].innerHTML = parent.children[1].children[0].innerHTML; // Setting header status to the name of chat user clicked
+            }
+            document.querySelectorAll(".chats header div")[1].innerHTML = xml.responseText; // Setting result on frontend
+        };
+    }
 }

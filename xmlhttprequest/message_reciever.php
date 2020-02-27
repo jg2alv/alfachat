@@ -11,6 +11,7 @@
         $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
         $response = "["; // Starting artificial JSON
         foreach($sql as $msg) {
+            $msg["content"] = html_entity_decode(base64_decode($msg["content"]));
             $sender = $msg["sender"]; // User ID
             $sql = "SELECT * FROM `users` WHERE id = $sender"; // Getting user info
             $sql = mysqli_query($conn, $sql);
