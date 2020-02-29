@@ -3,6 +3,53 @@ let id; // Setting global ID
 $(document).ready(() => {
     statusTimer(); // Start timer when window (chats) loads
     statusBackend("i=online&o=set"); // Setting MY status to online
+    messageSenderEventListener();
+    chatListUpdater();
+    const header_input = document.querySelector(
+        ".chat_selector header input[type='text']"
+    );
+    const chat_result_list = $(".chat_result_list")[0];
+    const chat_list = $(".chat_list")[0];
+    header_input.value = ""; // Removing input's value
+    header_input.addEventListener("keyup", k => {
+        // When user press any key, the result list will appear
+        if (
+            !header_input.value ||
+            (header_input.value.length == 1 && k.keyCode == 78) ||
+            header_input.value == " "
+        ) {
+            // If the header has no value OR (it's length is 1 AND user key is backspace) OR is the value is a spacebar
+            chat_result_list.setAttribute("hidden", ""); // Set hidden attribute
+            chat_list.removeAttribute("hidden"); // Removing original list's hidden attribute
+            return; // Stopping the function
+        }
+        $(chat_list).attr("hidden", ""); // Setting original list hidden attr
+        const xml = new XMLHttpRequest();
+        xml.open("POST", "../xmlhttprequest/chat_search.php", true);
+        xml.setRequestHeader(
+            "Content-type",
+            "application/x-www-form-urlencoded"
+        );
+        xml.send(`q=${header_input.value}`); // XML content is user input
+        xml.onload = () => {
+            chat_result_list.removeAttribute("hidden"); // Removing just to be sure
+            chat_result_list.innerHTML = ""; // Removing list's HTML to avoid duplicate results
+            if (xml.responseText) {
+                // If there's a valid response text
+                response = JSON.parse(xml.responseText); // Parsing JSON's server response text
+                response.forEach(user => {
+                    user["bio"] = !isNaN(header_input.value) ? user["rg"] : user["bio"];
+                    addChat(user, chat_result_list)
+                });
+            } else {
+                chat_result_list.innerHTML += `<div style="height: calc(93vh - 20px)"><div class="no_result">Nenhum resultado encontrado.</div></div>`; // Showing "no result" banner
+                chat_result_list.style = "overflow-y: hidden !important";
+            }
+        };
+    });
+});
+
+function messageSenderEventListener() {
     const xml = new XMLHttpRequest();
     const chats = Array.from($(".chat:visible"));
     chats.forEach(chat => {
@@ -27,70 +74,30 @@ $(document).ready(() => {
                 `<div class='message mine'>${xml.responseText + messageTime}</div>`;
         };
     });
-    const header_input = document.querySelector(
-        ".chat_selector header input[type='text']"
-    );
-    const chat_result_list = $(".chat_result_list")[0];
-    const chat_list = $(".chat_list")[0];
-    header_input.value = ""; // Removing input's value
-    header_input.addEventListener("keyup", k => {
-        // When user press any key, the result list will appear
-        if (
-            !header_input.value ||
-            (header_input.value.length == 1 && k.keyCode == 78) ||
-            header_input.value == " "
-        ) {
-            // If the header has no value OR (it's length is 1 AND user key is backspace) OR is the value is a spacebar
-            chat_result_list.setAttribute("hidden", ""); // Set hidden attribute
-            chat_list.removeAttribute("hidden"); // Removing original list's hidden attribute
-            return; // Stopping the function
-        }
-        $(chat_list).attr("hidden", ""); // Setting original list hidden attr
-        xml.open("POST", "../xmlhttprequest/chat_search.php", true);
-        xml.setRequestHeader(
-            "Content-type",
-            "application/x-www-form-urlencoded"
-        );
-        xml.send(`q=${header_input.value}`); // XML content is user input
-        xml.onload = () => {
-            chat_result_list.removeAttribute("hidden"); // Removing just to be sure
-            chat_result_list.innerHTML = ""; // Removing list's HTML to avoid duplicate results
-            if (xml.responseText) {
-                // If there's a valid response text
-                response = JSON.parse(xml.responseText); // Parsing JSON's server response text
-                response.forEach(user => {
-                    if (!isNaN(header_input.value)) {
-                        user["bio"] = user["rg"]; // If user is searching other user's RG
-                    }
+}
 
-                    if (!user["photo"]) {
-                        // If user don't have a profile pic
-                        user["photo"] = "assets/avatars/user/default.png";
-                    }
+function addChat(user, div) {
+    if (user["members"]) {
+        user["photo"] = `assets/avatars/groups/class/${user["id"]}.png`;
+        user["bio"] = `Turma do ${user["name"].replace("-", "do")}`;
+    } else {
+        user["photo"] = user["photo"] ? user["photo"] : "assets/avatars/user/default.png";
+        user["bio"] = user["bio"] ? user["bio"] : user["bio"] = "";
+    }
 
-                    if (!user["bio"]) {
-                        user["bio"] = "";
-                    }
-
-                    chat_result_list.innerHTML += `<div class="chat" data-id="${btoa(
-                        user["id"]
-                    )}"><div class="chat_pic"><img src="${
-                        user["photo"]
-                    }"></div><div class="chat_info"><div>${
-                        user["name"]
-                    }</div><div>${user["bio"]}</div></div></div>`;
-                    const chats = Array.from($(".chat:visible"));
-                    chats.forEach(chat => {
-                        chat.addEventListener("click", openChat);
-                    });
-                });
-            } else {
-                chat_result_list.innerHTML += `<div style="height: calc(93vh - 20px)"><div class="no_result">Nenhum resultado encontrado.</div></div>`; // Showing "no result" banner
-                chat_result_list.style = "overflow-y: hidden !important";
-            }
-        };
+    div.innerHTML += `<div class="chat" data-id="${btoa(
+        user["id"]
+    )}"><div class="chat_pic"><img src="${
+        user["photo"]
+    }"></div><div class="chat_info"><div>${
+        user["name"]
+    }</div><div>${user["bio"]}</div></div></div>`;
+    
+    const chats = Array.from($(".chat:visible"));
+    chats.forEach(chat => {
+        chat.addEventListener("click", openChat);
     });
-});
+}
 
 function openChat(e) {
     let parent = e.target;
@@ -105,6 +112,15 @@ function openChat(e) {
 
     $(".chat").attr("style", "background: #35215a"); // Removing "selected" background from every other div
     parent.style.background = "#291a46"; // Setting background to a darker one, indicating "selected"
+
+    const chat_result_list = $(".chat_result_list")[0];
+    const chat_list = $(".chat_list")[0];
+    if (chat_list.attributes["hidden"]) {
+        chat_result_list.setAttribute("hidden", ""); // Set hidden attribute
+        chat_list.removeAttribute("hidden"); // Removing original list's hidden attribute
+        document.querySelector(".chat_selector header input[type='text']").value = "";
+        document.querySelector(`.chat_list div[data-id='${parent.attributes["data-id"].value}']`).style.background = "#291a46";
+    }
     const message_area = $(".message_area")[0];
     const xml = new XMLHttpRequest();
     xml.open("POST", "../xmlhttprequest/message_reciever.php", true);
@@ -206,4 +222,27 @@ function statusBackend(arg, parent = false) {
             document.querySelectorAll(".chats header div")[1].innerHTML = xml.responseText; // Setting result on frontend
         };
     }
+}
+
+function chatListUpdater() {
+    const chat_list = document.querySelector(".chat_list");
+    const xml = new XMLHttpRequest();
+    setInterval(() => {
+        xml.open("POST", "../xmlhttprequest/chat_list_refresher.php", true);
+        xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xml.send(`cl=${chat_list.attributes["data-chats"].value}`);
+        xml.onload = () => {
+            if (xml.responseText) {
+                chat_list.innerHTML = "";
+                const response = JSON.parse(xml.responseText);
+                let chats;
+                response.forEach(user => {
+                    chats += user["members"] ? `group:${user["id"]},` : user["id"] + ",";
+                    addChat(user, chat_list)
+                })
+                chats = btoa(chats.slice(0, -1).replace("undefined", ""));
+                chat_list.setAttribute("data-chats", chats);
+            }
+        }
+    }, 500)
 }
