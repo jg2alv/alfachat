@@ -32,7 +32,13 @@
         $sql = "(SELECT * FROM `messages` WHERE sender = '$user' AND reciever = '$c') UNION (SELECT * FROM `messages` WHERE sender = '$c' AND reciever = '$user') ORDER BY time;";
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
-        echo json_encode($sql);
+        $response = "["; // Starting artificial JSON
+        foreach($sql as $msg) {
+            $msg["content"] = html_entity_decode(base64_decode($msg["content"]));
+            $response .= json_encode($msg);
+        }
+        $response .= "]"; // Finishing artificial JSON
+        echo $response; // Returning it to JS
         // Select all messages he sent me and I didn't see yet.
         $sql = "SELECT * FROM `messages` WHERE sender = $c AND seen = 0";
         $sql = mysqli_query($conn, $sql);
