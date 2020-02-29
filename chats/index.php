@@ -38,51 +38,52 @@
             <input type="text" name="query" placeholder="Busca">
         </header>
         <div class="chat_result_list" hidden></div>
-        <div class="chat_list">
-            <?php
-                $id = $_SESSION["id"]; // Getting user id
-                $sql = "SELECT * FROM `users` WHERE id = '$id'"; // Selecting logged user
-                $sql = mysqli_query($conn, $sql);
-                $sql = mysqli_fetch_assoc($sql);
-                $chats = explode(",", $sql["chats"]);
-                foreach ($chats as $chat) {
-                    if (strpos($chat, ":") === false) { // If that's not a group
-                        $sql = "SELECT * FROM `users` WHERE id = '$chat'";
+        <?php
+            echo "<div class='chat_list' ";
+            $id = $_SESSION["id"]; // Getting user id
+            $sql = "SELECT * FROM `users` WHERE id = '$id'"; // Selecting logged user
+            $sql = mysqli_query($conn, $sql);
+            $sql = mysqli_fetch_assoc($sql);
+            echo "data-chats='" . base64_encode($sql["chats"]) . "'>";
+            $chats = explode(",", $sql["chats"]);
+            foreach ($chats as $chat) {
+                if (strpos($chat, ":") === false) { // If that's not a group
+                    $sql = "SELECT * FROM `users` WHERE id = '$chat'";
+                    $sql = mysqli_query($conn, $sql);
+                    $chat_info = mysqli_fetch_assoc($sql);
+                    $photo = $chat_info["photo"];
+                    if (!$photo) {
+                        $photo = "assets/avatars/user/default.png"; // If user doesn't have a photo (setting according to js/chats relative path)
+                    }
+                    $name = $chat_info["name"];
+                    $bio = $chat_info["bio"];
+                    echo "<div class='chat' data-id='" . base64_encode($chat_info["id"]) . "'><div class='chat_pic'><img style='border-radius: 50%;' src='$photo'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
+                } else { // If that's a group
+                    $chat = explode(":", $chat)[1];
+                    if ($chat < 13) { // If it's a class group (group:1 to group:12)
+                        if ($chat > 9) {
+                            $chat = ($chat-9) . "° Ano - Ensino M&eacute;dio";
+                        } else {
+                            $chat = $chat . "° Ano - Ensino Fundamental";
+                        }
+                        $bio = "Turma do " . str_replace("-", "do", $chat);
+                        echo "<div class='chat' data-id='" . base64_encode("group:" . $_SESSION["class"]) . "'><div class='chat_pic'><img src='assets/avatars/groups/class/" . $_SESSION["class"] . ".png'></div><div class='chat_info'><div>$chat</div><div>$bio</div></div></div>";
+                    } else { // If that's not a class group
+                        $sql = "SELECT * FROM `groups` WHERE id = '$chat'";
                         $sql = mysqli_query($conn, $sql);
                         $chat_info = mysqli_fetch_assoc($sql);
                         $photo = $chat_info["photo"];
                         if (!$photo) {
-                            $photo = "assets/avatars/user/default.png"; // If user doesn't have a photo (setting according to js/chats relative path)
+                            $photo = "assets/avatars/groups/default.png"; // If group doesn't have a photo (setting according to js/chats relative path)
                         }
                         $name = $chat_info["name"];
-                        $bio = $chat_info["bio"];
-                        echo "<div class='chat' data-id='" . base64_encode($chat_info["id"]) . "'><div class='chat_pic'><img style='border-radius: 50%;' src='$photo'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
-                    } else { // If that's a group
-                        $chat = explode(":", $chat)[1];
-                        if ($chat < 13) { // If it's a class group (group:1 to group:12)
-                            if ($chat > 9) {
-                                $chat = ($chat-9) . "° Ano - Ensino M&eacute;dio";
-                            } else {
-                                $chat = $chat . "° Ano - Ensino Fundamental";
-                            }
-                            $bio = "Turma do " . str_replace("-", "do", $chat);
-                            echo "<div class='chat' data-id='" . base64_encode("group:" . $_SESSION["class"]) . "'><div class='chat_pic'><img style='border-radius: 0;' src='assets/avatars/groups/class/" . $_SESSION["class"] . ".png'></div><div class='chat_info'><div>$chat</div><div>$bio</div></div></div>";
-                        } else { // If that's not a class group
-                            $sql = "SELECT * FROM `groups` WHERE id = '$chat'";
-                            $sql = mysqli_query($conn, $sql);
-                            $chat_info = mysqli_fetch_assoc($sql);
-                            $photo = $chat_info["photo"];
-                            if (!$photo) {
-                                $photo = "assets/avatars/groups/default.png"; // If group doesn't have a photo (setting according to js/chats relative path)
-                            }
-                            $name = $chat_info["name"];
-                            $bio = $chat_info["description"];
-                            echo "<div class='chat' data-id='" . base64_encode("group:" . $_chat_info["id"]) . "'><div class='chat_pic'><img style='border-radius: 0;' src='$photo'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
-                        }
+                        $bio = $chat_info["description"];
+                        echo "<div class='chat' data-id='" . base64_encode("group:" . $_chat_info["id"]) . "'><div class='chat_pic'><img src='$photo'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
                     }
                 }
-            ?>
-        </div>
+            }
+            echo "</div>";
+        ?>
     </div>
 
     <div class="chats">
