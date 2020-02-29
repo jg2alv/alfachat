@@ -36,7 +36,9 @@
         foreach($sql as $msg) {
             $msg["content"] = html_entity_decode(base64_decode($msg["content"]));
             $response .= json_encode($msg);
+            $response .= ",";
         }
+        $response = substr($response, 0, -1);
         $response .= "]"; // Finishing artificial JSON
         echo $response; // Returning it to JS
         // Select all messages he sent me and I didn't see yet.
