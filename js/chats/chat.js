@@ -106,9 +106,6 @@ function openChat(e) {
     }
     id = parent.attributes["data-id"].value; // base64 id value. Example: 1; group:11 (in base64)
     statusBackend(`i=${id}&o=get`, parent);
-    if ($(".chats header div")[0].innerHTML === parent.children[1].children[0].innerHTML) { // If user clicked on the same chat, don't reload it.
-        return;
-    }
 
     $(".chat").attr("style", "background: #35215a"); // Removing "selected" background from every other div
     parent.style.background = "#291a46"; // Setting background to a darker one, indicating "selected"
@@ -116,11 +113,19 @@ function openChat(e) {
     const chat_result_list = $(".chat_result_list")[0];
     const chat_list = $(".chat_list")[0];
     if (chat_list.attributes["hidden"]) {
-        chat_result_list.setAttribute("hidden", ""); // Set hidden attribute
-        chat_list.removeAttribute("hidden"); // Removing original list's hidden attribute
-        document.querySelector(".chat_selector header input[type='text']").value = "";
-        document.querySelector(`.chat_list div[data-id='${parent.attributes["data-id"].value}']`).style.background = "#291a46";
+        const chats = atob(document.querySelector(".chat_list").attributes["data-chats"].value).split(",");
+        if (chats.includes(atob(id))) {
+            chat_result_list.setAttribute("hidden", ""); // Set hidden attribute
+            chat_list.removeAttribute("hidden"); // Removing original list's hidden attribute
+            document.querySelector(".chat_selector header input[type='text']").value = "";
+            document.querySelector(`.chat_list div[data-id='${parent.attributes["data-id"].value}']`).style.background = "#291a46";
+        }
     }
+
+    if ($(".chats header div")[0].innerHTML === parent.children[1].children[0].innerHTML) { // If user clicked on the same chat, don't reload it.
+        return;
+    }
+    
     const message_area = $(".message_area")[0];
     const xml = new XMLHttpRequest();
     xml.open("POST", "../xmlhttprequest/message_reciever.php", true);
