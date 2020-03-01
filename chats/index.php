@@ -45,8 +45,7 @@
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_assoc($sql);
             echo "data-chats='" . base64_encode($sql["chats"]) . "'>";
-            $chats = explode(",", $sql["chats"]);
-            foreach ($chats as $chat) {
+            foreach (explode(",", $sql["chats"]) as $chat) {
                 if (strpos($chat, ":") === false) { // If that's not a group
                     $sql = "SELECT * FROM `users` WHERE id = '$chat'";
                     $sql = mysqli_query($conn, $sql);
