@@ -132,8 +132,8 @@ function openChat(e) {
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     $(".choose_chat").remove(); // Removing "choose chat" balloon
     $(".input_area").attr("style", "display: grid");
-    $(".message_area").attr("style", "display: grid"); // Removing unecessary divs and new ones.
-    $(".message_area").html("");
+    message_area.style.display = "block"; // Removing unecessary divs and new ones.
+    message_area.innerHTML = "";
     $(".chats header").attr("style", "display: flex");
     xml.send("c=" + id);
     xml.onload = () => {
@@ -154,14 +154,15 @@ function openChat(e) {
             const messageTime = `<div class="message_time">${addZero(d.getDate()) + "/" + addZero(d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div>`;
             if (message.sender !== atob(sessionStorage[btoa("id")])) { // If user didn't send the message
                 if (atob(id).indexOf("group") > -1) { // If this chat is a group chat
-                    message_area.innerHTML += `<div class="their"><div class="message" style="border-bottom-left-radius: 0;">${"<span style='color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold'>" + message["name"] + "</span>" + message.content + messageTime}</div><img class="profile_img" src="${message["photo"]}"></div>`;
+                    message_area.innerHTML += `<div style="display: grid"><div class="their"><div class="message" style="border-bottom-left-radius: 0;">${"<span style='color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold'>" + message["name"] + "</span>" + message.content + messageTime}</div><img class="profile_img" src="${message["photo"]}"></div></div>`;
                 } else { // If chat isn't a group chat
-                    message_area.innerHTML += `<div class="message their" style="margin-left: 20px">${message.content + messageTime}</div>`;
+                    message_area.innerHTML += `<div style="display: grid"><div class="message their" style="margin-left: 20px">${message.content + messageTime}</div></div>`;
                 }
             } else { // If user sent the message
-                message_area.innerHTML += `<div class="message mine">${message.content + messageTime}</div>`;
+                message_area.innerHTML += `<div style="display: grid"><div class="message mine">${message.content + messageTime}</div></div>`;
             }
         });
+        message_area.scrollTop = message_area.scrollHeight;
     };
 
     addClipsEffect()
