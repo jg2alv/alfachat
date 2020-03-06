@@ -2,7 +2,7 @@
     if (empty($_POST["q"])) {
         header("Location: ../"); // If user tries to access directly
     } else {
-        $q = $_POST["q"];
+        $q = filter_input(INPUT_POST, "q", FILTER_SANITIZE_SPECIAL_CHARS);
     }
 
     session_start();
