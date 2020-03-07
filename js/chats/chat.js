@@ -122,7 +122,7 @@ function openChat(e) {
         }
     }
 
-    if ($(".chats header div")[0].innerHTML === parent.children[1].children[0].innerHTML) { // If user clicked on the same chat, don't reload it.
+    if ($(".chats header div div")[0].innerHTML === parent.children[1].children[0].innerHTML && $(".chats:visible").length) { // If user clicked on the same chat, don't reload it.
         return;
     }
     
@@ -146,8 +146,9 @@ function openChat(e) {
         }
         $(".input_area input").focus();
         if (!$(".chats:visible").length) {
-            // Replace chat list with chat. The 'return' command needs to be there. #MediaQuery
-            return;
+            $(".chat_selector")[0].style.display = "none";
+            $(".chats")[0].style.display = "grid";
+            $(".chats")[0].style.width = "100%";
         }
         response.forEach(message => { // ForEach message
             const d = new Date(Number(message.time) * 1000);
@@ -166,6 +167,13 @@ function openChat(e) {
     };
 
     addClipsEffect()
+}
+
+function closeChat() {
+    $(".chat_selector")[0].style.display = "block";
+    $(".chats")[0].style.display = "none";
+    $(".chats")[0].style.width = "";
+    $(".chat").attr("style", "background: #35215a"); // Removing "selected" background from every other div
 }
 
 function addZero(i) {
@@ -225,9 +233,11 @@ function statusBackend(arg, parent = false) {
     if (arg.indexOf("get") > -1) { // If this is a GET operation
         xml.onload = () => {
             if (parent) {
-                $(".chats header div")[0].innerHTML = parent.children[1].children[0].innerHTML; // Setting header status to the name of chat user clicked
+                $(".chats header div div")[0].innerHTML = parent.children[1].children[0].innerHTML; // Setting header status to the name of chat user clicked
             }
-            document.querySelectorAll(".chats header div")[1].innerHTML = xml.responseText; // Setting result on frontend
+            if (document.querySelectorAll(".chats header div div")[1].innerHTML !== xml.responseText) {
+                document.querySelectorAll(".chats header div div")[1].innerHTML = xml.responseText; // Setting result on frontend
+            }
         };
     }
 }

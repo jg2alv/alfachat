@@ -88,8 +88,11 @@
     <div class="chats">
         <div class="choose_chat">Escolha uma conversa para entrar</div>
         <header>
-            <div></div>
-            <div></div>
+            <img src="assets/icons/back_arrow.png" alt="Back Arrow" onclick="closeChat()">
+            <div style="display: flex; justify-content: flex-start; align-items: flex-start; flex-direction: column">
+                <div></div>
+                <div></div>
+            </div>
         </header>
         <div class="message_area"></div>
         <form class="input_area" enctype="multipart/form-data">

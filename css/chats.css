@@ -131,24 +131,26 @@ body {
 .chats header {
     display: none;
     align-self: flex-start;
-    background: #35215a;
+    background-color: #35215a;
     padding-bottom: 20px;
     margin: 0;
-    justify-content: flex-start;
-    align-items: flex-start;
     color: white;
     font-size: 20px;
     border-bottom: 1px solid black;
-    flex-direction: column;
+    justify-content: flex-start;
 }
 
-.chats header div:nth-of-type(1) {
+.chats header div div:nth-of-type(1) {
     margin: 15px 0 10px 15px;
 }
 
-.chats header div:nth-of-type(2) {
+.chats header div div:nth-of-type(2) {
     margin-left: 15px;
     font-size: 16px;
+}
+
+.chats header img {
+    display: none;
 }
 
 .message_area {
@@ -250,8 +252,21 @@ body {
         display: none;
     }
 
+    .chat_pic img {
+        max-width: 69%;
+    }
+
     .chat_selector {
         width: 100%;
+    }
+
+    .chats header img {
+        display: initial;
+        width: 9%;
+        margin-right: 20px;
+        margin-left: 15px;
+        margin-top: 20px;
+        cursor: pointer;
     }
 }
 
