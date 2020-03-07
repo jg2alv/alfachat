@@ -159,7 +159,6 @@ body {
     background: #291a46;
     align-items: flex-end;
     overflow-y: auto;
-    overflow-x: hidden;
     align-content: flex-end;
 }
 

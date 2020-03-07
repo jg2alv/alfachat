@@ -5,7 +5,7 @@
 
     session_start();
     $id = $_SESSION["id"];
-    $conn = mysqli_connect("localhost", "root", "", "AlfaChat");
+    require_once "../includes/db.inc.php";
     $chat_list = base64_decode($_POST["cl"]);
     
     $sql = "SELECT * FROM `users` WHERE id = '$id'";

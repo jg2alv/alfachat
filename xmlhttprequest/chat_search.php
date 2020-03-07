@@ -7,7 +7,7 @@
 
     session_start();
 
-    $conn = mysqli_connect('localhost', 'root', '', 'AlfaChat'); // Database connection
+    require_once "../includes/db.inc.php";
     $class = $_SESSION["class"];
     $id = $_SESSION["id"];
     $sql = "SELECT * FROM `users` WHERE (name LIKE '%$q%' OR rg LIKE '%$q%') AND class = '$class' AND id <> $id;"; // Select users where it's name/ rg matches query and class match user's class (user's will only be allowed to talk to others from the same class)

@@ -4,7 +4,7 @@
     }
 
     $c = base64_decode($_POST["c"]);
-    $conn = mysqli_connect("localhost", "root", "", "AlfaChat");
+    require_once "../includes/db.inc.php";
     if (strpos($c, "group") !== false) { // If that's a group
         $sql = "SELECT * FROM `messages` WHERE reciever = '$c' ORDER BY time;";
         $sql = mysqli_query($conn, $sql);

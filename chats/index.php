@@ -1,7 +1,7 @@
 <?php
     session_start();
+    require_once "../includes/db.inc.php";
 
-    $conn = mysqli_connect('localhost', 'root', '', 'AlfaChat'); // Database connection
     $id = $_SESSION["id"];
     $sql = "SELECT * FROM `users` WHERE id = $id;";
     $sql = mysqli_query($conn, $sql);
@@ -94,7 +94,7 @@
         <div class="message_area"></div>
         <form class="input_area" enctype="multipart/form-data">
             <input id="file_input" type="file" style="display: none">
-            <label for="file_input" style="height: 16px;">
+            <label for="file_input" style="height: 16px; width: 60px;">
                 <img src="assets/icons/file.png" alt="Carregar arquivo">
             </label>
             <input placeholder="Escreva sua mensagem..." type="text">

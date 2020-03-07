@@ -1,7 +1,7 @@
 <?php
     session_start();
+    require_once "../includes/db.inc.php";
 
-    $conn = mysqli_connect('localhost', 'root', '', 'AlfaChat'); // Database connection
 
     function checkUser($conn, $rg, $class) {
         $sql = "SELECT * from `users` WHERE rg='$rg' AND class='$class'";

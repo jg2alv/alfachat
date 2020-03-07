@@ -7,7 +7,7 @@
 
     session_start();
 
-    $conn = mysqli_connect("localhost", "root", "", "AlfaChat");
+    require_once "../includes/db.inc.php";
 
     $s = $_SESSION["id"];
     $r = base64_decode($_POST["id"]); // ID of the person I'm talking to
