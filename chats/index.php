@@ -23,12 +23,7 @@
     <link rel='icon' type='image/png' href='../img/logo_short.png'>
     <script src='../js/jquery-3.4.1.min.js'></script>
     <link rel="stylesheet" type="text/css" href="../css/chats.css">
-    <?php
-        $files = array_diff(scandir("../js/chats"), array(".", ".."));
-        foreach ($files as $file) {
-            echo "<script src='../js/chats/" . $file . "'></script>";   // Load JS files
-        }
-    ?>
+    <script src="../js/chats/chats.js"></script>
     <title>AlfaChat | Conversas</title>
 </head>
 <body>
