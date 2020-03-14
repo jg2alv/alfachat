@@ -2,7 +2,7 @@ function statusTimer() {
     let timer = 0;
     const msg = "o=set&i=Visto%20pela%20última%20vez%20há%20"; // Setting default message
     setInterval(() => {
-        statusBackend(`i=${id}&o=get`); // Getting user's/ classe's status & setting on frontend.
+        statusBackend(`i=${id}&o=get`); // Getting user's classes status & setting on frontend.
         timer += 1; // Adding to timer (seconds)
         switch (true) {
             case timer >= 1 && timer < 6: // If timer is between 1 and 5 (both included) seconds
@@ -14,7 +14,7 @@ function statusTimer() {
                 statusBackend(`${msg}1%20minuto`); // Seen one minute ago
                 break;
             case timer >= 120 && timer < 600: // If timer if more than two minutes but less than 10
-                statusBackend(`${msg + Math.floor(timer / 6)}%20minutos`); // Seen N minutes ago
+                statusBackend(`${msg + Math.floor(timer / 60)}%20minutos`); // Seen N minutes ago
                 break;
             case timer >= 600: // If timer marks more than 10 mintutes
                 statusBackend("i=offline&o=set"); // Offline if user isn't present for 10 minutes.
@@ -23,10 +23,9 @@ function statusTimer() {
     }, 1000);
     document.onmousemove = document.onkeypress = document.onclick = () => {
         timer = 0;
-        setTimeout(() => {
-            statusBackend("i=online&o=set"); // Setting MY status to online
-            statusBackend(`i=${id}&o=get`); // Refreshing frontend
-        }, 300)
+        statusBackend("i=online&o=set"); // Setting MY status to online
+        statusBackend(`i=${id}&o=get`); // Refreshing frontend
+    
     };
 }
 
