@@ -9,9 +9,9 @@ function addChat(user, div) {
 
     div.innerHTML += `<div class="chat" data-id="${btoa(
         user["id"]
-    )}"><div class="chat_pic"><img src="${
+    )}"><div class="pic"><img src="${
         user["photo"]
-    }"></div><div class="chat_info"><div>${
+    }"></div><div class="info"><div>${
         user["name"]
     }</div><div>${user["bio"]}</div></div></div>`;
     
