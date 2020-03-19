@@ -32,6 +32,25 @@
     <title>AlfaChat | Conversas</title>
 </head>
 <body>
+    <div class="side_menu">
+        <div class="side_menu_visible">
+            <header>
+                <img id="user_img"><br>
+                <span id="user_name"></span><br>
+                <span id="user_rg"></span>
+            </header>
+            <main>
+                <div id="new_group" class="menu_icon"><div class="pic"><img src="assets/icons/group.png" alt="Novo Grupo"></div><div class="info" style="flex: 4">Novo Grupo</div></div>
+                <div id="config" class="menu_icon"><div class="pic"><img src="assets/icons/settings.png" alt="Config"></div><div class="info" style="flex: 4">Configura&ccedil;&otilde;es</div></div>
+            </main>
+        </div>
+        <div class="side_menu_bg"></div>
+    </div>
+    <div class="submenu" id="new_group_menu" style="width: 20vw; height: 20vh">
+        <div class="pic" style="border-radius: 50%"><img src="assets/icons/camera.png" alt="Camera"></div>
+        <div class="info" style="flex: 3"><input style="max-width: 90%" type="text" placeholder="Nome do grupo"></div>
+    </div>
+    <div class="submenu" id="settings_menu" style="width: 30vw; height: 90vh"></div>
     <div class="chat_selector">
         <header>
             <img src="assets/icons/menu.png" alt="Menu icon">
@@ -56,7 +75,7 @@
                     }
                     $name = $chat_info["name"];
                     $bio = $chat_info["bio"];
-                    echo "<div class='chat' data-id='" . base64_encode($chat_info["id"]) . "'><div class='chat_pic'><img style='border-radius: 50%;' src='$photo'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
+                    echo "<div class='chat' data-id='" . base64_encode($chat_info["id"]) . "'><div class='pic'><img style='border-radius: 50%;' src='$photo'></div><div class='info'><div>$name</div><div>$bio</div></div></div>";
                 } else { // If that's a group
                     $chat = explode(":", $chat)[1];
                     if ($chat < 13) { // If it's a class group (group:1 to group:12)
@@ -66,7 +85,7 @@
                             $chat = $chat . "° Ano - Ensino Fundamental";
                         }
                         $bio = "Turma do " . str_replace("-", "do", $chat);
-                        echo "<div class='chat' data-id='" . base64_encode("group:" . $_SESSION["class"]) . "'><div class='chat_pic'><img src='assets/avatars/groups/class/" . $_SESSION["class"] . ".png'></div><div class='chat_info'><div>$chat</div><div>$bio</div></div></div>";
+                        echo "<div class='chat' data-id='" . base64_encode("group:" . $_SESSION["class"]) . "'><div class='pic'><img src='assets/avatars/groups/class/" . $_SESSION["class"] . ".png'></div><div class='info'><div>$chat</div><div>$bio</div></div></div>";
                     } else { // If that's not a class group
                         $sql = "SELECT * FROM `groups` WHERE id = '$chat'";
                         $sql = mysqli_query($conn, $sql);
@@ -77,7 +96,7 @@
                         }
                         $name = $chat_info["name"];
                         $bio = $chat_info["description"];
-                        echo "<div class='chat' data-id='" . base64_encode("group:" . $_chat_info["id"]) . "'><div class='chat_pic'><img src='$photo'></div><div class='chat_info'><div>$name</div><div>$bio</div></div></div>";
+                        echo "<div class='chat' data-id='" . base64_encode("group:" . $_chat_info["id"]) . "'><div class='pic'><img src='$photo'></div><div class='info'><div>$name</div><div>$bio</div></div></div>";
                     }
                 }
             }
