@@ -13,7 +13,6 @@ function updateChats(scroll = false) {
             message_area.innerHTML = "";
             return;
         }
-        $(".input_area input").focus();
         if (!$(".chats:visible").length) { // Mobile
             $(".chat_selector")[0].style.display = "none";
             $(".chats")[0].style.display = "grid";

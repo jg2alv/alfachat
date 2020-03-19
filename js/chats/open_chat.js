@@ -12,7 +12,7 @@ $(document).ready(() => {
     header_input.value = ""; // Removing input's value
     header_input.addEventListener("keyup", k => {
         // When user press any key, the result list will appear
-        if (!header_input.value || (header_input.value.length == 1 && k.keyCode == 78) || header_input.value == " ") {
+        if (!header_input.value || (header_input.value.length === 1 && k.keyCode === 78) || header_input.value === " ") {
             // If the header has no value OR (it's length is 1 AND user key is backspace) OR is the value is a spacebar
             chat_result_list.setAttribute("hidden", ""); // Set hidden attribute
             chat_list.removeAttribute("hidden"); // Removing original list's hidden attribute
@@ -82,5 +82,6 @@ function openChat(e) {
     $(".input_area").attr("style", "display: grid");
     $(".chats header").attr("style", "display: flex");
     updateChats(true);
+    $(".input_area input").focus();
     chats_updater = setInterval(updateChats, 300);
 }
