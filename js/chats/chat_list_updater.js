@@ -12,7 +12,7 @@ function chatListUpdater() {
                 let chats;
                 response.forEach(user => {
                     chats += user["members"] ? `group:${user["id"]},` : user["id"] + ",";
-                    addChat(user, chat_list)
+                    addChat(user, chat_list);
                 })
                 chats = btoa(chats.slice(0, -1).replace("undefined", ""));
                 chat_list.setAttribute("data-chats", chats);
