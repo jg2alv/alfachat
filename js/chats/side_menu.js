@@ -14,7 +14,7 @@ $(document).ready(() => {
     document.querySelector("#user_rg").innerHTML = atob(sessionStorage["cmc="]);
 
     document.addEventListener("keydown", k => {
-        if (k.keyCode === 27 && $(".submenu:visible").length || $(".side_menu:visible").length) {
+        if (k.keyCode === 27 && ($(".submenu:visible").length || $(".side_menu:visible").length)) {
             hideSideMenu();
         }
     })
