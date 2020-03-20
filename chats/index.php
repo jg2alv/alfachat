@@ -40,17 +40,33 @@
                 <span id="user_rg"></span>
             </header>
             <main>
-                <div id="new_group" class="menu_icon"><div class="pic"><img src="assets/icons/group.png" alt="Novo Grupo"></div><div class="info" style="flex: 4">Novo Grupo</div></div>
-                <div id="config" class="menu_icon"><div class="pic"><img src="assets/icons/settings.png" alt="Config"></div><div class="info" style="flex: 4">Configura&ccedil;&otilde;es</div></div>
+                <div id="new_group" class="menu_icon"><div class="pic"><img style="max-width: 50%"  src="assets/icons/group.png" alt="Novo Grupo"></div><div class="info" style="flex: 4">Novo Grupo</div></div>
+                <div id="config" class="menu_icon"><div class="pic"><img style="max-width: 50%" src="assets/icons/settings.png" alt="Config"></div><div class="info" style="flex: 4">Configura&ccedil;&otilde;es</div></div>
             </main>
         </div>
         <div class="side_menu_bg"></div>
     </div>
-    <div class="submenu" id="new_group_menu" style="width: 20vw; height: 20vh">
-        <div class="pic" style="border-radius: 50%"><img src="assets/icons/camera.png" alt="Camera"></div>
-        <div class="info" style="flex: 3"><input style="max-width: 90%" type="text" placeholder="Nome do grupo"></div>
+    <form class="submenu" id="new_group_menu" enctype="multipart/form-data" style="flex-direction: column">
+        <div class="submenu_container" style="display: flex; flex: 1">
+            <div class="pic">
+                <input id="group_pic_input" type="file" style="display: none" accept="image/*">
+                <label for="group_pic_input" style="display: flex; cursor: pointer;">
+                    <img src="assets/icons/camera.png" alt="Camera" style="margin: auto;">
+                </label>
+            </div>
+            <div class="info">
+                <label>Nome do grupo:</label>
+                <input type="text" name="gn">
+            </div>
+        </div>
+        <div class="submenu_btns">
+            <div onclick="hideSideMenu()">FECHAR</div>
+            <button type="submit">PROSSEGUIR</button>
+        </div>
+    </form>
+    <div class="submenu" id="settings_menu">
+
     </div>
-    <div class="submenu" id="settings_menu" style="width: 30vw; height: 90vh"></div>
     <div class="chat_selector">
         <header>
             <img src="assets/icons/menu.png" alt="Menu icon">
