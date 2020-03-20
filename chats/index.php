@@ -46,23 +46,32 @@
         </div>
         <div class="side_menu_bg"></div>
     </div>
-    <form class="submenu" id="new_group_menu" enctype="multipart/form-data" style="flex-direction: column">
+    <form class="submenu" id="new_group_menu" enctype="multipart/form-data">
         <div class="submenu_container" style="display: flex; flex: 1">
             <div class="pic">
                 <input id="group_pic_input" type="file" style="display: none" accept="image/*">
                 <label for="group_pic_input" style="display: flex; cursor: pointer;">
-                    <img src="assets/icons/camera.png" alt="Camera" style="margin: auto;">
+                    <img src="assets/icons/camera.png" alt="Camera" style="margin: auto; max-width: 60%">
                 </label>
             </div>
             <div class="info">
                 <label>Nome do grupo:</label>
-                <input type="text" name="gn">
+                <input type="text" autofocus>
             </div>
         </div>
         <div class="submenu_btns">
             <div onclick="hideSideMenu()">FECHAR</div>
             <button type="submit">PROSSEGUIR</button>
         </div>
+    </form>
+    <form class="submenu" id="new_group_menu_advanced">
+       <header style="padding-left: 0;">
+           <span>Adicionar Membros:</span>
+           <input type="text" placeholder="Busca" autofocus>
+       </header>
+       <main>
+
+       </main> 
     </form>
     <div class="submenu" id="settings_menu">
 
@@ -112,7 +121,7 @@
                         }
                         $name = $chat_info["name"];
                         $bio = $chat_info["description"];
-                        echo "<div class='chat' data-id='" . base64_encode("group:" . $_chat_info["id"]) . "'><div class='pic'><img src='$photo'></div><div class='info'><div>$name</div><div>$bio</div></div></div>";
+                        echo "<div class='chat' data-id='" . base64_encode("group:" . $chat_info["id"]) . "'><div class='pic'><img src='$photo'></div><div class='info'><div>$name</div><div>$bio</div></div></div>";
                     }
                 }
             }
