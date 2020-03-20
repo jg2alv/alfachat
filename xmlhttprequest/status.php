@@ -23,13 +23,13 @@
             } else {
                 echo "1 membro";
             }
-            die();
         } else { // If it's a private chat
             $sql = "SELECT * FROM `users` WHERE id = $i"; // Getting user info
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_assoc($sql);
             echo $sql["status"]; // Returning user status' row
         }
+        die();
     }
 
     function set($conn) { // If the operation is a set one
