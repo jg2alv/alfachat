@@ -6,9 +6,7 @@ function statusTimer() {
         timer += 1; // Adding to timer (seconds)
         switch (true) {
             case timer >= 1 && timer < 6: // If timer is between 1 and 5 (both included) seconds
-                statusBackend(
-                    "i=Visto%20pela%20última%20vez%20agora%20mesmo&o=set" // Override default message
-                );
+                statusBackend("i=Visto%20pela%20última%20vez%20agora%20mesmo&o=set"); // Override default message
                 break;
             case timer >= 60 && timer < 120: // If timer is more than a minute and less than two
                 statusBackend(`${msg}1%20minuto`); // Seen one minute ago
@@ -25,7 +23,7 @@ function statusTimer() {
         timer = 0;
         statusBackend("i=online&o=set"); // Setting MY status to online
         statusBackend(`i=${id}&o=get`); // Refreshing frontend
-    
+
     };
 }
 
