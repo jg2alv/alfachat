@@ -28,8 +28,14 @@
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_assoc($sql);
         echo json_encode($sql);
-        if (end($chats) !== $user) {
-            echo ",";
+        if (strpos(end($chats), ":") !== false) {
+            if (explode(":", end($chats))[1] !== $user) {
+                echo ",";
+            }
+        } else {
+            if (end($chats) !== $user) {
+                echo ",";
+            }
         }
     }
     echo "]";
