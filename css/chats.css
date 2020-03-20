@@ -21,7 +21,6 @@ body {
 
 .side_menu_visible {
     flex: 1;
-    background: white;
     display: flex;
     flex-direction: column;
 }
@@ -33,8 +32,12 @@ body {
 }
 
 .side_menu_visible header {
-    flex: 1;
     background-color: #35215a;
+}
+
+.side_menu_visible header,
+#new_group_menu_advanced header {
+    flex: 1;
     padding-top: 25px;
     padding-left: 25px;
     box-sizing: border-box;
@@ -59,8 +62,12 @@ body {
 }
 
 .side_menu_visible main {
-    flex: 4;
     background-color: #291a46;
+}
+
+.side_menu_visible main,
+#new_group_menu_advanced main {
+    flex: 4;
     padding-top: 20px;
 }
 
@@ -70,12 +77,12 @@ body {
     display: flex;
     transition: 100ms all;
     cursor: pointer;
-    padding-left: 25px;
+    padding-left: 20px;
     box-sizing: border-box;
 }
 
 .menu_icon:hover {
-    background-color: rgba(205, 205, 205, 0.4);
+    background-color: rgba(205, 205, 205, 0.3);
 }
 
 .menu_icon img {
@@ -98,7 +105,8 @@ body {
 
 #new_group_menu {
     width: 20vw;
-    height: 20vh
+    height: 20vh;
+    flex-direction: column;
 }
 
 #new_group_menu .pic {
@@ -154,6 +162,44 @@ body {
 .submenu_btns *:hover {
     background-color: #291a46;
     transition: 200ms all;
+}
+
+#new_group_menu_advanced {
+    height: 85vh;
+    width: 30vw;
+    display: none;
+    flex-direction: column;
+}
+
+#new_group_menu_advanced header span {
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 25px;
+    display: inline-block;
+}
+
+#new_group_menu_advanced header input {
+    background-color: #35215a;
+    color: white;
+    width: 100%;
+    padding: 6px;
+    padding-right: 25px;
+    height: calc(7vh * 0.7);
+    font-size: 16px;
+    box-sizing: border-box;
+    border: 0;
+    border-bottom: 1px solid black;
+}
+
+#new_group_menu_advanced header span,
+#new_group_menu_advanced header input {
+    padding-left: 25px;
+}
+
+
+#new_group_menu_advanced main {
+    padding-top: 0;
+    flex: 6;
 }
 
 #settings_menu {
@@ -403,6 +449,10 @@ body {
 }
 
 @media only screen and (max-width: 999px) {
+    #new_group_menu_advanced {
+        width: 50vw;
+    }
+
     .chats {
         display: none;
     }
@@ -426,7 +476,11 @@ body {
 }
 
 @media only screen and (max-width: 619px) {
-    header input {
+    #new_group_menu_advanced {
+        width: 60vw;
+    }
+
+    .chat_selector header input {
         height: calc(6vh * 0.6);
     }
 }
