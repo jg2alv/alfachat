@@ -65,9 +65,12 @@
         </div>
     </form>
     <form class="submenu" id="new_group_menu_advanced">
-       <header style="padding-left: 0;">
-           <span>Adicionar Membros:</span>
-           <input type="text" placeholder="Busca" autofocus>
+       <header>
+           <span id="add">Adicionar Membros:</span>
+           <div id="member_search_container">
+                <div style="display: flex;"></div>
+                <input type="text" placeholder="Busca">
+           </div>
        </header>
        <main>
 

@@ -9,7 +9,7 @@
     } elseif (empty($_POST["n"]) && !empty($_POST["m"])) { // If I wanna add a member to the group
         addMembers();
     } else {
-        getUserChatList(); // If POST[a] is filled but both POST[n] AND POST[m] aren't (safety again)
+        getUserChatList(); // If POST[a] is filled but both POST[n] AND POST[m] aren't
     }
 
     function setGroupName() {

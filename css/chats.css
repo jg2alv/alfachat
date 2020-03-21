@@ -171,35 +171,55 @@ body {
     flex-direction: column;
 }
 
-#new_group_menu_advanced header span {
+#new_group_menu_advanced header {
+    padding-left: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid black;
+}
+
+#add {
     font-weight: bold;
     font-size: 20px;
     margin-bottom: 25px;
     display: inline-block;
+    padding-left: 25px;
+}
+
+#member_search_container {
+    display: flex;
+    padding: 0 25px;
 }
 
 #new_group_menu_advanced header input {
     background-color: #35215a;
     color: white;
     width: 100%;
-    padding: 6px;
-    padding-right: 25px;
     height: calc(7vh * 0.7);
     font-size: 16px;
     box-sizing: border-box;
     border: 0;
-    border-bottom: 1px solid black;
 }
 
-#new_group_menu_advanced header span,
-#new_group_menu_advanced header input {
-    padding-left: 25px;
+.member_selection_balloon {
+    display: inline-block;
+    padding: 5px 20px;
+    background: green;
+    border-radius: 30px;
+    font-size: 16px;
+    margin: 2px;
+    box-sizing: border-box;
+    align-self: center;
+    text-align: center;
 }
-
 
 #new_group_menu_advanced main {
     padding-top: 0;
-    flex: 6;
+    flex: 7;
+    overflow-y: hidden;
+}
+
+#new_group_menu_advanced main:hover {
+    overflow-y: auto;
 }
 
 #settings_menu {
