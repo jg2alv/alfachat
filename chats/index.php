@@ -98,7 +98,7 @@
                     $sql = mysqli_query($conn, $sql);
                     if (!mysqli_num_rows($sql)) {
                         $bug_time = time();
-                        $sql = "INSERT INTO `log` (`session`, `msg`, `time`) VALUES ('PHP chat page loading', 'User ID $chat does not exist', $bug_time)";
+                        $sql = "INSERT INTO `log` (`file`, `session`, `msg`, `time`) VALUES ('chats/index.php', 'PHP chat page loading', 'User ID $chat does not exist', $bug_time)";
                         mysqli_query($conn, $sql);
                         continue;
                     }
@@ -125,7 +125,7 @@
                         $sql = mysqli_query($conn, $sql);
                         if (!mysqli_num_rows($sql)) {
                             $bug_time = time();
-                            $sql = "INSERT INTO `log` (`session`, `msg`, `time`) VALUES ('PHP chat page loading', 'User ID $chat does not exist', $bug_time)";
+                            $sql = "INSERT INTO `log` (`file`, `session`, `msg`, `time`) VALUES ('chats/index.php', 'PHP chat page loading', 'Class ID $chat does not exist', $bug_time)";
                             mysqli_query($conn, $sql);
                             continue;
                         }
