@@ -53,19 +53,17 @@ $(document).ready(() => {
 
 function openChat(e) {
     clearInterval(chats_updater);
-    let parent = e.target;
-    while (parent.classList.value != "chat") { // While the place where user clicked (children div) DO NOT have "chat" class
-        parent = parent.parentNode; // Set it to it's parent (because IT WILL be a children)
-    }
-    id = parent.attributes["data-id"].value; // base64 id value. Example: 1; group:11 (in base64)
-    statusBackend(`i=${id}&o=get`, parent);
+    id = e.currentTarget.attributes["data-id"].value; // base64 id value. Example: 1; group:11 (in base64)
 
-    if ($(".chats header div div")[0].innerHTML === parent.children[1].children[0].innerHTML && $(".chats:visible").length) { // If user clicked on the same chat, don't reload it.
+    if (id === e.currentTarget.children[1].children[0].getAttribute("data-id") && $(".chats:visible").length) { // If user clicked on the same chat, don't reload it.
         return;
     }
 
+    statusBackend(`i=${id}&o=get`, e.currentTarget);
+    $(".chats header div div")[0].setAttribute("data-id", id)
+
     $(".chat").attr("style", "background: #35215a"); // Removing "selected" background from every other div
-    parent.style.background = "#291a46"; // Setting background to a darker one, indicating "selected"
+    e.currentTarget.style.background = "#291a46"; // Setting background to a darker one, indicating "selected"
 
     const chat_result_list = $(".chat_result_list")[0];
     const chat_list = $(".chat_list")[0];
@@ -75,7 +73,7 @@ function openChat(e) {
             chat_result_list.setAttribute("hidden", ""); // Set hidden attribute
             chat_list.removeAttribute("hidden"); // Removing original list's hidden attribute
             document.querySelector(".chat_selector header input[type='text']").value = "";
-            document.querySelector(`.chat_list div[data-id='${parent.attributes["data-id"].value}']`).style.background = "#291a46";
+            document.querySelector(`.chat_list div[data-id='${e.currentTarget.attributes["data-id"].value}']`).style.background = "#291a46";
         }
     }
     $(".choose_chat").remove(); // Removing "choose chat" balloon
