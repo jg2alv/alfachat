@@ -96,6 +96,12 @@
                 if (strpos($chat, ":") === false) { // If that's not a group
                     $sql = "SELECT * FROM `users` WHERE id = '$chat'";
                     $sql = mysqli_query($conn, $sql);
+                    if (!mysqli_num_rows($sql)) {
+                        $bug_time = time();
+                        $sql = "INSERT INTO `log` (`session`, `msg`, `time`) VALUES ('PHP chat page loading', 'User ID $chat does not exist', $bug_time)";
+                        mysqli_query($conn, $sql);
+                        continue;
+                    }
                     $chat_info = mysqli_fetch_assoc($sql);
                     $photo = $chat_info["photo"];
                     if (!$photo) {
@@ -117,6 +123,12 @@
                     } else { // If that's not a class group
                         $sql = "SELECT * FROM `groups` WHERE id = '$chat'";
                         $sql = mysqli_query($conn, $sql);
+                        if (!mysqli_num_rows($sql)) {
+                            $bug_time = time();
+                            $sql = "INSERT INTO `log` (`session`, `msg`, `time`) VALUES ('PHP chat page loading', 'User ID $chat does not exist', $bug_time)";
+                            mysqli_query($conn, $sql);
+                            continue;
+                        }
                         $chat_info = mysqli_fetch_assoc($sql);
                         $photo = $chat_info["photo"];
                         if (!$photo) {

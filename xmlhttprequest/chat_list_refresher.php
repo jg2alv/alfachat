@@ -26,6 +26,15 @@
             $sql = "SELECT * FROM `groups` WHERE id = '$user'";
         }
         $sql = mysqli_query($conn, $sql);
+        if (!mysqli_num_rows($sql)) {
+            $bug_time = time();
+            $sql = "INSERT INTO `log` (`session`, `msg`, `time`) VALUES ('PHP chat page loading', 'User ID $user does not exist', $bug_time)";
+            if (strpos($user, ":") !== false) {
+                $sql = "INSERT INTO `log` (`session`, `msg`, `time`) VALUES ('PHP chat page loading', 'Class ID $user does not exist', $bug_time)";
+            }
+            mysqli_query($conn, $sql);
+            continue;
+        }
         $sql = mysqli_fetch_assoc($sql);
         echo json_encode($sql);
         if (strpos(end($chats), ":") !== false) {
