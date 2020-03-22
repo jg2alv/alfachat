@@ -82,7 +82,11 @@ body {
 }
 
 .menu_icon:hover {
-    background-color: rgba(205, 205, 205, 0.3);
+    background-color: #35215a;
+}
+
+#new_group_menu_advanced .menu_icon:hover {
+    background-color: #291a46;
 }
 
 .menu_icon img {
@@ -203,7 +207,7 @@ body {
 .member_selection_balloon {
     display: inline-block;
     padding: 5px 20px;
-    background: green;
+    background: #291a46;
     border-radius: 30px;
     font-size: 16px;
     margin: 2px;
@@ -215,10 +219,6 @@ body {
 #new_group_menu_advanced main {
     padding-top: 0;
     flex: 7;
-    overflow-y: hidden;
-}
-
-#new_group_menu_advanced main:hover {
     overflow-y: auto;
 }
 
@@ -275,12 +275,7 @@ body {
 .chat_result_list,
 .chat_list {
     max-height: calc(93vh - 20px);
-    overflow-y: hidden;
-}
-
-.chat_result_list:hover,
-.chat_list:hover {
-    overflow-y: auto !important;
+    overflow-y: auto;
 }
 
 .chat {
