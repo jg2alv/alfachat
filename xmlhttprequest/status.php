@@ -19,16 +19,26 @@
             $members = $sql["members"];
             $members = explode(",", $members);
             if (sizeof($members) > 1) {
-                echo sizeof($members) . " membros";
+                $status = sizeof($members) . " membros";
             } else {
-                echo "1 membro";
+                $status = "1 membro";
+            }
+            $id = $_SESSION["id"];
+            $sql = "SELECT * FROM `groups` WHERE status = 'online'"; // Getting info on group
+            $sql = mysqli_query($conn, $sql);
+            $sql = mysqli_fetch_assoc($sql);
+            $members = $sql["members"];
+            $members = explode(",", $members);
+            if (sizeof($members) - 1) {
+                $status .= ", " . sizeof($members) . " online";
             }
         } else { // If it's a private chat
             $sql = "SELECT * FROM `users` WHERE id = $i"; // Getting user info
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_assoc($sql);
-            echo $sql["status"]; // Returning user status' row
+            $status = $sql["status"];
         }
+        echo $status;
         die();
     }
 
