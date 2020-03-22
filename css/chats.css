@@ -220,6 +220,14 @@ body {
     padding-top: 0;
     flex: 7;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.members,
+.members_result {
+    flex: 16;
+    overflow-y: auto;
 }
 
 #settings_menu {
