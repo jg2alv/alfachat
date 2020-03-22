@@ -59,10 +59,10 @@
                 <input type="text" autofocus>
             </div>
         </div>
-        <div class="submenu_btns">
+        <footer class="submenu_btns">
             <div onclick="hideSideMenu()">FECHAR</div>
             <button type="submit">PROSSEGUIR</button>
-        </div>
+        </footer>
     </form>
     <form class="submenu" id="new_group_menu_advanced">
        <header>
@@ -73,7 +73,12 @@
            </div>
        </header>
        <main>
-
+            <div class="members_result" hidden></div>
+            <div class="members"></div>
+            <footer class="submenu_btns" style="flex: 1">
+                <div onclick="hideSideMenu()">FECHAR</div>
+                <button type="submit">PROSSEGUIR</button>
+            </footer>    
        </main> 
     </form>
     <div class="submenu" id="settings_menu">
@@ -135,7 +140,7 @@
                             $photo = "assets/avatars/groups/default.png"; // If group doesn't have a photo (setting according to js/chats relative path)
                         }
                         $name = $chat_info["name"];
-                        $bio = $chat_info["description"];
+                        $bio = $chat_info["description"] ? $chat_info["description"] : "Grupo de amantes do AlfaChat";
                         echo "<div class='chat' data-id='" . base64_encode("group:" . $chat_info["id"]) . "'><div class='pic'><img src='$photo'></div><div class='info'><div>$name</div><div>$bio</div></div></div>";
                     }
                 }
