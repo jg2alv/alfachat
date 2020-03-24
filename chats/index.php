@@ -6,7 +6,7 @@
     $sql = "SELECT * FROM `users` WHERE id = $id;";
     $sql = mysqli_query($conn, $sql);
 
-    if (empty($_SESSION) || !(mysqli_num_rows($sql))) {
+    if ((!empty($_GET["log_out"])) || (empty($_SESSION) || !(mysqli_num_rows($sql)))) {
         session_unset();
         session_destroy();
         header("Location: ../"); // If user isn't logged in
@@ -66,7 +66,7 @@
     </form>
     <form class="submenu" id="new_group_menu_advanced">
        <header>
-           <span id="add">Adicionar Membros:</span>
+           <span class="submenu_header_title">Adicionar Membros:</span>
            <div id="member_search_container">
                 <div style="display: flex;"></div>
                 <input type="text" placeholder="Busca">
@@ -82,7 +82,81 @@
        </main> 
     </form>
     <div class="submenu" id="settings_menu">
-
+        <header>
+            <div style="display: flex; justify-content: space-between; flex: 1;">
+                <span class="submenu_header_title" style="flex: 4">Configura&ccedil;&otilde;es:</span>
+                <div class="settings_header_btns">
+                    <img src="assets/icons/advanced_icon.png" alt="3 pontinhos">
+                    <div id="settings_menu_header_drop_down" class="settings_menu_header_drop_down">
+                        <span>Encerrar sess&atilde;o</span>
+                        <span class="edit_profile">Editar perfil</span>
+                    </div>
+                    <img src="assets/icons/x_icon.png" alt="X icon" style="width: 18%; margin-bottom: 3.5px">
+                </div>
+            </div>
+            <div class="settings_menu_user_area">
+                <div class="pic">
+                    <img src="" alt="">
+                </div>
+                <div class="info">
+                    <div style="font-weight: bold;"></div>
+                    <div style="font-size: 16px; color: #cccccc"></div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="menu_icon edit_profile"><div class="pic"><img style="max-width: 30%"  src="assets/icons/info.png" alt="Novo Grupo"></div><div class="info" style="flex: 4">Editar perfil</div></div>
+        </main>
+        <footer></footer>
+        <header hidden style="border: 0; padding-left: 0">
+            <div style="flex: 1; flex-direction: column; display: flex">
+                <div style="justify-content: space-between; display: flex; flex: 1;">
+                    <div class="submenu_header_title" style="flex: 20; display: flex; align-items: start; padding-left: 0; padding-left: 25px">
+                        <img id="settings_menu_back" src="assets/icons/back_arrow.png" alt="Voltar">
+                        <span style="margin: 4.6px 0 0 10px;">Informa&ccedil;&otilde;es:</span>
+                    </div>
+                    <div class="settings_header_btns" style="flex: 1; text-align: end;">
+                        <img id="settings_menu_close" src="assets/icons/x_icon.png" alt="X icon">
+                    </div>
+                </div>
+                <div style="background-color: #291a46; flex: 3; flex-direction: column; justify-content: center; align-items: center; display: flex">
+                    <img id="settings_menu_advanced_profile_pic" src="" alt="">
+                    <div>
+                        <span style="text-transform: uppercase; font-weight: bold; cursor: pointer; text-align: center; padding: 10px 30px; border-radius: 20px; background-color: #35215a">Mudar foto de perfil</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main hidden style="flex: 1; display: flex; flex-direction: column">
+            <div style="flex: 1" class="menu_icon settings_menu_icon">
+                <div class="pic">
+                    <img src="" alt="">
+                </div>
+                <div class="info">
+                    <span id="settings_menu_name"></span>
+                    <span class="settings_menu_subtitle">Nome</span>
+                </div>
+            </div>
+            <div style="flex: 1" class="menu_icon settings_menu_icon">
+                <div class="pic">
+                    <img src="" alt="">
+                </div>
+                <div class="info">
+                    <span id="settings_menu_email"></span>
+                    <span class="settings_menu_subtitle">E-mail</span>
+                </div>
+            </div>
+            <div style="flex: 1" class="menu_icon settings_menu_icon">
+                <div class="pic">
+                    <img src="" alt="">
+                </div>
+                <div class="info">
+                    <span id="settings_menu_rg"></span>
+                    <span class="settings_menu_subtitle">RG</span>
+                </div>
+            </div>
+        </main>
+        <footer hidden></footer>
     </div>
     <div class="chat_selector">
         <header>
@@ -114,7 +188,7 @@
                     }
                     $name = $chat_info["name"];
                     $bio = $chat_info["bio"];
-                    echo "<div class='chat' data-id='" . base64_encode($chat_info["id"]) . "'><div class='pic'><img style='border-radius: 50%;' src='$photo'></div><div class='info'><div>$name</div><div>$bio</div></div></div>";
+                    echo "<div class='chat' data-id='" . base64_encode($chat_info["id"]) . "'><div class='pic'><img src='$photo'></div><div class='info'><div>$name</div><div>$bio</div></div></div>";
                 } else { // If that's a group
                     $chat = explode(":", $chat)[1];
                     if ($chat < 13) { // If it's a class group (group:1 to group:12)
