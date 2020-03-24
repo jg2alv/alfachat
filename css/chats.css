@@ -36,7 +36,8 @@ body {
 }
 
 .side_menu_visible header,
-#new_group_menu_advanced header {
+#new_group_menu_advanced header,
+#settings_menu header {
     flex: 1;
     padding-top: 25px;
     padding-left: 25px;
@@ -66,7 +67,8 @@ body {
 }
 
 .side_menu_visible main,
-#new_group_menu_advanced main {
+#new_group_menu_advanced main,
+#settings_menu main {
     flex: 4;
     padding-top: 20px;
 }
@@ -110,6 +112,12 @@ body {
 #new_group_menu {
     width: 20vw;
     height: 20vh;
+}
+
+#new_group_menu,
+#new_group_menu_advanced,
+#new_group_menu_advanced main,
+#settings_menu {
     flex-direction: column;
 }
 
@@ -172,7 +180,6 @@ body {
     height: 85vh;
     width: 30vw;
     display: none;
-    flex-direction: column;
 }
 
 #new_group_menu_advanced header {
@@ -181,7 +188,7 @@ body {
     border-bottom: 1px solid black;
 }
 
-#add {
+.submenu_header_title {
     font-weight: bold;
     font-size: 20px;
     margin-bottom: 25px;
@@ -221,7 +228,6 @@ body {
     flex: 7;
     overflow-y: auto;
     display: flex;
-    flex-direction: column;
 }
 
 .members,
@@ -232,7 +238,128 @@ body {
 
 #settings_menu {
     width: 30vw;
-    height: 90vh
+    height: 90vh;
+}
+
+#settings_menu header,
+#settings_menu main {
+    padding-bottom: 15px;
+    border-bottom: 15px solid #291a46;
+    box-sizing: border-box;
+}
+
+#settings_menu header {
+    display: flex;
+    flex-direction: column;
+}
+
+.settings_header_btns {
+    flex: 1;
+    text-align: center;
+}
+
+.settings_header_btns img {
+    filter: brightness(60%);
+    cursor: pointer;
+    width: 25%;
+    height: auto;
+    margin: 0 5px;
+}
+
+.settings_header_btns img:hover {
+    filter: brightness(100%);
+}
+
+.settings_menu_header_drop_down {
+    position: absolute;
+    z-index: 1;
+    display: none;
+    min-width: 150px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    right: 50px;
+}
+
+.settings_menu_header_drop_down * {
+    display: block;
+    min-height: 30px;
+    background-color: #35215a;
+    text-align: justify;
+    padding: 10px;
+    padding-left: 20px;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+.settings_menu_header_drop_down *:hover {
+    background-color: #291a46;
+}
+
+.settings_menu_user_area {
+    display: flex;
+    flex: 2;
+    align-items: center;
+    padding-left: 25px;
+}
+
+.settings_menu_user_area .info {
+    margin-left: 20px;
+    font-size: 18px;
+}
+
+.settings_menu_user_area .info div {
+    padding: 5px 0;
+}
+
+.settings_menu_user_area .pic img {
+    max-width: 100%;
+}
+
+#settings_menu main {
+    flex: 3;
+    padding: 10px 0;
+}
+
+.edit_profile:hover {
+    background-color: #291a46;
+}
+
+.edit_profile:hover img {
+    filter: brightness(160%) !important;
+}
+
+#settings_menu footer {
+    flex: 1;
+}
+
+#settings_menu_back {
+    max-width: 7%;
+    filter: brightness(60%);
+    cursor: pointer;
+}
+
+#settings_menu_back:hover {
+    filter: brightness(100%);
+}
+
+#settings_menu_close {
+    width: 30%;
+    margin: 8px 50px 3.5px 3.5px
+}
+
+#settings_menu_advanced_profile_pic {
+    border-radius: 50%;
+    max-width: 15%;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.settings_menu_subtitle {
+    color: #cccccc;
+    font-size: 14px;
+}
+
+.settings_menu_icon:hover {
+    background-color: #291a46;
 }
 
 .chat_selector {
