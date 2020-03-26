@@ -130,7 +130,7 @@
         <main hidden style="flex: 1; display: flex; flex-direction: column">
             <div style="flex: 1" class="menu_icon settings_menu_icon">
                 <div class="pic">
-                    <img src="" alt="">
+                    <img src="assets/icons/name.png" alt="Mudar nome">
                 </div>
                 <div class="info">
                     <span id="settings_menu_name"></span>
@@ -139,7 +139,7 @@
             </div>
             <div style="flex: 1" class="menu_icon settings_menu_icon">
                 <div class="pic">
-                    <img src="" alt="">
+                    <img src="assets/icons/email.png" alt="Mudar email">
                 </div>
                 <div class="info">
                     <span id="settings_menu_email"></span>
@@ -148,7 +148,7 @@
             </div>
             <div style="flex: 1" class="menu_icon settings_menu_icon">
                 <div class="pic">
-                    <img src="" alt="">
+                    <img src="assets/icons/rg.png" alt="Mudar RG">
                 </div>
                 <div class="info">
                     <span id="settings_menu_rg"></span>
