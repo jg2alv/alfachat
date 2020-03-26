@@ -362,6 +362,14 @@ body {
     background-color: #291a46;
 }
 
+.settings_menu_icon .pic img {
+    filter: brightness(60%);
+}
+
+.settings_menu_icon:hover .pic img {
+    filter: brightness(100%);
+}
+
 .chat_selector {
     flex: 2;
     min-height: 100vh;
