@@ -48,7 +48,6 @@ function handleLogin() {
 
 function handleOperation(event) {
     event.preventDefault();
-    //form.removeEventListener("submit", handleOperation);
     $("span").remove();
     $("br[data-dynamic='true']").remove();
     let name = document.querySelector("input[name='name']");
