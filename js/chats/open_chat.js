@@ -1,5 +1,4 @@
 let id; // Setting global ID
-let chats_updater;
 
 $(document).ready(() => {
     statusTimer(); // Start timer when window (chats) loads
@@ -48,7 +47,6 @@ $(document).ready(() => {
 });
 
 function openChat(e) {
-    clearInterval(chats_updater);
     id = e.currentTarget.attributes["data-id"].value; // base64 id value. Example: 1; group:11 (in base64)
 
     if (id === e.currentTarget.children[1].children[0].getAttribute("data-id") && $(".chats:visible").length) { // If user clicked on the same chat, don't reload it.
@@ -77,5 +75,5 @@ function openChat(e) {
     $(".chats header").attr("style", "display: flex");
     updateChats(true);
     $(".input_area input").focus();
-    chats_updater = setInterval(updateChats, 300);
+    setInterval(updateChats, 300);
 }

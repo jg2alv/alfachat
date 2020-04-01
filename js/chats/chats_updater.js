@@ -31,12 +31,15 @@ function updateChats(scroll = false) {
                 chats += `<div style="display: grid"><div class="message mine">${message.content + messageTime}</div></div>`;
             }
         });
+
         if (message_area.innerHTML !== chats) {
             message_area.innerHTML = chats;
         }
+
         if (scroll) {
-            message_area.style.display = "block";
             message_area.scrollTop = message_area.scrollHeight;
         }
+
+        message_area.style.display = "block";
     };
 }
