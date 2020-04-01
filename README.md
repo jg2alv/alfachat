@@ -11,13 +11,13 @@ Para conseguir usar a ferramenta, o usu&aacute;rio precisa:
 
 Voc&ecirc;, professor, que deseja se cadastrar, entre em contato conosco, por meio do <a href='https://t.me/bored_user' target='_blank'>Telegram</a> ou por <a href='https://github.com/bored-user/AlfaChat/issues' target='_blank'>aqui</a> mesmo!
 
-Aqui est&atilde;o alguns exemplos da interface:
-<img src="_Examples_/login.png" alt="Login">
-<img src="_Examples_/select_chat.png" alt="Selecionar conversa">
-<img src="_Examples_/chat_1.png" alt="Conversa #1">
-<img src="_Examples_/chat_2.png" alt="Conversa #2">
-<img src="_Examples_/chat_3.png" alt="Conversa #3">
-<img src="_Examples_/side_menu.png" alt="Menu lateral">
-<img src="_Examples_/new_group.png" alt="Novo grupo">
-<img src="_Examples_/add_member_1.png" alt="Adicionar membro #1">
+Aqui est&atilde;o alguns exemplos da interface:<br><br>
+<img src="_Examples_/login.png" alt="Login"><br><br>
+<img src="_Examples_/select_chat.png" alt="Selecionar conversa"><br><br>
+<img src="_Examples_/chat_1.png" alt="Conversa #1"><br><br>
+<img src="_Examples_/chat_2.png" alt="Conversa #2"><br><br>
+<img src="_Examples_/chat_3.png" alt="Conversa #3"><br><br>
+<img src="_Examples_/side_menu.png" alt="Menu lateral"><br><br>
+<img src="_Examples_/new_group.png" alt="Novo grupo"><br><br>
+<img src="_Examples_/add_member_1.png" alt="Adicionar membro #1"><br><br>
 <img src="_Examples_/add_member_2.png" alt="Adicionar membro #2">
