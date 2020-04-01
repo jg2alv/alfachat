@@ -20,7 +20,12 @@ $(document).ready(() => {
         window.location.href = window.location.href + "?log_out=1";
     })
 
-    $(".settings_menu_user_area .pic img")[0].src = atob(sessionStorage["cGhvdG8="]) ? atob(sessionStorage["cGhvdG8="]) : "assets/avatars/user/default.png";
+    if (atob(sessionStorage["cGhvdG8="]) != "null") {
+        $(".settings_menu_user_area .pic img")[0].src = atob(sessionStorage["cGhvdG8="]);
+    } else {
+        $(".settings_menu_user_area .pic img")[0].src = "assets/avatars/user/default.png";
+    }
+
     $(".settings_menu_user_area .info div").eq(0).html(atob(sessionStorage["bmFtZQ=="]));
     $(".settings_menu_user_area .info div").eq(1).html(atob(sessionStorage["cmc="]));
 
@@ -40,7 +45,12 @@ $(document).ready(() => {
         });
     })
 
-    $("#settings_menu_advanced_profile_pic")[0].src = atob(sessionStorage["cGhvdG8="]) ? atob(sessionStorage["cGhvdG8="]) : "assets/avatars/user/default.png";
+    if (atob(sessionStorage["cGhvdG8="]) != "null") {
+        $("#settings_menu_advanced_profile_pic")[0].src = atob(sessionStorage["cGhvdG8="]);
+    } else {
+        $("#settings_menu_advanced_profile_pic")[0].src = "assets/avatars/user/default.png";
+    }
+
     $("#settings_menu_name").html(atob(sessionStorage["bmFtZQ=="]));
     $("#settings_menu_email").html(atob(sessionStorage["ZW1haWw="]));
     $("#settings_menu_rg").html(atob(sessionStorage["cmc="]));

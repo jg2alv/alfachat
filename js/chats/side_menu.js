@@ -9,7 +9,12 @@ $(document).ready(() => {
         side_menu_img.src = "assets/icons/menu.png";
     })
 
-    document.querySelector("#user_img").src = atob(sessionStorage["cGhvdG8="]) ? atob(sessionStorage["cGhvdG8="]) : "assets/avatars/user/default.png";
+    if (atob(sessionStorage["cGhvdG8="]) != "null") {
+        document.querySelector("#user_img").src = atob(sessionStorage["cGhvdG8="]);
+    } else {
+        document.querySelector("#user_img").src = "assets/avatars/user/default.png";
+    }
+
     document.querySelector("#user_name").innerHTML = atob(sessionStorage["bmFtZQ=="]);
     document.querySelector("#user_rg").innerHTML = atob(sessionStorage["cmc="]);
 
