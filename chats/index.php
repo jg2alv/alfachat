@@ -10,6 +10,8 @@
         session_unset();
         session_destroy();
         header("Location: ../"); // If user isn't logged in
+    } else {
+        $sql = json_encode(mysqli_fetch_assoc($sql));
     }
 ?>
 
@@ -32,6 +34,9 @@
     <title>AlfaChat | Conversas</title>
 </head>
 <body>
+    <?php
+        echo "<input type='hidden' value='$sql'>";
+    ?>
     <div class="side_menu">
         <div class="side_menu_visible">
             <header>
@@ -184,7 +189,7 @@
                     $chat_info = mysqli_fetch_assoc($sql);
                     $photo = $chat_info["photo"];
                     if (!$photo) {
-                        $photo = "assets/avatars/user/default.png"; // If user doesn't have a photo (setting according to js/chats relative path)
+                        $photo = "assets/avatars/users/default.png"; // If user doesn't have a photo (setting according to js/chats relative path)
                     }
                     $name = $chat_info["name"];
                     $bio = $chat_info["bio"];
