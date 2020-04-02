@@ -14,7 +14,7 @@
     $c = base64_encode(filter_input(INPUT_POST, "m", FILTER_SANITIZE_SPECIAL_CHARS));
     $t = time();
 
-    $sql = "INSERT INTO `messages` (sender, reciever, content, seen, time) VALUES ('$s', '$r', '$c', 0, '$t');";
+    $sql = "INSERT INTO `messages` (sender, reciever, content, time) VALUES ('$s', '$r', '$c', '$t');";
     $sql = mysqli_query($conn, $sql);
 
     echo base64_decode($c);
