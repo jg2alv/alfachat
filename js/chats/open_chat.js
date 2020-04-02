@@ -77,3 +77,10 @@ function openChat(e) {
     $(".input_area input").focus();
     setInterval(updateChats, 300);
 }
+
+function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+}
