@@ -28,7 +28,17 @@ function updateChats(scroll = false) {
                     chats += `<div style="display: grid"><div class="message their" style="margin-left: 20px">${message.content + messageTime}</div></div>`;
                 }
             } else { // If user sent the message
-                chats += `<div style="display: grid"><div class="message mine">${message.content + messageTime}</div></div>`;
+                if (message.file !== "0") {
+                    message.file = JSON.parse(message.file);
+                    const img = ["png", "jpg", "jpeg", "gif", "jfif"];
+                    if (img.includes(message.file.extension)) {
+                        chats += `<div style="display: grid"><div class="message mine"><img src="${atob(message.file.location)}">${messageTime}</div></div>`;
+                    } else {
+                        chats += `<div style="display: grid"><div class="message mine"><div><a style="display: flex" href="${atob(message.file.location)}" download><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/download.png" style="max-width: 60%; background-color: #291a46"></div><div style="flex: 2;" class="info"><div>${message.file.name}</div><div style="color: #cccccc; font-size: 16px">${convertUnits(message.file.size)}</div></div></a></div> ${messageTime}</div></div>`;
+                    }
+                } else {
+                    chats += `<div style="display: grid"><div class="message mine">${message.content + messageTime}</div></div>`;
+                }
             }
         });
 
@@ -42,4 +52,14 @@ function updateChats(scroll = false) {
 
         message_area.style.display = "block";
     };
+}
+
+function convertUnits(bytes) {
+    if (bytes === 0) {
+        return '0 Bytes';
+    }
+    const k = 1024,
+    sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+    i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }

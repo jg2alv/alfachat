@@ -23,4 +23,22 @@ function messageSender() {
             message_area.scrollTop = message_area.scrollHeight;
         };
     });
+
+    const file = $(".input_area input[type='file']")[0];
+    file.addEventListener("change", () => {
+    if (file.files.length < 1) {
+        return;
+    }
+
+    const formData = new FormData();
+    formData.set("file_user_input", file.files[0]);
+    formData.set("id", id);
+
+    xml.open("POST", "../xmlhttprequest/chat_file_upload.php", true);
+    xml.send(formData);
+    
+    xml.onload = () => {
+        console.log(xml.responseText);
+    }
+    })
 }
