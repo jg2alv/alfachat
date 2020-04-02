@@ -17,7 +17,7 @@
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_assoc($sql);
             if (!$sql["photo"]) {
-                $response .= substr(json_encode($msg), 0, -1) . ',"photo"' . ":" .  '"assets/avatars/user/default.png","name":"' . $sql["name"] .'"},'; // Default pic
+                $response .= substr(json_encode($msg), 0, -1) . ',"photo"' . ":" .  '"assets/avatars/users/default.png","name":"' . $sql["name"] .'"},'; // Default pic
             } else {
                 $response .= substr(json_encode($msg), 0, -1) . ',"photo":' . '"' . $sql["photo"] . '","name":"' . $sql["name"] . '"},'; // User's pic
             }
