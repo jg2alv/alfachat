@@ -12,7 +12,7 @@ $(document).ready(() => {
     if (atob(sessionStorage["cGhvdG8="]) != "null") {
         document.querySelector("#user_img").src = atob(sessionStorage["cGhvdG8="]);
     } else {
-        document.querySelector("#user_img").src = "assets/avatars/user/default.png";
+        document.querySelector("#user_img").src = "assets/avatars/users/default.png";
     }
 
     document.querySelector("#user_name").innerHTML = atob(sessionStorage["bmFtZQ=="]);
