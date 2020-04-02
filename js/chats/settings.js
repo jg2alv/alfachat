@@ -23,7 +23,7 @@ $(document).ready(() => {
     if (atob(sessionStorage["cGhvdG8="]) != "null") {
         $(".settings_menu_user_area .pic img")[0].src = atob(sessionStorage["cGhvdG8="]);
     } else {
-        $(".settings_menu_user_area .pic img")[0].src = "assets/avatars/user/default.png";
+        $(".settings_menu_user_area .pic img")[0].src = "assets/avatars/users/default.png";
     }
 
     $(".settings_menu_user_area .info div").eq(0).html(atob(sessionStorage["bmFtZQ=="]));
@@ -48,7 +48,7 @@ $(document).ready(() => {
     if (atob(sessionStorage["cGhvdG8="]) != "null") {
         $("#settings_menu_advanced_profile_pic")[0].src = atob(sessionStorage["cGhvdG8="]);
     } else {
-        $("#settings_menu_advanced_profile_pic")[0].src = "assets/avatars/user/default.png";
+        $("#settings_menu_advanced_profile_pic")[0].src = "assets/avatars/users/default.png";
     }
 
     $("#settings_menu_name").html(atob(sessionStorage["bmFtZQ=="]));
