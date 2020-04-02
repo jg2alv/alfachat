@@ -567,6 +567,19 @@ body {
     color: #cccccc;
 }
 
+.message img {
+    margin: 10px 0;
+}
+
+.message a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.message a:focus {
+    outline: 0;
+}
+
 .input_area {
     display: none;
     max-height: 400px;
