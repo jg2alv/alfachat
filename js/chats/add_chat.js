@@ -3,10 +3,14 @@ function addChat(user, div) {
         user["photo"] = `assets/avatars/groups/class/${user["id"]}.png`;
         user["bio"] = `Turma do ${user["name"].replace("-", "do")}`;
     } else if (user["members"]) { // Personal group
-        user["photo"] = user["photo"] ? user["photo"] : "assets/icons/group.png";
-        user["bio"] = user["bio"] ? user["bio"] : "Grupo de amantes do AlfaChat";
+        if (user["photo"] === "null") {
+            user["photo"] = "assets/icons/group.png";
+        }
+        user["bio"] = user["desc"] ? user["desc"] : "Grupo de amantes do AlfaChat";
     } else { // User
-        user["photo"] = user["photo"] ? user["photo"] : "assets/avatars/user/default.png";
+        if (user["photo"] === "null") {
+            user["photo"] = "assets/avatars/users/default.png";
+        }
         user["bio"] = user["bio"] ? user["bio"] : user["bio"] = "";
     }
 

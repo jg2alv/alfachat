@@ -23,7 +23,9 @@ $(document).ready(() => {
                 const response = JSON.parse(xml.responseText);
                 let member_list = "";
                 response.forEach(user => {
-                    user["photo"] = user["photo"] ? user["photo"] : "assets/avatars/user/default.png";
+                    if (user["photo"] === null) {
+                      user["photo"] = "assets/avatars/users/default.png";
+                    }
                     member_list += `<div data-id='${user["id"]}' class='menu_icon' style='padding-left: 7px'><div class='pic'><img style='filter: brightness(100%)' src='${user["photo"]}' alt='Foto do usu&aacute;rio'></div><div class='info'><div style="font-weight: bold;">${user["name"]}</div><div>${user["status"]}</div></div></div>`
                 })
                 $("#new_group_menu_advanced main .members").html(member_list);
@@ -85,7 +87,9 @@ $(document).ready(() => {
                 const response = JSON.parse(xml.responseText);
                 let result = "";
                 response.forEach(user => {
-                    user["photo"] = user["photo"] ? user["photo"] : "assets/avatars/user/default.png";
+                    if (user["photo"] === null) {
+                      user["photo"] = "assets/avatars/users/default.png";
+                    }
                     result += `<div data-id='${user["id"]}' class='menu_icon' style='padding-left: 7px'><div class='pic'><img style='filter: brightness(100%)' src='${user["photo"]}' alt='Foto do usu&aacute;rio'></div><div class='info'><div style="font-weight: bold;">${user["name"]}</div><div>${user["status"]}</div></div></div>`
                 })
                 $(member_result_list).html(result);
