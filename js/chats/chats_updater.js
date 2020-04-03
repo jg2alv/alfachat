@@ -1,7 +1,7 @@
 function updateChats(scroll = false) {
-    const xml = new XMLHttpRequest();
+    const xml = new XMLHttpRequest(),
+    message_area = $(".message_area")[0];
     let chats = "";
-    const message_area = $(".message_area")[0];
     xml.open("POST", "../xmlhttprequest/message_reciever.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xml.send("c=" + id);
@@ -19,8 +19,8 @@ function updateChats(scroll = false) {
             $(".chats")[0].style.width = "100%";
         }
         response.forEach(message => { // ForEach message
-            const d = new Date(Number(message.time) * 1000);
-            const messageTime = `<div class="message_time">${addZero(d.getDate()) + "/" + addZero(d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div>`;
+            const d = new Date(Number(message.time) * 1000),
+            messageTime = `<div class="message_time">${addZero(d.getDate()) + "/" + addZero(d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div>`;
             if (message.sender !== atob(sessionStorage[btoa("id")])) { // If user didn't send the message
                 if (atob(id).indexOf("group") > -1) { // If this chat is a group chat
                     chats += `<div style="display: grid"><div class="their"><div class="message" style="border-bottom-left-radius: 0;">${"<span style=\"color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold\">" + message["name"] + "</span>" + message.content + messageTime}</div><img class="profile_img" src="${message["photo"]}"></div></div>`;
@@ -67,10 +67,10 @@ function updateChats(scroll = false) {
 
 function convertUnits(bytes) {
     if (bytes === 0) {
-        return '0 Bytes';
+        return "0 Bytes";
     }
     const k = 1024,
-    sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+    sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
     i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
 }

@@ -1,11 +1,11 @@
 function messageSender() {
-    const xml = new XMLHttpRequest();
-    const chats = Array.from($(".chat:visible"));
+    const xml = new XMLHttpRequest(),
+    chats = Array.from($(".chat:visible"));
     chats.forEach(chat => {
         chat.addEventListener("click", openChat); // Adding event to open chat on click
     });
-    const form = $("form.input_area")[0];
-    const input = $(".input_area input[type='text']")[0];
+    const form = $("form.input_area")[0],
+    input = $(".input_area input[type='text']")[0];
     form.addEventListener("submit", e => {
         e.preventDefault();
         if (!input.value) {
