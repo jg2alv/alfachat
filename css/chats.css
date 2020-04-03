@@ -567,7 +567,8 @@ body {
     color: #cccccc;
 }
 
-.message img {
+.message img,
+.message video {
     margin: 10px 0;
 }
 
