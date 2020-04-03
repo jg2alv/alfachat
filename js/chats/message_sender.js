@@ -11,7 +11,6 @@ function messageSender() {
         if (!input.value) {
             return;
         }
-        const message_area = document.querySelector(".message_area");
         xml.open("POST", "../xmlhttprequest/message_sender.php", true);
         xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xml.send(`m=${input.value}&id=${id}`); // XML content is user input
