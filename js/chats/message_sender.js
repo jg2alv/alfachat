@@ -17,28 +17,21 @@ function messageSender() {
         xml.send(`m=${input.value}&id=${id}`); // XML content is user input
         xml.onload = () => {
             input.value = "";
-            const d = new Date();
-            const messageTime = `<div class="message_time">${addZero(d.getDate()) + "/" + addZero(d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div>`;
-            message_area.innerHTML += `<div style="display: grid"><div class="message mine">${xml.responseText + messageTime}</div></div>`;
-            message_area.scrollTop = message_area.scrollHeight;
+            updateChats(true);
         };
     });
 
     const file = $(".input_area input[type='file']")[0];
     file.addEventListener("change", () => {
-    if (file.files.length < 1) {
-        return;
-    }
+        if (file.files.length < 1) {
+            return;
+        }
 
-    const formData = new FormData();
-    formData.set("file_user_input", file.files[0]);
-    formData.set("id", id);
+        const formData = new FormData();
+        formData.set("file_user_input", file.files[0]);
+        formData.set("id", id);
 
-    xml.open("POST", "../xmlhttprequest/chat_file_upload.php", true);
-    xml.send(formData);
-    
-    xml.onload = () => {
-        console.log(xml.responseText);
-    }
+        xml.open("POST", "../xmlhttprequest/chat_file_upload.php", true);
+        xml.send(formData);
     })
 }
