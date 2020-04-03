@@ -3,12 +3,12 @@ function addChat(user, div) {
         user["photo"] = `assets/avatars/groups/class/${user["id"]}.png`;
         user["bio"] = `Turma do ${user["name"].replace("-", "do")}`;
     } else if (user["members"]) { // Personal group
-        if (user["photo"] === "null") {
+        if (user["photo"] === null) {
             user["photo"] = "assets/icons/group.png";
         }
         user["bio"] = user["desc"] ? user["desc"] : "Grupo de amantes do AlfaChat";
     } else { // User
-        if (user["photo"] === "null") {
+        if (user["photo"] === null) {
             user["photo"] = "assets/avatars/users/default.png";
         }
         user["bio"] = user["bio"] ? user["bio"] : user["bio"] = "";
