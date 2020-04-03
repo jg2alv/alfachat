@@ -30,11 +30,14 @@ function updateChats(scroll = false) {
             } else { // If user sent the message
                 if (message.file !== "0") {
                     message.file = JSON.parse(message.file);
-                    const img = ["png", "jpg", "jpeg", "gif", "jfif"];
+                    const img = ["png", "jpg", "jpeg", "gif", "jfif"],
+                    video = ["mp4", "webm", "ogg"];
                     if (img.includes(message.file.extension)) {
                         chats += `<div style="display: grid"><div class="message mine"><img src="${atob(message.file.location)}">${messageTime}</div></div>`;
+                    } else if  (video.includes(message.file.extension)) {
+                        chats += `<div style="display: grid"><div class="message mine"><video controls=""><source src="${atob(message.file.location)}" type="video/${message.file.extension}"></video>${messageTime}</div></div>`;
                     } else {
-                        chats += `<div style="display: grid"><div class="message mine"><div><a style="display: flex" href="${atob(message.file.location)}" download><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/download.png" style="max-width: 60%; background-color: #291a46"></div><div style="flex: 2;" class="info"><div>${message.file.name}</div><div style="color: #cccccc; font-size: 16px">${convertUnits(message.file.size)}</div></div></a></div> ${messageTime}</div></div>`;
+                        chats += `<div style="display: grid"><div class="message mine"><div><a style="display: flex" href="${atob(message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/download.png" style="max-width: 60%; background-color: #291a46"></div><div style="flex: 2;" class="info"><div>${message.file.name}</div><div style="color: #cccccc; font-size: 16px">${convertUnits(message.file.size)}</div></div></a></div> ${messageTime}</div></div>`;
                     }
                 } else {
                     chats += `<div style="display: grid"><div class="message mine">${message.content + messageTime}</div></div>`;
@@ -47,10 +50,18 @@ function updateChats(scroll = false) {
         }
 
         if (scroll) {
-            message_area.scrollTop = message_area.scrollHeight;
+            setTimeout(() => {
+                message_area.scrollTop = message_area.scrollHeight;
+                setTimeout(() => {
+                    message_area.style.display = "block";
+                }, 60);
+                return;
+            }, 50);
         }
 
-        message_area.style.display = "block";
+        setTimeout(() => {
+            message_area.style.display = "block";
+        }, 50);
     };
 }
 
