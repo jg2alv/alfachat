@@ -231,10 +231,15 @@
     <div class="chats">
         <div class="choose_chat">Escolha uma conversa para entrar</div>
         <header>
-            <img src="assets/icons/back_arrow.png" alt="Back Arrow" onclick="closeChat()">
+            <img src="assets/icons/arrow.png" alt="Back Arrow" onclick="closeChat()">
             <div style="display: flex; justify-content: flex-start; align-items: flex-start; flex-direction: column">
                 <div></div>
                 <div></div>
+            </div>
+            <img src="assets/icons/advanced_icon.png" alt="Avan&ccedil;ado">
+            <div id="settings_menu_header_drop_down_2" class="settings_menu_header_drop_down">
+                <span>Encerrar sess&atilde;o</span>
+                <span class="edit_profile">Editar perfil</span>
             </div>
         </header>
         <div class="message_area"></div>
