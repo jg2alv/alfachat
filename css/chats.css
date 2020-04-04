@@ -522,7 +522,6 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
     align-content: flex-end;
-    scroll-behavior: smooth;
 }
 
 .message {

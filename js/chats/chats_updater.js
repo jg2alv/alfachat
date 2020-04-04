@@ -1,6 +1,10 @@
 function updateChats() {
+    if (!update) {
+        return;
+    }
     const xml = new XMLHttpRequest(),
-    message_area = $(".message_area");
+    message_area = $(".message_area"),
+    t0 = performance.now();
     let chats = "";
     xml.open("POST", "../xmlhttprequest/message_reciever.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -35,7 +39,7 @@ function updateChats() {
                     if (img.includes(message.file.extension)) {
                         chats += `<div style="display: grid"><div class="message mine"><img src="${atob(message.file.location)}">${messageTime}</div></div>`;
                     } else if  (video.includes(message.file.extension)) {
-                        chats += `<div style="display: grid"><div class="message mine"><video controls=""><source src="${atob(message.file.location)}" type="video/${message.file.extension}"></video>${messageTime}</div></div>`;
+                        chats += `<div style="display: grid"><div class="message mine"><video controls="" preload=""><source src="${atob(message.file.location)}" type="video/${message.file.extension}"></video>${messageTime}</div></div>`;
                     } else {
                         chats += `<div style="display: grid"><div class="message mine"><div><a style="display: flex" href="${atob(message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/download.png" style="max-width: 60%; background-color: #291a46"></div><div style="flex: 2;" class="info"><div>${message.file.name}</div><div style="color: #cccccc; font-size: 16px">${convertUnits(message.file.size)}</div></div></a></div> ${messageTime}</div></div>`;
                     }
@@ -66,7 +70,20 @@ function updateChats() {
         })
 
         $(message_area).css("visibility", "visible");
+
+        if (update) {
+            const t1 = performance.now(),
+            diff = t1 - t0;
+            if (diff < 200) {
+                setTimeout(updateChats, (200 - diff));
+                return;
+            } else {
+                updateChats();
+                return;
+            }
+        }
     };
+    return;
 }
 
 function convertUnits(bytes) {

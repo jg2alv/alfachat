@@ -1,5 +1,6 @@
 let id; // Setting global ID
 let scrollState = true;
+let update = true;
 
 $(document).ready(() => {
     statusTimer(); // Start timer when window (chats) loads
@@ -48,6 +49,7 @@ $(document).ready(() => {
 });
 
 function openChat(e) {
+    update = false;
     id = e.currentTarget.attributes["data-id"].value; // base64 id value. Example: 1; group:11 (in base64)
 
     if (id === e.currentTarget.children[1].children[0].getAttribute("data-id") && $(".chats:visible").length) { // If user clicked on the same chat, don't reload it.
@@ -75,7 +77,8 @@ function openChat(e) {
     $(".input_area").attr("style", "display: grid");
     $(".chats header").attr("style", "display: flex");
     $(".input_area input").focus();
-    setInterval(updateChats, 200);
+    scrollState = update = true;
+    updateChats();
 }
 
 function addZero(i) {

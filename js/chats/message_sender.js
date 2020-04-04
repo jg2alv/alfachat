@@ -19,9 +19,11 @@ function messageSender() {
         xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xml.send(`m=${input.value}&id=${id}`); // XML content is user input
 
-        input.value = "";
-        message_area.scrollTop = message_area.scrollHeight;
-        scrollState = true;
+        xml.onload = () => {
+            input.value = "";
+            scrollState = true;
+            message_area.scrollTop = message_area.scrollHeight;
+        };
     });
 
     const file = $(".input_area input[type='file']")[0];
