@@ -516,11 +516,13 @@ body {
     max-height: calc(87vh - 36px);
     width: 100%;
     display: none;
+    visibility: hidden;
     background: #291a46;
     align-items: flex-end;
     overflow-y: auto;
     overflow-x: hidden;
     align-content: flex-end;
+    scroll-behavior: smooth;
 }
 
 .message {

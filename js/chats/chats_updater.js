@@ -1,6 +1,6 @@
-function updateChats(scroll = false) {
+function updateChats() {
     const xml = new XMLHttpRequest(),
-    message_area = $(".message_area")[0];
+    message_area = $(".message_area");
     let chats = "";
     xml.open("POST", "../xmlhttprequest/message_reciever.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -10,7 +10,7 @@ function updateChats(scroll = false) {
         try {
             response = JSON.parse(xml.responseText)
         } catch {
-            message_area.innerHTML = "";
+            message_area.html("");
             return;
         }
         if (!$(".chats:visible").length) { // Mobile
@@ -45,23 +45,27 @@ function updateChats(scroll = false) {
             }
         });
 
-        if (message_area.innerHTML !== chats) {
-            message_area.innerHTML = chats;
+        if ($(message_area).css("display") === "none") {
+            $(message_area).css("display", "block");
         }
 
-        if (scroll) {
-            setTimeout(() => {
-                message_area.scrollTop = message_area.scrollHeight;
-                setTimeout(() => {
-                    message_area.style.display = "block";
-                }, 60);
-                return;
-            }, 50);
+        if ($(message_area).html() !== chats) {
+            $(message_area).html(chats);
         }
 
-        setTimeout(() => {
-            message_area.style.display = "block";
-        }, 50);
+        if (message_area[0].scrollTop === message_area[0].scrollHeight) {
+            scrollState = true;
+        }
+
+        if (scrollState) {
+            message_area[0].scrollTop = message_area[0].scrollHeight;
+        }
+
+        $(message_area).on("scroll", () => {
+            scrollState = false;
+        })
+
+        $(message_area).css("visibility", "visible");
     };
 }
 

@@ -1,4 +1,5 @@
 let id; // Setting global ID
+let scrollState = true;
 
 $(document).ready(() => {
     statusTimer(); // Start timer when window (chats) loads
@@ -73,9 +74,8 @@ function openChat(e) {
     $(".choose_chat").remove(); // Removing "choose chat" balloon
     $(".input_area").attr("style", "display: grid");
     $(".chats header").attr("style", "display: flex");
-    updateChats(true);
     $(".input_area input").focus();
-    setInterval(updateChats, 300);
+    setInterval(updateChats, 200);
 }
 
 function addZero(i) {
