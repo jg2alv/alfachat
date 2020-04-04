@@ -1,57 +1,75 @@
 $(document).ready(() => {
-    $("#settings_menu .settings_header_btns img")[1].addEventListener("click", hideSideMenu);
+  $("#settings_menu .settings_header_btns img")[1].addEventListener(
+    "click",
+    hideSideMenu
+  );
 
-    $("#settings_menu .settings_header_btns img")[0].addEventListener("click", () => {
-        if ($("#settings_menu_header_drop_down").css("display") === "block") {
-            $("#settings_menu_header_drop_down").fadeOut(200);
-        } else {
-            $("#settings_menu_header_drop_down").fadeIn(200, () => {
-                setTimeout(() => {
-                    $("#settings_menu").click(() => {
-                        $("#settings_menu").off("click");
-                        $("#settings_menu_header_drop_down").fadeOut(200);
-                    });
-                }, 50)
+  $("#settings_menu .settings_header_btns img")[0].addEventListener(
+    "click",
+    () => {
+      if ($("#settings_menu_header_drop_down").css("display") === "block") {
+        $("#settings_menu_header_drop_down").fadeOut(200);
+      } else {
+        $("#settings_menu_header_drop_down").fadeIn(200, () => {
+          setTimeout(() => {
+            $("#settings_menu").click(() => {
+              $("#settings_menu").off("click");
+              $("#settings_menu_header_drop_down").fadeOut(200);
             });
-        }
-    })
-
-    $("#settings_menu_header_drop_down span").eq(0).click(() => {
-        window.location.href = window.location.href + "?log_out=1";
-    })
-
-    if (atob(sessionStorage["cGhvdG8="]) != "null") {
-        $(".settings_menu_user_area .pic img")[0].src = atob(sessionStorage["cGhvdG8="]);
-    } else {
-        $(".settings_menu_user_area .pic img")[0].src = "assets/avatars/users/default.png";
-    }
-
-    $(".settings_menu_user_area .info div").eq(0).html(atob(sessionStorage["bmFtZQ=="]));
-    $(".settings_menu_user_area .info div").eq(1).html(atob(sessionStorage["cmc="]));
-
-    $(".edit_profile").click(() => {
-        const edit_profile = $("#settings_menu > *[hidden]");
-        const default_settings = $("#settings_menu > *:not([hidden])");
-        default_settings.attr("hidden", 1);
-        edit_profile.removeAttr("hidden");
-        $("#settings_menu_back").click(() => {
-            default_settings.removeAttr("hidden");
-            edit_profile.attr("hidden", 1);
-        })
-        $("#settings_menu_close").click(() => {
-            hideSideMenu();
-            default_settings.removeAttr("hidden");
-            edit_profile.attr("hidden", 1);
+          }, 50);
         });
-    })
-
-    if (atob(sessionStorage["cGhvdG8="]) != "null") {
-        $("#settings_menu_advanced_profile_pic")[0].src = atob(sessionStorage["cGhvdG8="]);
-    } else {
-        $("#settings_menu_advanced_profile_pic")[0].src = "assets/avatars/users/default.png";
+      }
     }
+  );
 
-    $("#settings_menu_name").html(atob(sessionStorage["bmFtZQ=="]));
-    $("#settings_menu_email").html(atob(sessionStorage["ZW1haWw="]));
-    $("#settings_menu_rg").html(atob(sessionStorage["cmc="]));
-})
+  $("#settings_menu_header_drop_down span")
+    .eq(0)
+    .click(() => {
+      window.location.href = window.location.href + "?log_out=1";
+    });
+
+  if (atob(sessionStorage["cGhvdG8="]) != "null") {
+    $(".settings_menu_user_area .pic img")[0].src = atob(
+      sessionStorage["cGhvdG8="]
+    );
+  } else {
+    $(".settings_menu_user_area .pic img")[0].src =
+      "assets/avatars/users/default.png";
+  }
+
+  $(".settings_menu_user_area .info div")
+    .eq(0)
+    .html(atob(sessionStorage["bmFtZQ=="]));
+  $(".settings_menu_user_area .info div")
+    .eq(1)
+    .html(atob(sessionStorage["cmE="]));
+
+  $(".edit_profile").click(() => {
+    const edit_profile = $("#settings_menu > *[hidden]");
+    const default_settings = $("#settings_menu > *:not([hidden])");
+    default_settings.attr("hidden", 1);
+    edit_profile.removeAttr("hidden");
+    $("#settings_menu_back").click(() => {
+      default_settings.removeAttr("hidden");
+      edit_profile.attr("hidden", 1);
+    });
+    $("#settings_menu_close").click(() => {
+      hideSideMenu();
+      default_settings.removeAttr("hidden");
+      edit_profile.attr("hidden", 1);
+    });
+  });
+
+  if (atob(sessionStorage["cGhvdG8="]) != "null") {
+    $("#settings_menu_advanced_profile_pic")[0].src = atob(
+      sessionStorage["cGhvdG8="]
+    );
+  } else {
+    $("#settings_menu_advanced_profile_pic")[0].src =
+      "assets/avatars/users/default.png";
+  }
+
+  $("#settings_menu_name").html(atob(sessionStorage["bmFtZQ=="]));
+  $("#settings_menu_email").html(atob(sessionStorage["ZW1haWw="]));
+  $("#settings_menu_rg").html(atob(sessionStorage["cmE="]));
+});

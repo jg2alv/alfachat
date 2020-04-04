@@ -3,8 +3,8 @@
     require_once "../includes/db.inc.php";
 
 
-    function checkUser($conn, $rg, $class) {
-        $sql = "SELECT * from `users` WHERE rg='$rg' AND class='$class'";
+    function checkUser($conn, $ra, $class) {
+        $sql = "SELECT * from `users` WHERE ra='$ra' AND class='$class'";
         return mysqli_query($conn, $sql); // Return the query. If user exist.
     }
 
@@ -15,11 +15,11 @@
     $o = $_POST["o"];
 
     // ============= SAFETY MEASURES
-    $rg = mysqli_real_escape_string($conn, $_POST["rg"]);
+    $ra = mysqli_real_escape_string($conn, $_POST["ra"]);
     $class = $_POST["class"];
 
     if ($o == "check") {
-        echo mysqli_num_rows(checkUser($conn, $rg, $class)); // If the intended operation is a check one.
+        echo mysqli_num_rows(checkUser($conn, $ra, $class)); // If the intended operation is a check one.
         die();
     }
 
@@ -27,12 +27,12 @@
         $name = mysqli_real_escape_string($conn, $_POST["name"]);
         $email = mysqli_real_escape_string($conn, $_POST["email"]);
         $password = md5($_POST["password"]);
-        if (!mysqli_num_rows(checkUser($conn, $rg, $class))) { // If don't user exist.
+        if (!mysqli_num_rows(checkUser($conn, $ra, $class))) { // If don't user exist.
             $joined = time();
             // ============= CREATING USER
-            $sql = "INSERT INTO `users` (rg, name, email, password, class, chats, joined) VALUES ($rg, '$name', '$email', '$password', $class, 'group:$class', $joined);";
+            $sql = "INSERT INTO `users` (ra, name, email, password, class, chats, joined) VALUES ($ra, '$name', '$email', '$password', $class, 'group:$class', $joined);";
             mysqli_query($conn, $sql);
-            $sql = checkUser($conn, $rg, $class); // Get user info.
+            $sql = checkUser($conn, $ra, $class); // Get user info.
             $sql = mysqli_fetch_assoc($sql);
             foreach ($sql as $index => $value) {
                 $_SESSION[$index] = $value;
@@ -51,7 +51,7 @@
             mysqli_query($conn, $sql);
 
             // ============= RETURNING USER DATA
-            $sql = checkUser($conn, $rg, $class);
+            $sql = checkUser($conn, $ra, $class);
             print_r(json_encode(mysqli_fetch_assoc($sql)));
             die();
         } else { // If user exist.
@@ -62,7 +62,7 @@
 
     if ($o == "login") { // Login operation.
         $password = md5($_POST["password"]);
-        $sql = "SELECT * FROM `users` WHERE rg = '$rg' AND password = '$password' AND class = '$class';";
+        $sql = "SELECT * FROM `users` WHERE ra = '$ra' AND password = '$password' AND class = '$class';";
         $sql = mysqli_query($conn, $sql);
         if (mysqli_num_rows($sql)) {
             $sql = mysqli_fetch_assoc($sql);

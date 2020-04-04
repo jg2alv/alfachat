@@ -153,11 +153,11 @@
             </div>
             <div style="flex: 1" class="menu_icon settings_menu_icon">
                 <div class="pic">
-                    <img src="assets/icons/rg.png" alt="Mudar RG">
+                    <img src="assets/icons/ra.png" alt="Mudar ra">
                 </div>
                 <div class="info">
                     <span id="settings_menu_rg"></span>
-                    <span class="settings_menu_subtitle">RG</span>
+                    <span class="settings_menu_subtitle">ra</span>
                 </div>
             </div>
         </main>

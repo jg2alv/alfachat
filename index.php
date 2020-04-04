@@ -27,7 +27,7 @@
     <main>
         <form>
             <input type="text" name="name" placeholder="Nome completo" hidden><br hidden><br hidden>
-            <input required minlength="8" maxlength="8" pattern="[0-9]*" inputmode="numeric" name="rg" placeholder="Matr&iacute;cula"><br><br>
+            <input required minlength="8" maxlength="8" pattern="[0-9]*" inputmode="numeric" name="ra" placeholder="Matr&iacute;cula"><br><br>
             <input type="email" name="email" placeholder="Email" hidden><br hidden><br hidden>
             <input minlength="8" maxlength="16" type="password" name="password" placeholder="Senha" hidden><br hidden><br hidden>
             <select name="class">

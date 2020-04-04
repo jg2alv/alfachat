@@ -52,7 +52,7 @@
                 $sql = "SELECT * FROM `users` WHERE id = $chat";
                 $sql = mysqli_query($conn, $sql);
                 $sql = mysqli_fetch_assoc($sql);
-                unset($sql["password"], $sql["rg"], $sql["chats"], $sql["class"], $sql["email"], $sql["joined"], $sql["bio"]);
+                unset($sql["password"], $sql["ra"], $sql["chats"], $sql["class"], $sql["email"], $sql["joined"], $sql["bio"]);
                 $sql["id"] = base64_encode($sql["id"]);
                 $response .= json_encode($sql);
                 $response .= ",";
