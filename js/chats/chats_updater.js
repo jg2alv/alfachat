@@ -24,6 +24,7 @@ function updateChats() {
 			$('.chats')[0].style.width = '100%';
 		}
 		response.forEach((message) => {
+			console.log(message.file)
 			// ForEach message
 			const d = new Date(Number(message.time) * 1000),
 				messageTime = `<div class="message_time">${addZero(d.getDate()) + '/' + addZero(d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + addZero(d.getHours()) + ':' + addZero(d.getMinutes())}</div>`;
