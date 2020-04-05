@@ -57,4 +57,25 @@ $(document).ready(() => {
 	$('#settings_menu_name').html(atob(sessionStorage['bmFtZQ==']));
 	$('#settings_menu_email').html(atob(sessionStorage['ZW1haWw=']));
 	$('#settings_menu_rg').html(atob(sessionStorage['cmE=']));
+
+	const photo = $("#settings_menu input[type='file']")[0];
+	$(photo).on("change", () => {
+		if (photo.files.length < 1) {
+            return;
+		}
+		
+		$('#settings_menu_advanced_profile_pic')[0].src = URL.createObjectURL(photo.files[0]);
+
+        const formData = new FormData();
+		formData.set("user_photo", photo.files[0]);
+		formData.set("f", "photo");
+
+		const xml = new XMLHttpRequest();
+        xml.open("POST", "../xmlhttprequest/settings_menu.php", true);
+		xml.send(formData);
+		
+		xml.onload = () => {
+			console.log(xml.responseText);
+		}
+	})
 });
