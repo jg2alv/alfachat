@@ -134,15 +134,10 @@ $(document).ready(() => {
                 formData.set("n", group_name.value);
                 formData.set("a", "1");
                 xml.send(formData);
-                xml.onload = () => {
-                    console.log(xml.responseText);
-                }
             } else {
                 xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xml.send(`m=${id_list}&n=${group_name.value}&a=1`);
             }
-
-            return;
 
             xml.onload = () => {
                 hideSideMenu();
