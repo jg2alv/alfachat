@@ -3,14 +3,9 @@
         header("Location: ../");
     }
 
-    function checkDirectory($root) {
-        if (!file_exists($root)) {
-            mkdir($root);
-        }
-    }
-
     session_start();
     require "../includes/db.inc.php";
+    require "../includes/check_dir.php";
 
     $sent = time();
     $id = $_SESSION["id"];
