@@ -73,9 +73,5 @@ $(document).ready(() => {
 		const xml = new XMLHttpRequest();
         xml.open("POST", "../xmlhttprequest/settings_menu.php", true);
 		xml.send(formData);
-		
-		xml.onload = () => {
-			console.log(xml.responseText);
-		}
 	})
 });
