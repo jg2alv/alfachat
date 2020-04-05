@@ -117,8 +117,8 @@
             <div style="flex: 1; flex-direction: column; display: flex">
                 <div style="justify-content: space-between; display: flex; flex: 1;">
                     <div class="submenu_header_title" style="flex: 20; display: flex; align-items: start; padding-left: 0; padding-left: 25px">
-                        <img id="settings_menu_back" src="assets/icons/back_arrow.png" alt="Voltar">
-                        <span style="margin: 4.6px 0 0 10px;">Informa&ccedil;&otilde;es:</span>
+                        <img id="settings_menu_back" src="assets/icons/arrow.png" alt="Voltar">
+                        <span style="margin: 12px 0 0 10px;">Informa&ccedil;&otilde;es:</span>
                     </div>
                     <div class="settings_header_btns" style="flex: 1; text-align: end;">
                         <img id="settings_menu_close" src="assets/icons/x_icon.png" alt="X icon">
@@ -127,12 +127,13 @@
                 <div style="background-color: #291a46; flex: 3; flex-direction: column; justify-content: center; align-items: center; display: flex">
                     <img id="settings_menu_advanced_profile_pic" src="" alt="">
                     <div>
-                        <span style="text-transform: uppercase; font-weight: bold; cursor: pointer; text-align: center; padding: 10px 30px; border-radius: 20px; background-color: #35215a">Mudar foto de perfil</span>
+                        <input id="profile_pic_input" type="file" style="display: none" accept="image/*">
+                        <label for="profile_pic_input" style="text-transform: uppercase; font-weight: bold; cursor: pointer; text-align: center; padding: 10px 30px; border-radius: 20px; background-color: #35215a">Mudar foto de perfil</label>
                     </div>
                 </div>
             </div>
         </header>
-        <main hidden style="flex: 1; display: flex; flex-direction: column">
+        <form hidden style="flex: 1; display: flex; flex-direction: column">
             <div style="flex: 1" class="menu_icon settings_menu_icon">
                 <div class="pic">
                     <img src="assets/icons/name.png" alt="Mudar nome">
@@ -157,10 +158,10 @@
                 </div>
                 <div class="info">
                     <span id="settings_menu_rg"></span>
-                    <span class="settings_menu_subtitle">ra</span>
+                    <span class="settings_menu_subtitle">RA</span>
                 </div>
             </div>
-        </main>
+        </form>
         <footer hidden></footer>
     </div>
     <div class="chat_selector">

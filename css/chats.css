@@ -68,7 +68,8 @@ body {
 
 .side_menu_visible main,
 #new_group_menu_advanced main,
-#settings_menu main {
+#settings_menu main,
+#settings_menu form {
 	flex: 4;
 	padding-top: 20px;
 }
@@ -242,7 +243,8 @@ body {
 }
 
 #settings_menu header,
-#settings_menu main {
+#settings_menu main,
+#settings_menu form {
 	padding-bottom: 15px;
 	border-bottom: 15px solid #291a46;
 	box-sizing: border-box;
@@ -329,7 +331,8 @@ body {
 	max-width: 100%;
 }
 
-#settings_menu main {
+#settings_menu main,
+#settings_menu form {
 	flex: 3;
 	padding: 10px 0;
 }
@@ -347,7 +350,8 @@ body {
 }
 
 #settings_menu_back {
-	max-width: 7%;
+	max-width: 10%;
+	transform: rotate(90deg);
 	filter: brightness(60%);
 	cursor: pointer;
 }
