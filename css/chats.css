@@ -615,6 +615,10 @@ body {
 	outline: 0;
 }
 
+.message[class="message their"] {
+	margin-left: 20px;
+}
+
 .input_area {
 	display: none;
 	max-height: 400px;
