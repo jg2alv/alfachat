@@ -91,20 +91,18 @@ function updateChats() {
 			}
 		});
 
-		if ($(message_area).css('display') === 'none') {
-			$(message_area).css('display', 'block');
-		}
+		switch(true) {
+			case $(message_area).css('display') === 'none':
+				$(message_area).css('display', 'block');
+			
+			case $(message_area).html() !== chats:
+				$(message_area).html(chats);
+			
+			case message_area[0].scrollTop === message_area[0].scrollHeight:
+				scrollState = true;
 
-		if ($(message_area).html() !== chats) {
-			$(message_area).html(chats);
-		}
-
-		if (message_area[0].scrollTop === message_area[0].scrollHeight) {
-			scrollState = true;
-		}
-
-		if (scrollState) {
-			message_area[0].scrollTop = message_area[0].scrollHeight;
+			case scrollState:
+				message_area[0].scrollTop = message_area[0].scrollHeight
 		}
 
 		$(message_area).on('scroll', () => {
