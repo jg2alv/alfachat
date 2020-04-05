@@ -10,11 +10,11 @@
         require "../includes/db.inc.php";
         require "../includes/check_dir.php";
         $id = $_SESSION["id"];
-        $file_name = $_FILES["user_photo"]["name"];
-        $file_size = $_FILES["user_photo"]["size"];
-        $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
-        $root = "assets/avatars/users/uploads/$id";
+        $file_extension = pathinfo($_FILES["user_photo"]["name"], PATHINFO_EXTENSION);
+        $root = "assets/avatars/users/uploads";
 
+        checkDirectory("../chats/$root");
+        $root .= "/$id";
         checkDirectory("../chats/$root");
         $root .= "/profile_pic.$file_extension";
 
