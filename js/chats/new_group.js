@@ -1,6 +1,19 @@
 let group_name;
+let file;
 
 $(document).ready(() => {
+    const photo = $("#new_group_menu input[type='file']")[0];
+    $(photo).on("change", () => {
+        if (photo.files.length < 1) {
+            return;
+		}
+		
+        $('#new_group_menu label img')[0].src = URL.createObjectURL(photo.files[0]);
+        $('#new_group_menu label img')[0].style.maxWidth = "100%";
+
+        file = photo.files[0];
+    })
+
     $("#new_group_menu")[0].addEventListener("submit", (e) => {
         e.preventDefault();
         group_name = $(".submenu_container .info input[type='text']")[0]
@@ -32,10 +45,10 @@ $(document).ready(() => {
                 let i = 0;
                 $("#new_group_menu_advanced main .menu_icon").click(element => {
                     i++;
-                    const menu_icon = element.currentTarget;
-                    const search_input = $("#new_group_menu_advanced header input")[0];
-                    const result_div = $("#new_group_menu_advanced header div")[1];
-                    const member_search_container = $("#member_search_container")[0];
+                    const menu_icon = element.currentTarget,
+                        search_input = $("#new_group_menu_advanced header input")[0],
+                        result_div = $("#new_group_menu_advanced header div")[1],
+                        member_search_container = $("#member_search_container")[0];
                     if (menu_icon.getAttribute("data-member-id")) {
                         $(menu_icon).find(".pic").find("img")[0].style.border = "";
                         menu_icon.style.backgroundColor = "";
@@ -66,6 +79,7 @@ $(document).ready(() => {
             }
         }
     })
+
     const member_search = $("#new_group_menu_advanced input")[0];
     const member_result_list = $("#new_group_menu_advanced .members_result")[0];
     const member_list = $("#new_group_menu_advanced .members")[0];
@@ -113,16 +127,29 @@ $(document).ready(() => {
             })
             const xml = new XMLHttpRequest();
             xml.open("POST", "../xmlhttprequest/new_group.php", true);
-            xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xml.send(`m=${id_list}&n=${group_name.value}&a=1`);
+            if (file) {
+                const formData = new FormData();
+                formData.set("p", file);
+                formData.set("m", id_list);
+                formData.set("n", group_name.value);
+                formData.set("a", "1");
+                xml.send(formData);
+                xml.onload = () => {
+                    console.log(xml.responseText);
+                }
+            } else {
+                xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xml.send(`m=${id_list}&n=${group_name.value}&a=1`);
+            }
+
+            return;
+
             xml.onload = () => {
                 hideSideMenu();
                 setTimeout(() => {
                     $(`[data-id='${xml.responseText}']`).click();
                 }, 300)
             }
-        } else {
-            return;
         }
     })
 })

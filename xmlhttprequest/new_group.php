@@ -20,6 +20,32 @@
         $sql = "INSERT INTO `groups` (`name`, `members`, `created`) VALUES ('$name', '$members', '$created')"; // Insert INTO groups table values: name, members (the user) and creation time
         mysqli_query($conn, $sql); // Querying
 
+        if ($_FILES["p"]) {
+            require "../includes/check_dir.php";
+
+            $extension = pathinfo($_FILES["p"]["name"], PATHINFO_EXTENSION);
+            $id = mysqli_insert_id($conn);
+            $root = "assets/avatars/groups/uploads";
+
+            checkDirectory("../chats/$root");
+            $root .= "/$id";
+            checkDirectory("../chats/$root");
+            $root .= "/profile_pic.$extension";
+
+            $sql = "UPDATE `groups` SET `photo` = '$root' WHERE id = $id"; // Insert INTO groups table values: name, members (the user) and creation time
+            mysqli_query($conn, $sql);
+
+            $sql = "SELECT * FROM `groups` WHERE id = $id";
+            $sql = mysqli_query($conn, $sql);
+            $sql = mysqli_fetch_assoc($sql)["photo"];
+
+            if ($sql) {
+                unlink("../chats/$sql");
+            }
+
+            move_uploaded_file($_FILES["p"]["tmp_name"], "../chats/$root");
+        }
+
         $sql = "SELECT * FROM `groups` WHERE `name` = '$name' AND `members` = '$members' AND `created` = '$created'"; // Getting the new-born group ID
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_assoc($sql);
