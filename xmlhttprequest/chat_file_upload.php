@@ -19,8 +19,10 @@
     $file_size = $_FILES["file_user_input"]["size"];
     $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
     $file_location = base64_encode("assets/files/$sent/$id/$reciever/$file_name");
-    $root = "../chats/assets/files/$sent";
+    $root = "../chats/assets/files";
 
+    checkDirectory($root);
+    $root .= "/$sent";
     checkDirectory($root);
     $root .= "/$id";
     checkDirectory($root);
