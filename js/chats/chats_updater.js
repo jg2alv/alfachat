@@ -15,6 +15,8 @@ function updateChats() {
 			response = JSON.parse(xml.responseText);
 		} catch (e) {
 			message_area.html('');
+			if (update)
+				timeToUpdate(t0);
 			return;
 		}
 		if (!$('.chats:visible').length) {
@@ -111,18 +113,8 @@ function updateChats() {
 
 		$(message_area).css('visibility', 'visible');
 
-		if (update) {
-			const t1 = performance.now(),
-				diff = t1 - t0;
-			if (diff < 200) {
-				setTimeout(updateChats, 200 - diff);
-				return;
-			}
-			else {
-				updateChats();
-				return;
-			}
-		}
+		if (update)
+			timeToUpdate(t0);
 	};
 	return;
 }
@@ -135,4 +127,17 @@ function convertUnits(bytes) {
 		sizes = [ 'Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB' ],
 		i = Math.floor(Math.log(bytes) / Math.log(k));
 	return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+function timeToUpdate(t0) {
+	const t1 = performance.now(),
+		diff = t1 - t0;
+	if (diff < 200) {
+		setTimeout(updateChats, 200 - diff);
+		return;
+	}
+	else {
+		updateChats();
+		return;
+	}
 }
