@@ -25,13 +25,12 @@ $(document).ready(() => {
 		xml.send(`q=${header_input.value}`); // XML content is user input
 		xml.onload = () => {
 			chat_result_list.innerHTML = ''; // Removing list's HTML to avoid duplicate results
+			chat_result_list.removeAttribute('hidden'); // Removing just to be sure
 			if (xml.responseText) {
 				// If there's a valid response text
 				response = JSON.parse(xml.responseText); // Parsing JSON's server response text
-				response.forEach((user) => {
-					user['bio'] =
-						!isNaN(header_input.value) ? user['ra'] :
-						user['bio'];
+				response.forEach(user => {
+					user['bio'] = !isNaN(header_input.value) ? user['ra'] : user['bio'];
 					addChat(user, chat_result_list);
 				});
 			}
@@ -39,7 +38,6 @@ $(document).ready(() => {
 				chat_result_list.innerHTML += `<div style="height: calc(93vh - 20px)"><div class="no_result">Nenhum resultado encontrado.</div></div>`; // Showing "no result" banner
 			}
 			$(chat_list).attr('hidden', ''); // Setting original list hidden attr
-			chat_result_list.removeAttribute('hidden'); // Removing just to be sure
 		};
 	});
 	const clip = $('.input_area label img')[0]; // Clips img
@@ -85,21 +83,21 @@ function openChat(e) {
 	scrollState = update = true;
 	updateChats();
 
-	$('.chats header img')[1].addEventListener('click', () => {
-		if ($('#settings_menu_header_drop_down_2').css('display') === 'block') {
-			$('#settings_menu_header_drop_down_2').fadeOut(200);
-		}
-		else {
-			$('#settings_menu_header_drop_down_2').fadeIn(200, () => {
-				setTimeout(() => {
-					$('.chats header').click(() => {
-						$('.chats header').off('click');
-						$('#settings_menu_header_drop_down_2').fadeOut(200);
-					});
-				}, 50);
-			});
-		}
-	});
+	// $('.chats header img')[1].addEventListener('click', () => {
+	// 	if ($('#settings_menu_header_drop_down_2').css('display') === 'block') {
+	// 		$('#settings_menu_header_drop_down_2').fadeOut(200);
+	// 	}
+	// 	else {
+	// 		$('#settings_menu_header_drop_down_2').fadeIn(200, () => {
+	// 			setTimeout(() => {
+	// 				$('.chats header').click(() => {
+	// 					$('.chats header').off('click');
+	// 					$('#settings_menu_header_drop_down_2').fadeOut(200);
+	// 				});
+	// 			}, 50);
+	// 		});
+	// 	}
+	// });
 }
 
 function addZero(i) {

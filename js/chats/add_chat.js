@@ -29,6 +29,7 @@ function addChat(user, div, check = false) {
             div.innerHTML += `<div class="chat" data-id="${btoa(user["id"])}"><div class="pic"><img src="${user["photo"]}"></div><div class="info"><div>${user["name"]}</div><div>${user["bio"]}</div></div></div>`;
         }
     }
+    
     Array.from($(".chat:visible")).forEach(chat => {
         chat.addEventListener("click", openChat);
     });
