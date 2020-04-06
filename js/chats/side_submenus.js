@@ -7,6 +7,8 @@ function newGroupMenu() {
         document.querySelector(".side_menu_bg").style.flex = 1;
         $("#new_group_menu input[type='text']")[0].value = "";
         new_group_menu.style.display = "flex";
+        $('#new_group_menu label img')[0].src = "assets/icons/camera.png";
+        $('#new_group_menu label img')[0].style.maxWidth = "";
     });
 }
 

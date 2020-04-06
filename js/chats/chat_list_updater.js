@@ -7,15 +7,20 @@ function chatListUpdater() {
         xml.send(`cl=${chat_list.attributes["data-chats"].value}`);
         xml.onload = () => {
             if (xml.responseText) {
-                chat_list.innerHTML = "";
                 const response = JSON.parse(xml.responseText);
-                let chats;
+                let chats = list = "";
                 response.forEach(user => {
                     chats += user["members"] ? `group:${user["id"]},` : user["id"] + ",";
-                    addChat(user, chat_list);
+                    list += addChat(user, chat_list, true);
                 })
-                chats = btoa(chats.slice(0, -1).replace("undefined", ""));
+                chats = btoa(chats.slice(0, -1));
                 chat_list.setAttribute("data-chats", chats);
+                if (chat_list.innerHTML !== list) {
+                    chat_list.innerHTML = list;
+                    Array.from($(".chat:visible")).forEach(chat => {
+                    chat.addEventListener("click", openChat);
+                    });
+                }
             }
         }
     }, 300)
