@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require_once "../includes/db.inc.php";
+    require "../includes/db.inc.php";
 
     $id = $_SESSION["id"];
     $sql = "SELECT * FROM `users` WHERE id = $id;";
