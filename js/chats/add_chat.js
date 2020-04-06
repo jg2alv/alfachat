@@ -1,4 +1,4 @@
-function addChat(user, div) {
+function addChat(user, div, check = false) {
     if (user["members"] && Number(user["id"]) < 13) { // Class group
         user["photo"] = `assets/avatars/groups/class/${user["id"]}.png`;
         user["bio"] = `Turma do ${user["name"].replace("-", "do")}`;
@@ -14,13 +14,22 @@ function addChat(user, div) {
         user["bio"] = user["bio"] ? user["bio"] : user["bio"] = "";
     }
 
-    if (user["members"]) {
-        div.innerHTML += `<div class="chat" data-id="${btoa("group:" + user["id"])}"><div class="pic"><img src="${user["photo"]}"></div><div class="info"><div>${user["name"]}</div><div>${user["bio"]}</div></div></div>`;
+    if (check) {
+        let chats = "";
+        if (user["members"]) {
+            chats += `<div class="chat" data-id="${btoa("group:" + user["id"])}"><div class="pic"><img src="${user["photo"]}"></div><div class="info"><div>${user["name"]}</div><div>${user["bio"]}</div></div></div>`;
+        } else {
+            chats += `<div class="chat" data-id="${btoa(user["id"])}"><div class="pic"><img src="${user["photo"]}"></div><div class="info"><div>${user["name"]}</div><div>${user["bio"]}</div></div></div>`;
+        }
+        return chats;
     } else {
-        div.innerHTML += `<div class="chat" data-id="${btoa(user["id"])}"><div class="pic"><img src="${user["photo"]}"></div><div class="info"><div>${user["name"]}</div><div>${user["bio"]}</div></div></div>`;
+        if (user["members"]) {
+            div.innerHTML += `<div class="chat" data-id="${btoa("group:" + user["id"])}"><div class="pic"><img src="${user["photo"]}"></div><div class="info"><div>${user["name"]}</div><div>${user["bio"]}</div></div></div>`;
+        } else {
+            div.innerHTML += `<div class="chat" data-id="${btoa(user["id"])}"><div class="pic"><img src="${user["photo"]}"></div><div class="info"><div>${user["name"]}</div><div>${user["bio"]}</div></div></div>`;
+        }
     }
-    const chats = Array.from($(".chat:visible"));
-    chats.forEach(chat => {
+    Array.from($(".chat:visible")).forEach(chat => {
         chat.addEventListener("click", openChat);
     });
 }
