@@ -21,7 +21,7 @@
         mysqli_query($conn, $sql); // Querying
 
         if ($_FILES["p"]) {
-            require "../includes/check_dir.php";
+            require "../includes/check_dir.inc.php";
 
             $extension = pathinfo($_FILES["p"]["name"], PATHINFO_EXTENSION);
             $id = mysqli_insert_id($conn);

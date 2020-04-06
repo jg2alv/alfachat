@@ -8,7 +8,7 @@
     function photo() {
         session_start();
         require "../includes/db.inc.php";
-        require "../includes/check_dir.php";
+        require "../includes/check_dir.inc.php";
         $id = $_SESSION["id"];
         $file_extension = pathinfo($_FILES["user_photo"]["name"], PATHINFO_EXTENSION);
         $root = "assets/avatars/users/uploads";

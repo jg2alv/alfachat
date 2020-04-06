@@ -5,7 +5,7 @@
 
     session_start();
     require "../includes/db.inc.php";
-    require "../includes/check_dir.php";
+    require "../includes/check_dir.inc.php";
 
     $sent = time();
     $id = $_SESSION["id"];
