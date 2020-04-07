@@ -30,7 +30,5 @@ function addChat(user, div, check = false) {
         }
     }
     
-    Array.from($(".chat:visible")).forEach(chat => {
-        chat.addEventListener("click", openChat);
-    });
+    $(".chat:visible").on("click", openChat);
 }
