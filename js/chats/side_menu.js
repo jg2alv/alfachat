@@ -2,12 +2,6 @@ $(document).ready(() => {
   const side_menu_img = document.querySelector(".chat_selector header img");
 
   side_menu_img.addEventListener("click", showSideMenu);
-  side_menu_img.addEventListener("mouseover", () => {
-    side_menu_img.src = "assets/icons/menu_hover.png";
-  });
-  side_menu_img.addEventListener("mouseout", () => {
-    side_menu_img.src = "assets/icons/menu.png";
-  });
 
   if (atob(sessionStorage["cGhvdG8="]) != "null") {
     document.querySelector("#user_img").src = atob(sessionStorage["cGhvdG8="]);
@@ -29,9 +23,7 @@ function showSideMenu() {
   const side_menu = document.querySelector(".side_menu");
   const side_menu_img = document.querySelector(".chat_selector header img");
 
-  setTimeout(() => {
-    side_menu_img.style.display = "none";
-  }, 50);
+  setTimeout(() => side_menu_img.style.visibility = "hidden", 50);
 
   if (!$(".chats:visible").length) {
     // Mobile
@@ -55,12 +47,12 @@ function showSideMenu() {
 function hideSideMenu() {
   const side_menu_img = document.querySelector(".chat_selector header img");
 
-  side_menu_img.style.display = "initial";
   document.querySelector(".side_menu_bg").removeEventListener("click", hideSideMenu);
   document.querySelector(".chats").removeEventListener("keypress", hideSideMenu);
   $(".submenu").css("display", "none");
   document.querySelector(".side_menu_visible").style.flex = 1;
+  setTimeout(() => side_menu_img.style.visibility = "", 150);
   $(document.querySelector(".side_menu")).fadeOut(300, () => {
-    side_menu_img.addEventListener("click", showSideMenu);
+      side_menu_img.addEventListener("click", showSideMenu);
   });
 }
