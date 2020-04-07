@@ -23,7 +23,7 @@
     <meta name='viewport' content='initial-scale=1, maximum-scale=1'>
     <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Didact+Gothic'>
     <link rel='icon' type='image/png' href='../img/logo_short.png'>
-    <script src='../js/jquery-3.4.1.min.js'></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="../css/chats.css">
     <?php
         $files = array_diff(scandir("../js/chats"), array(".", ".."));
@@ -248,6 +248,10 @@
             <input id="file_input" type="file" style="display: none">
             <img src="assets/icons/file.png" alt="Carregar arquivo">
             <input placeholder="Escreva sua mensagem..." type="text">
+            <div style="background-color: green; bottom: 80px; left: 85px"></div>
+            <div style="background-color: red; bottom: 40px; left: 60px"></div>
+            <span class="countdown" hidden>00:00</span>
+            <img src="assets/icons/audio.png" alt="Gravar audio">
         </form>
     </div>
 </body>
