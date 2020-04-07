@@ -11,7 +11,7 @@ $(document).ready(() => {
 	const chat_result_list = $('.chat_result_list')[0];
 	const chat_list = $('.chat_list')[0];
 	header_input.value = ''; // Removing input's value
-	header_input.addEventListener('keyup', (k) => {
+	header_input.addEventListener('keyup', k => {
 		// When user press any key, the result list will appear
 		if (!header_input.value || (header_input.value.length === 1 && k.keyCode === 78) || header_input.value === ' ') {
 			// If the header has no value OR (it's length is 1 AND user key is backspace) OR is the value is a spacebar
@@ -40,14 +40,8 @@ $(document).ready(() => {
 			$(chat_list).attr('hidden', ''); // Setting original list hidden attr
 		};
 	});
-	const clip = $('.input_area label img')[0]; // Clips img
-	clip.addEventListener('mouseover', () => {
-		// Change img src
-		clip.src = 'assets/icons/file_hover.png';
-	});
-	clip.addEventListener('mouseout', () => {
-		clip.src = 'assets/icons/file.png';
-	});
+
+	$(".chat:visible").on("click", openChat);
 });
 
 function openChat(e) {
@@ -77,7 +71,7 @@ function openChat(e) {
 		}
 	}
 	$('.choose_chat').remove(); // Removing "choose chat" balloon
-	$('.input_area').attr('style', 'display: grid');
+	$('.input_area').attr('style', 'display: flex');
 	$('.chats header').attr('style', 'display: flex');
 	$('.input_area input').focus();
 	scrollState = update = true;
