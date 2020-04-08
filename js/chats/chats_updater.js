@@ -28,22 +28,24 @@ function updateChats() {
 		response.forEach((message) => {
 			// ForEach message
 			const d = new Date(Number(message.time) * 1000),
-				messageTime = `<div class="message_time">${addZero(d.getDate()) + '/' + addZero(d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + addZero(d.getHours()) + ':' + addZero(d.getMinutes())}</div>`;
+				messageTime = `<div class="message_time">${addZero(d.getDate()) + '/' + addZero(d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + addZero(d.getHours()) + ':' + addZero(d.getMinutes())}</div>`,
+				img = [ 'png', 'jpg', 'jpeg', 'gif', 'jfif' ],
+				video = [ 'mp4', 'webm' ],
+				audio = [ 'mp3', 'wav', 'ogg' ];
 			if (message.sender !== atob(sessionStorage[btoa('id')])) {
 				// If user didn't send the message
 				if (atob(id).indexOf('group') > -1) {
 					// If this chat is a group chat
 					if (message.file !== '0') {
 						message.file = JSON.parse(message.file);
-						const img = [ 'png', 'jpg', 'jpeg', 'gif', 'jfif' ],
-							video = [ 'mp4', 'webm', 'ogg' ];
 						if (img.includes(message.file.extension)) {
 							chats += `<div style="display: grid"><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${message["name"]}</span><img src="${atob(message.file.location)}">${messageTime}</div><img class="profile_img" src="${message['photo']}"></div></div>`;
 						}
 						else if (video.includes(message.file.extension)) {
 							chats += `<div style="display: grid"><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${message["name"]}</span><video controls="" preload=""><source src="${atob(message.file.location)}" type="video/${message.file.extension}"></video>${messageTime}</div><img class="profile_img" src="${message['photo']}"></div></div>`;
-						}
-						else {
+						} else if (audio.includes(message.file.extension)) {
+							chats += `<div style="display: grid"><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${message["name"]}</span><audio controls="" preload=""><source src="${atob(message.file.location)}" type="audio/${message.file.extension}"></audio>${messageTime}</div><img class="profile_img" src="${message['photo']}"></div></div>`;
+						} else {
 							chats += `<div style="display: grid"><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${message["name"]}</span><div><a style="display: flex" href="${atob(message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46"></div><div style="flex: 2;" class="info"><div>${message.file.name}</div><div style="color: #cccccc; font-size: 16px">${convertUnits(message.file.size)}</div></div></a></div>${messageTime}</div><img class="profile_img" src="${message['photo']}"></div></div>`;
 						}
 					} else {
@@ -54,15 +56,14 @@ function updateChats() {
 					// If chat isn't a group chat
 					if (message.file !== '0') {
 						message.file = JSON.parse(message.file);
-						const img = [ 'png', 'jpg', 'jpeg', 'gif', 'jfif' ],
-							video = [ 'mp4', 'webm', 'ogg' ];
 						if (img.includes(message.file.extension)) {
 							chats += `<div style="display: grid"><div class="message their"><img src="${atob(message.file.location)}">${messageTime}</div></div>`;
 						}
 						else if (video.includes(message.file.extension)) {
 							chats += `<div style="display: grid"><div class="message their"><video controls="" preload=""><source src="${atob(message.file.location)}" type="video/${message.file.extension}"></video>${messageTime}</div></div>`;
-						}
-						else {
+						} else if (audio.includes(message.file.extension)) {
+							chats += `<div style="display: grid"><div class="message their"><audio controls="" preload=""><source src="${atob(message.file.location)}" type="audio/${message.file.extension}"></audio>${messageTime}</div></div>`;
+						} else {
 							chats += `<div style="display: grid"><div class="message their"><div><a style="display: flex" href="${atob(message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46"></div><div style="flex: 2;" class="info"><div>${message.file.name}</div><div style="color: #cccccc; font-size: 16px">${convertUnits(message.file.size)}</div></div></a></div> ${messageTime}</div></div>`;
 						}
 					}
@@ -75,15 +76,14 @@ function updateChats() {
 				// If user sent the message
 				if (message.file !== '0') {
 					message.file = JSON.parse(message.file);
-					const img = [ 'png', 'jpg', 'jpeg', 'gif', 'jfif' ],
-						video = [ 'mp4', 'webm', 'ogg' ];
 					if (img.includes(message.file.extension)) {
 						chats += `<div style="display: grid"><div class="message mine" style="margin-left: 0"><img src="${atob(message.file.location)}">${messageTime}</div></div>`;
 					}
 					else if (video.includes(message.file.extension)) {
 						chats += `<div style="display: grid"><div class="message mine" style="margin-left: 0;"><video controls="" preload=""><source src="${atob(message.file.location)}" type="video/${message.file.extension}"></video>${messageTime}</div></div>`;
-					}
-					else {
+					} else if (audio.includes(message.file.extension)) {
+						chats += `<div style="display: grid"><div class="message mine" style="margin-left: 0;"><audio controls="" preload=""><source src="${atob(message.file.location)}" type="audio/${message.file.extension}"></audio>${messageTime}</div></div>`;
+					} else {
 						chats += `<div style="display: grid"><div class="message mine" style="margin-left: 0;"><div><a style="display: flex" href="${atob(message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46"></div><div style="flex: 2;" class="info"><div>${message.file.name}</div><div style="color: #cccccc; font-size: 16px">${convertUnits(message.file.size)}</div></div></a></div> ${messageTime}</div></div>`;
 					}
 				}

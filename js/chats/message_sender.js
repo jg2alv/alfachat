@@ -1,20 +1,17 @@
 function messageSender() {
-    const form = $("form.input_area")[0],
+    const form = $(".input_area")[0],
         input = $(".input_area input[type='text']")[0],
         btn = $(".input_area img")[1],
         file = $(".input_area input[type='file']")[0];
     
-    file.addEventListener("click", () => $(".input_area input[type='file']").click());
+    $(".input_area img").eq(0).on("click", () => $(file).click());
 
     file.addEventListener("change", sendFile);
 
     form.addEventListener("submit", sendMessage);
 
     input.addEventListener("keydown", k => {
-        if (input.value.length === 1 && k.keyCode === 8) {
-            btn.src = "assets/icons/audio.png";
-            return;
-        } else if (input.value.length === 0 && k.keyCode === 8) {
+        if (input.value.length > 2 && k.keyCode === 8) {
             btn.src = "assets/icons/audio.png";
             return;
         } else {
@@ -33,56 +30,60 @@ function messageSender() {
             sendMessage();
         } else if (btn.src.indexOf("assets/icons/audio.png") > -1) {
             if (navigator.mediaDevices) {
-                let chunks = [];
-
-                $(".input_area div").addClass("audio_control");
+                let chunks = [],
+                mediaStream
+                time = 0;
 
                 navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
+                    $(".input_area div").removeAttr("hidden");
+                    $(btn).attr("hidden", "");
+
+                    const countdown = $(".input_area span");
+                    countdown.removeAttr("hidden");
+                    countdown.css("line-height", `${form.scrollHeight}px`);
+
+                    const countdownTime = setInterval(() => {
+                        time++;
+
+                        const min = Math.floor(time / 60),
+                            sec = time % 60;
+
+                        countdown.html(`${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`);
+                    }, 1000);
+
                     const mediaRecorder = new MediaRecorder(stream);
-
-                    // $(".input_area div").eq(0).on("click", () => {
-                    //     mediaRecorder.stop();
-                    //     sendFile();
-                    // });
-
-                    $(".input_area div").eq(1).on("click", () => {
-                        mediaRecorder.stop();
-                    });
+                    mediaRecorder.start(1);
+                    mediaStream = stream.getTracks()[0];
 
                     mediaRecorder.ondataavailable = e => {
-                        console.log("data")
-                        console.log(e);
-                        return;
                         chunks.push(e.data);
                     };
 
                     mediaRecorder.onstop = () => {
-                        console.log("stop")
-                        return;
-                        const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
-                        chunks = [];
-                        console.log(URL.createObjectURL(blob));
-                        //send
+                        setTimeout(() => mediaStream.stop(), 1000);
+
+                        $(".input_area div").attr("hidden", "");
+                        $(btn).removeAttr("hidden");
+                        countdown.attr("hidden", "");
+
+                        countdown.html("00:00");
+
+                        clearInterval(countdownTime);
+                    }
+
+                    $(".input_area div")[0].onclick = () => {
+                        mediaRecorder.stop();
+
+                        setTimeout(() => {
+                            const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+                            sendFile(false, blob);
+                        }, 1000);
                     };
+
+                    $(".input_area div")[1].onclick = () => mediaRecorder.stop();
                 });
-
-
-                btn.remove();
-
-                const countdown = $(".input_area span");
-                countdown.css("line-height", `${form.scrollHeight}px`);
-                countdown.removeAttr("hidden");
-
-                let time = 0;
-                const countdownTime = setInterval(() => {
-                    time++;
-                    const min = Math.floor(time / 60);
-                    const sec = time % 60;
-                    countdown.html(`${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`);
-                }, 1000);
             }
         }
-        return;
     })
 }
 
@@ -111,23 +112,30 @@ function sendMessage(e) {
     };
 }
 
-function sendFile(file, audio = false) {
-    if (audio) {
-        return; // =====================================================================================================
-    } else {
-        const file = $(".input_area input[type='file']")[0];
+function sendFile(e, blob = false) {
+    if (e) {
+        e.preventDefault();
     }
 
-    const xml = new XMLHttpRequest();
+    const file = $(".input_area input[type='file']")[0],
+        xml = new XMLHttpRequest(),
+        formData = new FormData(),
+        d = new Date();
 
-    if (file.files.length < 1) {
+    if (blob) {
+        formData.set("file_user_input", blob, `AUD_${d.getFullYear() + (addZero(d.getMonth() + 1)) + addZero(d.getDate()) + addZero(d.getMilliseconds())}`);
+        formData.set("audio", true);
+    } else if (file.files.length) {
+        formData.set("file_user_input", file.files[0]);
+    } else {
         return;
     }
 
-    const formData = new FormData();
-    formData.set("file_user_input", file.files[0]);
     formData.set("id", id);
-
     xml.open("POST", "../xmlhttprequest/chat_file_upload.php", true);
     xml.send(formData);
+
+    xml.onload = () => {
+        console.log(xml.responseText);
+    }
 }

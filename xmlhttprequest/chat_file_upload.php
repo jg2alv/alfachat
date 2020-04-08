@@ -16,6 +16,9 @@
     $file_location = base64_encode("assets/files/$sent/$id/$reciever/$file_name");
     $root = "../chats/assets/files";
 
+    if (!empty($_POST["audio"]) && !empty($_FILES["file_user_input"]["type"])) 
+        $file_extension = explode("/", $_FILES["file_user_input"]["type"])[1];
+
     checkDirectory($root);
     $root .= "/$sent";
     checkDirectory($root);
@@ -34,4 +37,5 @@
     $sql = mysqli_query($conn, $sql);
 
     move_uploaded_file($_FILES["file_user_input"]["tmp_name"], $root);
+    die();
 ?>
