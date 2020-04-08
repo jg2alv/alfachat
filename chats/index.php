@@ -248,8 +248,8 @@
             <input id="file_input" type="file" style="display: none">
             <img src="assets/icons/file.png" alt="Carregar arquivo">
             <input placeholder="Escreva sua mensagem..." type="text">
-            <div style="background-color: green; bottom: 80px; left: 85px"></div>
-            <div style="background-color: red; bottom: 40px; left: 60px"></div>
+            <div class="audio_control" style="background-color: green; bottom: 80px; left: 85px" hidden></div>
+            <div class="audio_control" style="background-color: red; bottom: 40px; left: 60px" hidden></div>
             <span class="countdown" hidden>00:00</span>
             <img src="assets/icons/audio.png" alt="Gravar audio">
         </form>
