@@ -45,10 +45,7 @@ function messageSender() {
                     const countdownTime = setInterval(() => {
                         time++;
 
-                        const min = Math.floor(time / 60),
-                            sec = time % 60;
-
-                        countdown.html(`${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`);
+                        countdown.html(convertTime(time));
                     }, 1000);
 
                     const mediaRecorder = new MediaRecorder(stream);
@@ -85,6 +82,12 @@ function messageSender() {
             }
         }
     })
+}
+
+function convertTime(s) {
+    const min = Math.floor(s / 60),
+        sec = s % 60;
+    return `${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`
 }
 
 function sendMessage(e) {
@@ -134,8 +137,4 @@ function sendFile(e, blob = false) {
     formData.set("id", id);
     xml.open("POST", "../xmlhttprequest/chat_file_upload.php", true);
     xml.send(formData);
-
-    xml.onload = () => {
-        console.log(xml.responseText);
-    }
 }
