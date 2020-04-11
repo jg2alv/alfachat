@@ -37,5 +37,6 @@
     $sql = mysqli_query($conn, $sql);
 
     move_uploaded_file($_FILES["file_user_input"]["tmp_name"], $root);
-    die();
+
+    require "../includes/add_to_chatlist.inc.php";
 ?>
