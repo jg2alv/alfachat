@@ -675,6 +675,7 @@ body {
 
 .audio_btns {
 	max-width: 7%;
+	cursor: pointer;
 }
 
 input[type=range] {
@@ -725,6 +726,14 @@ input[type=range]::-moz-range-thumb {
 	background: #291a46;
 	cursor: pointer;
 	border: 0;
+}
+
+.audio_time {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 92px;
+	min-width: 90px;
 }
 
 @media only screen and (max-width: 999px) {
