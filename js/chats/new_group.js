@@ -1,5 +1,5 @@
-let group_name;
-let file;
+let group_name,
+    file;
 
 $(document).ready(() => {
     const photo = $("#new_group_menu input[type='file']")[0];
@@ -118,13 +118,12 @@ $(document).ready(() => {
         e.preventDefault();
         if ($(`span[data-member-id]`).length) {
             let id_list = "";
-            const selected_members = Array.from($(`span[data-member-id]`));
-            selected_members.forEach(user => {
+            $(`span[data-member-id]`).each((index, user) => {
                 id_list += atob($(`.menu_icon[data-member-id='${user.getAttribute("data-member-id")}']`)[0].getAttribute("data-id"));
-                if (user !== selected_members[selected_members.length - 1]) {
+                if (user !== $(`span[data-member-id]`)[$(`span[data-member-id]`).length - 1]) {
                     id_list += ",";
                 }
-            })
+            });
             const xml = new XMLHttpRequest();
             xml.open("POST", "../xmlhttprequest/new_group.php", true);
             if (file) {
