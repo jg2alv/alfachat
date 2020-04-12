@@ -1,5 +1,3 @@
-let voice = updatedVoice = [];
-
 function updateChats() {
 	if (!update) {
 		return;
