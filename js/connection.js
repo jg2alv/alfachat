@@ -1,5 +1,4 @@
 $(document).ready(() => {
-    debugger
     $(window).on("offline", () => {
         update = false;
 
@@ -13,7 +12,7 @@ $(document).ready(() => {
             $(".connection_status").css("background-color", "green").slideDown();
 
             update = true;
-            setTimeout(() => { $(".connection_status").slideUp() }, 1500);
+            setTimeout(() => { $(".connection_status").slideUp() }, 2500);
         });
     });
 });
