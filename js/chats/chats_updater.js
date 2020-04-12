@@ -44,7 +44,7 @@ function updateChats() {
 						else if (video.includes(message.file.extension)) {
 							chats.innerHTML += `<div style="display: grid"><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${message["name"]}</span><video controls="" preload=""><source src="${atob(message.file.location)}" type="video/${message.file.extension}"></video>${messageTime}</div><img class="profile_img" src="${message['photo']}"></div></div>`;
 						} else if (audio.includes(message.file.extension)) {
-							chats.innerHTML += `<div style="display: grid"><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${message["name"]}</span><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio><source src="${atob(message.file.location)}" type="audio/${message.file.extension}"></audio><span class="audio_time"></span></div>${messageTime}</div><img class="profile_img" src="${message['photo']}"></div></div>`;
+							chats.innerHTML += `<div style="display: grid"><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${message["name"]}</span><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source src="${atob(message.file.location)}" type="audio/${message.file.extension}"></audio><span class="audio_time"></span></div>${messageTime}</div><img class="profile_img" src="${message['photo']}"></div></div>`;
 						} else {
 							chats.innerHTML += `<div style="display: grid"><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${message["name"]}</span><div><a style="display: flex" href="${atob(message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46"></div><div style="flex: 2;" class="info"><div>${message.file.name}</div><div style="color: #cccccc; font-size: 16px">${convertUnits(message.file.size)}</div></div></a></div>${messageTime}</div><img class="profile_img" src="${message['photo']}"></div></div>`;
 						}
@@ -62,7 +62,7 @@ function updateChats() {
 						else if (video.includes(message.file.extension)) {
 							chats.innerHTML += `<div style="display: grid"><div class="message their"><video controls="" preload=""><source src="${atob(message.file.location)}" type="video/${message.file.extension}"></video>${messageTime}</div></div>`;
 						} else if (audio.includes(message.file.extension)) {
-							chats.innerHTML += `<div style="display: grid"><div class="message their"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio><source src="${atob(message.file.location)}" type="audio/${message.file.extension}"></audio><span class="audio_time"></span></div>${messageTime}</div></div>`;
+							chats.innerHTML += `<div style="display: grid"><div class="message their"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source src="${atob(message.file.location)}" type="audio/${message.file.extension}"></audio><span class="audio_time"></span></div>${messageTime}</div></div>`;
 						} else {
 							chats.innerHTML += `<div style="display: grid"><div class="message their"><div><a style="display: flex" href="${atob(message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46"></div><div style="flex: 2;" class="info"><div>${message.file.name}</div><div style="color: #cccccc; font-size: 16px">${convertUnits(message.file.size)}</div></div></a></div> ${messageTime}</div></div>`;
 						}
@@ -82,7 +82,7 @@ function updateChats() {
 					else if (video.includes(message.file.extension)) {
 						chats.innerHTML += `<div style="display: grid"><div class="message mine" style="margin-left: 0;"><video controls="" preload=""><source src="${atob(message.file.location)}" type="video/${message.file.extension}"></video>${messageTime}</div></div>`;
 					} else if (audio.includes(message.file.extension)) {
-						chats.innerHTML += `<div style="display: grid"><div class="message mine" style="margin-left: 0;"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio><source src="${atob(message.file.location)}" type="audio/${message.file.extension}"></audio><span class="audio_time"></span></div>${messageTime}</div></div>`;
+						chats.innerHTML += `<div style="display: grid"><div class="message mine" style="margin-left: 0;"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source src="${atob(message.file.location)}" type="audio/${message.file.extension}"></audio><span class="audio_time"></span></div>${messageTime}</div></div>`;
 					} else {
 						chats.innerHTML += `<div style="display: grid"><div class="message mine" style="margin-left: 0;"><div><a style="display: flex" href="${atob(message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46"></div><div style="flex: 2;" class="info"><div>${message.file.name}</div><div style="color: #cccccc; font-size: 16px">${convertUnits(message.file.size)}</div></div></a></div> ${messageTime}</div></div>`;
 					}
@@ -106,7 +106,11 @@ function updateChats() {
 					scrollState = false;
 				});
 
-				$(message_area).css('visibility', 'visible');
+				$("audio").off("loadedmetadata");
+				$("audio").on("loadedmetadata", e => {
+					$(e.target).siblings("span").html(`00:00/${convertTime(Math.floor(e.target.duration))}`);
+					$(message_area).css('visibility', 'visible');
+				});
 
 				$(".audio_btns").off("click");
 				$(".audio_btns").on("click", e => {
@@ -114,7 +118,7 @@ function updateChats() {
 						input = $(e.currentTarget).siblings("input")[0];
 
 					if (audio.paused) {
-						Array.from($("audio")).forEach((audio) => {
+						$("audio").each((index, audio) => {
 							audio.pause();
 							$(audio).siblings("img")[0].src = "assets/icons/play.png";
 						})
