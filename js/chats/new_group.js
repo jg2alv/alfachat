@@ -116,34 +116,42 @@ $(document).ready(() => {
     })
     $("#new_group_menu_advanced")[0].addEventListener("submit", e => {
         e.preventDefault();
-        if ($(`span[data-member-id]`).length) {
-            let id_list = "";
-            $(`span[data-member-id]`).each((index, user) => {
-                id_list += atob($(`.menu_icon[data-member-id='${user.getAttribute("data-member-id")}']`)[0].getAttribute("data-id"));
-                if (user !== $(`span[data-member-id]`)[$(`span[data-member-id]`).length - 1]) {
-                    id_list += ",";
-                }
-            });
-            const xml = new XMLHttpRequest();
-            xml.open("POST", "../xmlhttprequest/new_group.php", true);
-            if (file) {
-                const formData = new FormData();
-                formData.set("p", file);
-                formData.set("m", id_list);
-                formData.set("n", group_name.value);
-                formData.set("a", "1");
-                xml.send(formData);
-            } else {
-                xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xml.send(`m=${id_list}&n=${group_name.value}&a=1`);
-            }
 
-            xml.onload = () => {
-                hideSideMenu();
-                setTimeout(() => {
-                    $(`[data-id='${xml.responseText}']`).click();
-                }, 300)
+        if (!$(`span[data-member-id]`).length) 
+            return;
+
+        let id_list = "";
+        $(`span[data-member-id]`).each((index, user) => {
+            id_list += atob($(`.menu_icon[data-member-id='${user.getAttribute("data-member-id")}']`)[0].getAttribute("data-id"));
+            if (user !== $(`span[data-member-id]`)[$(`span[data-member-id]`).length - 1]) {
+                id_list += ",";
             }
+        });
+
+        const xml = new XMLHttpRequest(),
+            toast = createToast("Criando grupo...");
+
+        xml.open("POST", "../xmlhttprequest/new_group.php", true);
+
+        if (file) {
+            const formData = new FormData();
+            formData.set("p", file);
+            formData.set("m", id_list);
+            formData.set("n", group_name.value);
+            formData.set("a", "1");
+            xml.send(formData);
+        } else {
+            xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xml.send(`m=${id_list}&n=${group_name.value}&a=1`);
+        }
+
+        xml.onload = () => {
+            hideSideMenu();
+            toast.innerHTML = "Grupo criado com sucesso!"
+            setTimeout(() => { $(toast).slideUp() }, 2500);
+            setTimeout(() => {
+                $(`[data-id='${xml.responseText}']`).click();
+            }, 300);
         }
     })
 })
