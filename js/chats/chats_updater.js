@@ -46,30 +46,7 @@ function updateChats() {
 						else if (video.includes(message.file.extension)) {
 							chats.innerHTML += `<div style="display: grid"><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${message["name"]}</span><video controls="" preload=""><source src="${atob(message.file.location)}" type="video/${message.file.extension}"></video>${messageTime}</div><img class="profile_img" src="${message['photo']}"></div></div>`;
 						} else if (audio.includes(message.file.extension)) {
-							const id = message.file.id;
-
-							updatedVoice[id] = new Audio();
-							updatedVoice[id].type = message.file.extension;
-							updatedVoice[id].src = atob(message.file.location);
-							updatedVoice[id].setAttribute("data-id", id);
-							
-							updatedVoice[id].ontimeupdate = e => {
-								const input = $(`input[data-id=${$(e.target).attr("data-id")}]`)[0],
-									duration = Math.floor(e.target.duration);
-							
-								input.max = e.target.duration;
-								input.value = e.target.currentTime;
-							
-								$(input).siblings("span").html(`${convertTime(Math.floor(e.target.currentTime))}/${convertTime(duration)}`)
-							
-								if (Math.floor(input.value) === duration) {
-									e.target.pause();
-									$(input).siblings("img")[0].src = "assets/icons/play.png";
-									e.target.currentTime = 0;
-								}
-							}
-						
-							chats.innerHTML += `<div style="display: grid"><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${message["name"]}</span><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input data-id="${id}" oninput="voice[${id}].currentTime = Number(this.value)" type="range" value="0" max=""><span class="audio_time"></span></div>${messageTime}</div><img class="profile_img" src="${message['photo']}"></div></div>`;
+							chats.innerHTML += `<div style="display: grid"><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${message["name"]}</span><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio><source src="${atob(message.file.location)}" type="audio/${message.file.extension}"></audio><span class="audio_time"></span></div>${messageTime}</div><img class="profile_img" src="${message['photo']}"></div></div>`;
 						} else {
 							chats.innerHTML += `<div style="display: grid"><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${message["name"]}</span><div><a style="display: flex" href="${atob(message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46"></div><div style="flex: 2;" class="info"><div>${message.file.name}</div><div style="color: #cccccc; font-size: 16px">${convertUnits(message.file.size)}</div></div></a></div>${messageTime}</div><img class="profile_img" src="${message['photo']}"></div></div>`;
 						}
@@ -87,30 +64,7 @@ function updateChats() {
 						else if (video.includes(message.file.extension)) {
 							chats.innerHTML += `<div style="display: grid"><div class="message their"><video controls="" preload=""><source src="${atob(message.file.location)}" type="video/${message.file.extension}"></video>${messageTime}</div></div>`;
 						} else if (audio.includes(message.file.extension)) {
-							const id = message.file.id;
-
-							updatedVoice[id] = new Audio();
-							updatedVoice[id].type = message.file.extension;
-							updatedVoice[id].src = atob(message.file.location);
-							updatedVoice[id].setAttribute("data-id", id);
-							
-							updatedVoice[id].ontimeupdate = e => {
-								const input = $(`input[data-id=${$(e.target).attr("data-id")}]`)[0],
-									duration = Math.floor(e.target.duration);
-							
-								input.max = e.target.duration;
-								input.value = e.target.currentTime;
-							
-								$(input).siblings("span").html(`${convertTime(Math.floor(e.target.currentTime))}/${convertTime(duration)}`)
-							
-								if (Math.floor(input.value) === duration) {
-									e.target.pause();
-									$(input).siblings("img")[0].src = "assets/icons/play.png";
-									e.target.currentTime = 0;
-								}
-							}
-						
-							chats.innerHTML += `<div style="display: grid"><div class="message their"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input data-id="${id}" oninput="voice[${id}].currentTime = Number(this.value)" type="range" value="0" max=""><span class="audio_time"></span></div>${messageTime}</div></div>`;
+							chats.innerHTML += `<div style="display: grid"><div class="message their"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio><source src="${atob(message.file.location)}" type="audio/${message.file.extension}"></audio><span class="audio_time"></span></div>${messageTime}</div></div>`;
 						} else {
 							chats.innerHTML += `<div style="display: grid"><div class="message their"><div><a style="display: flex" href="${atob(message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46"></div><div style="flex: 2;" class="info"><div>${message.file.name}</div><div style="color: #cccccc; font-size: 16px">${convertUnits(message.file.size)}</div></div></a></div> ${messageTime}</div></div>`;
 						}
@@ -130,30 +84,7 @@ function updateChats() {
 					else if (video.includes(message.file.extension)) {
 						chats.innerHTML += `<div style="display: grid"><div class="message mine" style="margin-left: 0;"><video controls="" preload=""><source src="${atob(message.file.location)}" type="video/${message.file.extension}"></video>${messageTime}</div></div>`;
 					} else if (audio.includes(message.file.extension)) {
-						const id = message.file.id;
-
-						updatedVoice[id] = new Audio();
-						updatedVoice[id].type = message.file.extension;
-						updatedVoice[id].src = atob(message.file.location);
-						updatedVoice[id].setAttribute("data-id", id);
-
-						updatedVoice[id].ontimeupdate = e => {
-							const input = $(`input[data-id=${$(e.target).attr("data-id")}]`)[0],
-								duration = Math.floor(e.target.duration);
-
-							input.max = e.target.duration;
-							input.value = e.target.currentTime;
-
-							$(input).siblings("span").html(`${convertTime(Math.floor(e.target.currentTime))}/${convertTime(duration)}`)
-
-							if (Math.floor(input.value) === duration) {
-								e.target.pause();
-								$(input).siblings("img")[0].src = "assets/icons/play.png";
-								e.target.currentTime = 0;
-							}
-						}
-
-						chats.innerHTML += `<div style="display: grid"><div class="message mine" style="margin-left: 0;"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input data-id="${id}" oninput="user_audio = true; voice[${id}].currentTime = Number(this.value)" type="range" value="0" max=""><span class="audio_time"></span></div>${messageTime}</div></div>`;
+						chats.innerHTML += `<div style="display: grid"><div class="message mine" style="margin-left: 0;"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio><source src="${atob(message.file.location)}" type="audio/${message.file.extension}"></audio><span class="audio_time"></span></div>${messageTime}</div></div>`;
 					} else {
 						chats.innerHTML += `<div style="display: grid"><div class="message mine" style="margin-left: 0;"><div><a style="display: flex" href="${atob(message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46"></div><div style="flex: 2;" class="info"><div>${message.file.name}</div><div style="color: #cccccc; font-size: 16px">${convertUnits(message.file.size)}</div></div></a></div> ${messageTime}</div></div>`;
 					}
@@ -179,32 +110,47 @@ function updateChats() {
 
 				$(message_area).css('visibility', 'visible');
 
-				let backupVoice;
 				$(".audio_btns").off("click");
 				$(".audio_btns").on("click", e => {
-					const id = $(e.currentTarget).siblings("input").attr("data-id");
+					const audio = $(e.currentTarget).siblings("audio")[0],
+						input = $(e.currentTarget).siblings("input")[0];
 
-					if (e.currentTarget.src.indexOf("play") > -1) {
-						voice.forEach((audio, index) => {
-							if (index == id) {
-								return;
-							} else {
-								if (backupVoice) {
-									backupVoice.pause();
-								}
-								$(`input[data-id=${index}]`).siblings("img")[0].src = "assets/icons/play.png";
-							}
+					if (audio.paused) {
+						Array.from($("audio")).forEach((audio) => {
+							audio.pause();
+							$(audio).siblings("img")[0].src = "assets/icons/play.png";
 						})
-						voice[id].currentTime = Number($(`input[data-id=${id}]`)[0].value);
-						voice[id].play();
-						backupVoice = voice[id];
+						audio.currentTime = Number(input.value)
+						audio.play();
 						e.currentTarget.src = "assets/icons/pause.png";
-					} else if (e.currentTarget.src.indexOf("pause") > -1) {
-						backupVoice.pause();
+					} else {
+						audio.pause();
 						e.currentTarget.src = "assets/icons/play.png";
 					}
 				});
-				voice = updatedVoice;
+
+				$("audio").off("timeupdate");
+				$("audio").on("timeupdate", e => {
+					const input = $(e.target).siblings("input[type='range']")[0],
+						duration = Math.floor(e.target.duration);
+
+					input.max = e.target.duration;
+					input.value = e.target.currentTime;
+
+					$(input).siblings("span").html(`${convertTime(Math.floor(e.target.currentTime))}/${convertTime(duration)}`);
+
+					if (Math.floor(input.value) === duration) {
+						e.target.pause();
+						$(input).siblings("img")[0].src = "assets/icons/play.png";
+						e.target.currentTime = 0;
+					}
+				});
+
+				$("input[type='range']").off("input");
+				$("input[type='range']").on("input", e => {
+					const input = e.currentTarget;
+					$(input).siblings('audio')[0].currentTime = Number(input.value)
+				});
 				
 			
 			case message_area[0].scrollTop === message_area[0].scrollHeight:

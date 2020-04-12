@@ -728,6 +728,10 @@ input[type=range]::-moz-range-thumb {
 	border: 0;
 }
 
+.message audio {
+	display: none;
+}
+
 .audio_time {
 	display: flex;
 	align-items: center;
