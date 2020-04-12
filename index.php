@@ -14,8 +14,18 @@
     <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Didact+Gothic'>
     <link rel='icon' type='image/png' href='img/logo_short.png'>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="css/login.css">
-    <script src="js/account.js"></script>
+    <?php
+        foreach (array_diff(scandir("js"), array(".", "..", "chats")) as $file) {
+            echo "<script src='js/$file'></script>";   // Load JS files
+        }
+
+        foreach (array_diff(scandir("css", 1), array(".", "..")) as $file) {
+            if ($file === "chats.css") {
+                continue;
+            }
+            echo "<link rel='stylesheet' type='text/css' href='css/$file'></link>";   // Load JS files
+        }
+    ?>
     <title>AlfaChat - Entrar</title>
 </head>
 <body>
@@ -55,5 +65,6 @@
             <a href='https://t.me/bored_user' target='_blank'>Telegram</a> ou <a href='https://github.com/bored-user/AlfaChat/issues' target='_blank'>Github</a>.
         </p>
     </footer>
+    <div class="connection_status"></div>
 </body>
 </html>
