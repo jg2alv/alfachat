@@ -1,0 +1,17 @@
+body {
+    overflow: hidden;
+}
+
+.connection_status {
+	display: none;
+	position: absolute;
+	bottom: 0;
+	z-index: 999;
+	width: 100%;
+	padding: 10px !important;
+    font-size: 18px;
+    color: white;
+    text-align: center;
+    line-height: 20px;
+    font-weight: bold;
+}
