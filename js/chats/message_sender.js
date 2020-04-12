@@ -120,6 +120,8 @@ function sendFile(e, blob = false) {
         e.preventDefault();
     }
 
+    const toast = createToast("Enviando arquivo...")
+
     const file = $(".input_area input[type='file']")[0],
         xml = new XMLHttpRequest(),
         formData = new FormData(),
@@ -137,4 +139,19 @@ function sendFile(e, blob = false) {
     formData.set("id", id);
     xml.open("POST", "../xmlhttprequest/chat_file_upload.php", true);
     xml.send(formData);
+
+    xml.onload = () => {
+        toast.innerHTML = "Arquivo enviado com sucesso!";
+        setTimeout(() => { $(toast).slideUp() }, 2500)
+    }
+}
+
+function createToast(txt) {
+    const toast = document.createElement("div");
+    toast.classList = "toast";
+    toast.innerHTML = txt;
+    $(document.body).append(toast);
+    $(toast).slideDown();
+    
+    return toast;
 }
