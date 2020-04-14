@@ -18,7 +18,7 @@ $(document).ready(() => {
 	});
 
 	$('#settings_menu_header_drop_down span').eq(0).click(() => {
-		window.location.href = window.location.href + '?log_out=1';
+		location.href += '?log_out=1';
 	});
 
 	if (atob(sessionStorage['cGhvdG8=']) != 'null') {
@@ -54,9 +54,8 @@ $(document).ready(() => {
 		$('#settings_menu_advanced_profile_pic')[0].src = 'assets/avatars/users/default.png';
 	}
 
-	$('#settings_menu_name').html(atob(sessionStorage['bmFtZQ==']));
-	$('#settings_menu_email').html(atob(sessionStorage['ZW1haWw=']));
-	$('#settings_menu_rg').html(atob(sessionStorage['cmE=']));
+	// $('#settings_menu_name').html(atob(sessionStorage['bmFtZQ==']));		**REPLACE WITH PHP**
+	// $("#settings_menu_ra").html(atob(sessionStorage['cmE=']));			**REPLACE WITH PHP**
 
 	const photo = $("#settings_menu input[type='file']")[0];
 	$(photo).on("change", () => {
