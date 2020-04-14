@@ -28,10 +28,13 @@ form {
     border-radius: 4px;
 }
 
+input {
+    width: 280px;
+}
+
 input:not([type='submit']) {
     min-height: 34px;
     padding: 6px;
-    width: 245px;
     font-size: 16px;
     line-height: 1.4;
     box-sizing: border-box;
@@ -45,7 +48,6 @@ input[type='submit'] {
     color: white;
     outline: 0;
     border: 1px solid #ccc;
-    width: 245px;
     height: 40px;
     font-size: 16px;
     background: rgb(52, 17, 118);
@@ -65,7 +67,7 @@ input[type='submit']:hover {
 }
 
 select {
-    width: 245px;
+    width: 280px;
     min-height: 34px;
 }
 
