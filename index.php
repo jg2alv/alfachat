@@ -16,7 +16,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <?php
         foreach (array_diff(scandir("js"), array(".", "..", "chats")) as $file) {
-            echo "<script src='js/$file'></script>";   // Load JS files
+            echo "<script defer src='js/$file'></script>";   // Load JS files
         }
 
         foreach (array_diff(scandir("css", 1), array(".", "..")) as $file) {
@@ -36,10 +36,8 @@
     </header>
     <main>
         <form>
-            <input type="text" name="name" placeholder="Nome completo" hidden><br hidden><br hidden>
-            <input required minlength="8" maxlength="8" pattern="[0-9]*" inputmode="numeric" name="ra" placeholder="Matr&iacute;cula"><br><br>
-            <input type="email" name="email" placeholder="Email" hidden><br hidden><br hidden>
-            <input minlength="8" maxlength="16" type="password" name="password" placeholder="Senha" hidden><br hidden><br hidden>
+            <input required minlength="8" maxlength="8" pattern="[0-9]*" inputmode="numeric" name="ra" placeholder="RA"><br><br>
+            <input minlength="8" maxlength="16" type="password" name="password" placeholder="Senha"><br><br>
             <select name="class">
                 <option value="1">1° Ano Ensino Fundamental</option>
                 <option value="2">2° Ano Ensino Fundamental</option>
@@ -53,9 +51,24 @@
                 <option value="10">1° Ano Ensino Médio</option>
                 <option value="11">2° Ano Ensino Médio</option>
                 <option value="12">3° Ano Ensino Médio</option>
-            </select>
-            <br>
-            <input type="submit" value="Prosseguir">
+            </select><br><br>
+
+            <select name="city">
+                <option value="cascavel">Paran&aacute; - Cascavel</option>
+                <option value="toledo">Paran&aacute; - Toledo</option>
+                <option value="pato_branco">Paran&aacute; - Pato Branco</option>
+                <option value="francisco_beltrao">Paran&aacute; - Francisco Beltr&atilde;o</option>
+                <option value="guarapuava">Paran&aacute; - Guarapuava</option>
+                <option value="campo_mourao">Paran&aacute; - Campo Mour&atilde;o</option>
+                <option value="ponta_grossa">Paran&aacute; - Ponta Grossa</option>
+                <option value="chapeco">Santa Catarina - Chapec&oacute;</option>
+                <option value="blumenau">Santa Catarina - Blumenau</option>
+                <option value="jaragua_sul">Santa Catarina - Jaragu&aacute; do Sul</option>
+            </select><br>
+            <span style="font-size: small; color: red;" hidden>RA ou senha incorreta(s)!</span><br hidden>
+
+
+            <input type="submit" value="Entrar">
         </form>
     </main>
     <footer>
