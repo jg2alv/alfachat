@@ -11,7 +11,7 @@
         session_destroy();
         header("Location: ../"); // If user isn't logged in
     } else {
-        $sql = json_encode(mysqli_fetch_assoc($sql));
+        $sql = mysqli_fetch_assoc($sql);
     }
 ?>
 
@@ -40,7 +40,7 @@
 </head>
 <body>
     <?php
-        echo "<input type='hidden' value='$sql'>";
+        echo "<input type='hidden' value='" . json_encode($sql) . "'>";
     ?>
     <div class="side_menu">
         <div class="side_menu_visible">
@@ -144,17 +144,8 @@
                     <img src="assets/icons/name.png" alt="Mudar nome">
                 </div>
                 <div class="info">
-                    <span id="settings_menu_name"></span>
+                    <span id="settings_menu_name"><?php echo $sql["name"] ?></span>
                     <span class="settings_menu_subtitle">Nome</span>
-                </div>
-            </div>
-            <div style="flex: 1" class="menu_icon settings_menu_icon">
-                <div class="pic">
-                    <img src="assets/icons/email.png" alt="Mudar email">
-                </div>
-                <div class="info">
-                    <span id="settings_menu_email"></span>
-                    <span class="settings_menu_subtitle">E-mail</span>
                 </div>
             </div>
             <div style="flex: 1" class="menu_icon settings_menu_icon">
@@ -162,7 +153,7 @@
                     <img src="assets/icons/ra.png" alt="Mudar ra">
                 </div>
                 <div class="info">
-                    <span id="settings_menu_rg"></span>
+                    <span id="settings_menu_ra"><?php echo $sql["ra"] ?></span>
                     <span class="settings_menu_subtitle">RA</span>
                 </div>
             </div>
