@@ -24,6 +24,7 @@
     <link rel='icon' type='image/png' href='../img/logo_short.png'>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="../js/connection.js"></script>
+    <script src="../js/toast.class.js"></script>
     <?php
         foreach (array_diff(scandir("../js/chats"), array(".", "..")) as $file) {
             echo "<script src='../js/chats/$file'></script>";   // Load JS files
@@ -251,6 +252,5 @@
         </form>
     </div>
     </div>
-    <div class="connection_status"></div>
 </body>
 </html>
