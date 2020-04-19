@@ -65,8 +65,6 @@
                 <option value="blumenau">Santa Catarina - Blumenau</option>
                 <option value="jaragua_sul">Santa Catarina - Jaragu&aacute; do Sul</option>
             </select><br>
-            <span style="font-size: small; color: red;" hidden>RA ou senha incorreta(s)!</span><br hidden>
-
 
             <input type="submit" value="Entrar">
         </form>
@@ -78,6 +76,5 @@
             <a href='https://t.me/bored_user' target='_blank'>Telegram</a> ou <a href='https://github.com/bored-user/AlfaChat/issues' target='_blank'>Github</a>.
         </p>
     </footer>
-    <div class="connection_status"></div>
 </body>
 </html>
