@@ -2,10 +2,13 @@ function updateChats() {
 	if (!update) {
 		return;
 	}
+
 	const xml = new XMLHttpRequest(),
 		message_area = $('.message_area'),
 		t0 = performance.now();
+
 	let chats = document.createElement("div");
+	
 	xml.open('POST', '../xmlhttprequest/message_reciever.php', true);
 	xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	xml.send('c=' + id);
