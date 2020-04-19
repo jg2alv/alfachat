@@ -7,9 +7,9 @@ $(document).ready(() => {
 	statusBackend('i=online&o=set'); // Setting MY status to online
 	messageSender();
 	chatListUpdater();
-	const header_input = document.querySelector(".chat_selector header input[type='text']");
-	const chat_result_list = $('.chat_result_list')[0];
-	const chat_list = $('.chat_list')[0];
+	const header_input = document.querySelector(".chat_selector header input[type='text']"),
+		chat_result_list = $('.chat_result_list')[0],
+		chat_list = $('.chat_list')[0];
 	header_input.value = ''; // Removing input's value
 	header_input.addEventListener('keyup', k => {
 		// When user press any key, the result list will appear
@@ -48,10 +48,8 @@ function openChat(e) {
 	update = false;
 	id = e.currentTarget.attributes['data-id'].value; // base64 id value. Example: 1; group:11 (in base64)
 
-	if (id === e.currentTarget.children[1].children[0].getAttribute('data-id') && $('.chats:visible').length) {
-		// If user clicked on the same chat, don't reload it.
+	if (id === e.currentTarget.children[1].children[0].getAttribute('data-id') && $('.chats:visible').length)
 		return;
-	}
 
 	statusBackend(`i=${id}&o=get`, e.currentTarget);
 	$('.chats header div div')[0].setAttribute('data-id', id);
