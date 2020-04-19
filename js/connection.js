@@ -2,17 +2,15 @@ $(document).ready(() => {
     $(window).on("offline", () => {
         update = false;
 
-        $(".connection_status").html("Conex&atilde;o perdida!");
-        $(".connection_status").css("background-color", "#c80003").slideDown();
+        const toast = new Toast("Conex&atilde;o perdida!", "background-color: #c80003;");
+        toast.show();
 
         $(window).on("online", () => {
+            update = true;
             $(window).off("online");
 
-            $(".connection_status").html("Online novamente!");
-            $(".connection_status").css("background-color", "green").slideDown();
-
-            update = true;
-            setTimeout(() => { $(".connection_status").slideUp() }, 2500);
+            toast.update("Online novamente!", "background-color: green; display: block;");
+            toast.destroy(2500);
         });
     });
 });

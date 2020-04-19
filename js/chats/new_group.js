@@ -129,7 +129,9 @@ $(document).ready(() => {
         });
 
         const xml = new XMLHttpRequest(),
-            toast = createToast("Criando grupo...");
+            toast = new Toast("Criando grupo...");
+        
+        toast.show();
 
         xml.open("POST", "../xmlhttprequest/new_group.php", true);
 
@@ -147,8 +149,8 @@ $(document).ready(() => {
 
         xml.onload = () => {
             hideSideMenu();
-            toast.innerHTML = "Grupo criado com sucesso!"
-            setTimeout(() => { $(toast).slideUp() }, 2500);
+            toast.update("Grupo criado com sucesso!");
+            toast.destroy(2500);
             setTimeout(() => {
                 $(`[data-id='${xml.responseText}']`).click();
             }, 300);

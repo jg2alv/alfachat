@@ -11,14 +11,13 @@ $("form").on("submit", e => {
 	xml.send(`ra=${ra.value}&password=${password.value}&class=${$("select")[0].value}&city=${$("select")[1].value}`);
 
 	xml.onload = () => {
-		if (xml.responseText === "false") {
-			console.log(xml.responseText)
+		if (!xml.responseText) {
 			ra.value = password.value = "";
 
-			$("span[hidden]").removeAttr("hidden");
-			$("br[hidden]").removeAttr("hidden");
+			const toast = new Toast("RA ou senha incorreta(s)!", "background-color: red; font-size: 18px; font-weigth: bold;");
+			toast.show();
+			toast.destroy(2500);
 		} else {
-			console.log(xml.responseText)
 			const response = JSON.parse(xml.responseText);
 			$(response).each((index, value) => {
 				sessionStorage[btoa(index)] = btoa(value);
