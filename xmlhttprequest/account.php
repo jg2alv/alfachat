@@ -12,11 +12,16 @@
             session_start();
             require "../includes/db.inc.php";
 
-            $ra = filter_input(INPUT_POST, "ra", FILTER_SANITIZE_SPECIAL_CHARS);
-            $city = $_POST["city"];
-            $class = $_POST["class"];
-
-            $sql = "SELECT * FROM `users` WHERE ra = $ra AND class = $class AND city = '$city'";
+            if ($_POST["teacher"]) {
+                $email = filter_input(INPUT_POST, "ra", FILTER_SANITIZE_EMAIL);
+                $sql = "SELECT * FROM `teachers` WHERE email = '$email'";  
+            } else {
+                $ra = filter_input(INPUT_POST, "ra", FILTER_SANITIZE_NUMBER_INT);
+                $city = $_POST["city"];
+                $class = $_POST["class"];
+                $sql = "SELECT * FROM `users` WHERE ra = '$ra' AND class = '$class' AND city = '$city'";
+            }
+                
             $sql = mysqli_query($conn, $sql);
             if (!mysqli_num_rows($sql)) {
                 echo false;

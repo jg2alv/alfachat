@@ -37,7 +37,7 @@
     <main>
         <form>
             <input required minlength="8" maxlength="8" pattern="[0-9]*" inputmode="numeric" name="ra" placeholder="RA"><br><br>
-            <input minlength="8" maxlength="16" type="password" name="password" placeholder="Senha"><br><br>
+            <input minlength="8" maxlength="16" type="password" name="password" placeholder="Senha"><br data-teacher><br data-teacher>
             <select name="class">
                 <option value="1">1° Ano Ensino Fundamental</option>
                 <option value="2">2° Ano Ensino Fundamental</option>
@@ -51,7 +51,7 @@
                 <option value="10">1° Ano Ensino Médio</option>
                 <option value="11">2° Ano Ensino Médio</option>
                 <option value="12">3° Ano Ensino Médio</option>
-            </select><br><br>
+            </select><br data-teacher><br data-teacher>
 
             <select name="city">
                 <option value="cascavel">Paran&aacute; - Cascavel</option>
@@ -65,6 +65,8 @@
                 <option value="blumenau">Santa Catarina - Blumenau</option>
                 <option value="jaragua_sul">Santa Catarina - Jaragu&aacute; do Sul</option>
             </select><br>
+
+            <span data-teacher="0" style="font-size: small; color: #2a7ae2; font-weight: bold; cursor: pointer">Sou um professor</span><br>
 
             <input type="submit" value="Entrar">
         </form>
