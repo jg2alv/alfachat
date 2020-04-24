@@ -11,7 +11,7 @@ function messageSender() {
     });
 
     form.addEventListener("submit", e => {
-        new Message(input.value).sendMessage(e);
+        new Message({sender: atob(sessionStorage["aWQ="]), reciever: atob(id), content: input.value, file: 0, seen: 0, time: (new Date().getSeconds() / 1000), photo: sessionStorage["cGhvdG8="]}).sendMessage(e);
     });
 
     input.addEventListener("keydown", k => {
@@ -31,7 +31,7 @@ function messageSender() {
 
     btn.addEventListener("click", () => {
         if (btn.src.indexOf("assets/icons/send.png") > -1) {
-            new Message(input.value).sendMessage(e);
+            new Message({sender: atob(sessionStorage["aWQ="]), reciever: atob(id), content: input.value, file: 0, seen: 0, time: (new Date().getSeconds() / 1000), photo: sessionStorage["cGhvdG8="]}).sendMessage(e);
         } else if (btn.src.indexOf("assets/icons/audio.png") > -1) {
             if (navigator.mediaDevices) {
                 let chunks = [],
