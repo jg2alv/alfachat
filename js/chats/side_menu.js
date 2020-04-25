@@ -40,5 +40,6 @@ function hideSideMenu() {
 		side_menu_img.addEventListener("click", showSideMenu);
 	});
 	$("#teachers_menu").toggleClass("teachers_menu_active");
+	icon.style.transform = "";
 	$("#teachers_menu div").eq(3).slideUp();
 }
