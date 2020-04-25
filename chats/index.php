@@ -294,7 +294,7 @@
         $(".submenu_btns div:nth-of-type(1)").on("click", hideSideMenu);
         $(".chats header img").eq(0).on("click", closeChat);
         $("#teachers_menu div").eq(0).on("click", e => {
-            $("#teachers_menu").toggleClass("teachers_menu_active")
+            $("#teachers_menu").toggleClass("teachers_menu_active");
 
             const icon = $("#teachers_menu img")[0];
 
