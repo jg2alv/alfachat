@@ -39,4 +39,6 @@ function hideSideMenu() {
 	$(document.querySelector(".side_menu")).fadeOut(300, () => {
 		side_menu_img.addEventListener("click", showSideMenu);
 	});
+	$("#teachers_menu").toggleClass("teachers_menu_active");
+	$("#teachers_menu div").eq(3).slideUp();
 }
