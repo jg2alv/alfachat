@@ -12,6 +12,10 @@
         header("Location: ../"); // If user isn't logged in
     } else {
         $sql = mysqli_fetch_assoc($sql);
+        if (!empty($_POST["s"])) {
+            echo json_encode($sql);
+            die();
+        }
     }
 ?>
 
@@ -23,6 +27,7 @@
     <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Didact+Gothic'>
     <link rel='icon' type='image/png' href='../img/logo_short.png'>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
     <script src="../js/connection.js"></script>
     <script src="../js/toast.class.js"></script>
     <?php
@@ -40,20 +45,39 @@
     <title>AlfaChat | Conversas</title>
 </head>
 <body>
-    <?php
-        echo "<input type='hidden' value='" . json_encode($sql) . "'>";
-    ?>
     <div class="side_menu">
         <div class="side_menu_visible">
             <header>
-                <img id="user_img"><br>
-                <span id="user_name"></span><br>
-                <span id="user_rg"></span>
+                <img id="user_img" src="<?php echo $_SESSION["photo"] ? $_SESSION["photo"] : "assets/avatars/users/default.png"; ?>"><br>
+                <span id="user_name" style="font-weight: bold"><?php echo $_SESSION["name"]; ?></span><br>
+                <span id="user_ra"><?php echo $_SESSION["ra"]; ?></span>
             </header>
-            <main>
+            <main style="overflow-y: auto">
                 <div id="new_group" class="menu_icon"><div class="pic"><img style="max-width: 50%"  src="assets/icons/group.png" alt="Novo Grupo"></div><div class="info" style="flex: 4">Novo Grupo</div></div>
-                <div id="config" class="menu_icon"><div class="pic"><img style="max-width: 50%" src="assets/icons/settings.png" alt="Config"></div><div class="info" style="flex: 4">Configura&ccedil;&otilde;es</div></div>
+                <div style="flex-direction: column; justify-content: center; padding: 0" id="teachers_menu" class="menu_icon">
+                    <div style="display: flex; padding-left: 20px">
+                        <div class="pic"><img style="max-width: 50%"  src="assets/icons/play.png" alt="Professores"></div>
+                        <div class="info" style="flex: 4">Professores</div>
+                    </div>
+                    <div style="padding-top: 15px; height: auto; display: none; margin-bottom: 10px">
+                        <?php
+                            $sql = "SELECT * FROM `teachers`";
+                            $sql = mysqli_query($conn, $sql);
+                            $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
+
+                            foreach($sql as $teacher) {
+                                $teacher["photo"] = $teacher["photo"] === null ? "assets/avatars/users/default.png" : $teacher["photo"];
+
+                                echo "<div class='menu_icon' teacher='' data-id='" . base64_encode("teacher:" . $teacher["id"]) . "'><div class='pic'><img src='" . $teacher["photo"] . "'></div><div class='info teacher_info_wrapper'><div class='teacher_info_general'><div>" . $teacher["name"] . "</div><div>" . $teacher["subject"] . "</div></div><div class='teacher_info_status'><div class='teacher_status " . $teacher["status"] . "'></div></div></div>";
+                            }
+                        ?>
+                    </div>
+                </div>
             </main>
+            <footer style="padding: 0; margin-top: 15px; padding-top: 10px">
+                <div id="config" class="menu_icon"><div class="pic"><img style="max-width: 50%" src="assets/icons/settings.png" alt="Config"></div><div class="info" style="flex: 4">Configura&ccedil;&otilde;es</div></div>
+                <div class="menu_icon"><div class="pic" style="margin: 0 15px"><img src="assets/icons/release.png" style="width: 200%; border-radius: 0"></div><div class="info"><a target="_blank" href="https://github.com/alfachat/alfachat/releases" id="version"></a></div></div>
+            </footer>
         </div>
         <div class="side_menu_bg"></div>
     </div>
@@ -71,7 +95,7 @@
             </div>
         </div>
         <footer class="submenu_btns">
-            <div onclick="hideSideMenu()">FECHAR</div>
+            <div>FECHAR</div>
             <button type="submit">PROSSEGUIR</button>
         </footer>
     </form>
@@ -87,7 +111,7 @@
             <div class="members_result" hidden></div>
             <div class="members"></div>
             <footer class="submenu_btns" style="flex: 1">
-                <div onclick="hideSideMenu()">FECHAR</div>
+                <div>FECHAR</div>
                 <button type="submit">PROSSEGUIR</button>
             </footer>    
        </main> 
@@ -107,11 +131,11 @@
             </div>
             <div class="settings_menu_user_area">
                 <div class="pic">
-                    <img src="" alt="">
+                    <img src="<?php echo $_SESSION["photo"] ? $_SESSION["photo"] : "assets/avatars/users/default.png"; ?>">
                 </div>
                 <div class="info">
-                    <div style="font-weight: bold;"></div>
-                    <div style="font-size: 16px; color: #cccccc"></div>
+                    <div style="font-weight: bold;"><?php echo $_SESSION["name"]; ?></div>
+                    <div style="font-size: 16px; color: #cccccc"><?php echo $_SESSION["ra"]; ?></div>
                 </div>
             </div>
         </header>
@@ -131,7 +155,7 @@
                     </div>
                 </div>
                 <div style="background-color: #291a46; flex: 3; flex-direction: column; justify-content: center; align-items: center; display: flex">
-                    <img id="settings_menu_advanced_profile_pic" src="" alt="">
+                    <img id="settings_menu_advanced_profile_pic" src="<?php echo $_SESSION["photo"] ? $_SESSION["photo"] : "assets/avatars/users/default.png" ?>" alt="">
                     <div>
                         <input id="profile_pic_input" type="file" style="display: none" accept="image/*">
                         <label for="profile_pic_input" style="text-transform: uppercase; font-weight: bold; cursor: pointer; text-align: center; padding: 10px 30px; border-radius: 20px; background-color: #35215a">Mudar foto de perfil</label>
@@ -145,7 +169,7 @@
                     <img src="assets/icons/name.png" alt="Mudar nome">
                 </div>
                 <div class="info">
-                    <span id="settings_menu_name"><?php echo $sql["name"] ?></span>
+                    <span id="settings_menu_name"><?php echo $_SESSION["name"] ?></span>
                     <span class="settings_menu_subtitle">Nome</span>
                 </div>
             </div>
@@ -154,7 +178,7 @@
                     <img src="assets/icons/ra.png" alt="Mudar ra">
                 </div>
                 <div class="info">
-                    <span id="settings_menu_ra"><?php echo $sql["ra"] ?></span>
+                    <span id="settings_menu_ra"><?php echo $_SESSION["ra"] ?></span>
                     <span class="settings_menu_subtitle">RA</span>
                 </div>
             </div>
@@ -185,10 +209,7 @@
                         continue;
                     }
                     $chat_info = mysqli_fetch_assoc($sql);
-                    $photo = $chat_info["photo"];
-                    if (!$photo) {
-                        $photo = "assets/avatars/users/default.png"; // If user doesn't have a photo (setting according to js/chats relative path)
-                    }
+                    $photo = $chat_info["photo"] ? $chat_info["photo"] : "assets/avatars/users/default.png";
                     $name = $chat_info["name"];
                     $bio = $chat_info["bio"];
                     echo "<div class='chat' data-id='" . base64_encode($chat_info["id"]) . "'><div class='pic'><img src='$photo'></div><div class='info'><div>$name</div><div>$bio</div></div></div>";
@@ -212,10 +233,7 @@
                             continue;
                         }
                         $chat_info = mysqli_fetch_assoc($sql);
-                        $photo = $chat_info["photo"];
-                        if (!$photo) {
-                            $photo = "assets/avatars/groups/default.png"; // If group doesn't have a photo (setting according to js/chats relative path)
-                        }
+                        $photo = $chat_info["photo"] ? $chat_info["photo"] : "assets/avatars/users/default.png";
                         $name = $chat_info["name"];
                         $bio = $chat_info["description"] ? $chat_info["description"] : "Grupo de amantes do AlfaChat";
                         echo "<div class='chat' data-id='" . base64_encode("group:" . $chat_info["id"]) . "'><div class='pic'><img src='$photo'></div><div class='info'><div>$name</div><div>$bio</div></div></div>";
@@ -229,7 +247,7 @@
     <div class="chats">
         <div class="choose_chat">Escolha uma conversa para entrar</div>
         <header>
-            <img src="assets/icons/arrow.png" alt="Back Arrow" onclick="closeChat()">
+            <img src="assets/icons/arrow.png" alt="Back Arrow">
             <div style="display: flex; justify-content: flex-start; align-items: flex-start; flex-direction: column">
                 <div></div>
                 <div></div>
@@ -252,5 +270,51 @@
         </form>
     </div>
     </div>
+    <script>
+        async function getSessionData() {
+            const xml = new XMLHttpRequest();
+            xml.open("POST", "./", true);
+            xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xml.send("s=1");
+
+            return new Promise(resolve => {
+                xml.onload = () => resolve(JSON.parse(xml.responseText));
+            });
+        }
+
+        const response = getSessionData().then(response => {
+            const keys = Object.keys(response);
+            
+            keys.forEach(key => sessionStorage[btoa(key)] = btoa(unescape(encodeURIComponent(response[key]))));
+        });
+
+        fetch("http://api.github.com/repos/alfachat/alfachat/tags").then(response =>  response.json().then(data => (data))).then(response => $("#version").html(response[response.length - 1]["name"]));
+
+
+        $(".submenu_btns div:nth-of-type(1)").on("click", hideSideMenu);
+        $(".chats header img").eq(0).on("click", closeChat);
+        $("#teachers_menu div").eq(0).on("click", e => {
+            $("#teachers_menu").toggleClass("teachers_menu_active")
+
+            const icon = $("#teachers_menu img")[0];
+
+            if (!icon.style.transform) {
+                icon.style.transform = "rotate(90deg)";
+                $("#teachers_menu div").eq(3).slideDown();
+            } else {
+                icon.style.transform = "";
+                $("#teachers_menu div").eq(3).slideUp();
+            }
+        })
+
+        $("[teacher]").on("click", e => {
+            if ($(e.currentTarget).find(".teacher_info_status div")[0].classList[$(e.currentTarget).find(".teacher_info_status div")[0].classList.length - 1] === "online") {
+                hideSideMenu();
+                openChat(e, e.currentTarget.children[1].children[0].children[0]);
+            } else {
+                // say the teacher is not available
+            }
+        })
+    </script>
 </body>
 </html>
