@@ -22,6 +22,7 @@ body {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
+	background-color: #35215a;
 }
 
 .side_menu_bg {
@@ -32,9 +33,11 @@ body {
 
 .side_menu_visible header {
 	background-color: #35215a;
+	margin-bottom: 20px;
 }
 
 .side_menu_visible header,
+.side_menu_visible footer,
 #new_group_menu_advanced header,
 #settings_menu header {
 	flex: 1;
@@ -52,16 +55,13 @@ body {
 }
 
 #user_name,
-#user_rg {
+#user_ra {
 	font-size: 18px;
 	padding-left: 5px;
 }
 
-#user_name {
-	font-weight: bold;
-}
-
-.side_menu_visible main {
+.side_menu_visible main,
+.side_menu_visible footer {
 	background-color: #291a46;
 }
 
@@ -83,7 +83,11 @@ body {
 	box-sizing: border-box;
 }
 
-.menu_icon:hover {
+.teachers_menu_active {
+	height: auto;
+}
+
+.menu_icon:not(.teachers_menu_active):hover {
 	background-color: #35215a;
 }
 
@@ -107,6 +111,52 @@ body {
 	border-radius: 5px;
 	background-color: #35215a;
 	display: none;
+}
+
+[teacher] {
+	padding-left: 70px;
+}
+
+.teacher_info_wrapper {
+	flex: 4 !important;
+	flex-direction: row !important;
+	justify-content: space-around !important;
+}
+
+.teacher_info_general {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	flex: 3
+}
+
+.teacher_info_status {
+	flex: 3;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.teacher_status {
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+}
+
+.online {
+	background-color: green;
+}
+
+.offline {
+	background-color: red;
+}
+
+.unavailable {
+	background-color: #999999;
+}
+
+.busy {
+	background-color: #a97000;
 }
 
 #new_group_menu {
@@ -174,6 +224,15 @@ body {
 .submenu_btns *:hover {
 	background-color: #291a46;
 	transition: 200ms all;
+}
+
+#version {
+	color: inherit;
+	text-decoration: none;
+}
+
+.menu_icon:hover #version {
+	text-decoration: underline;
 }
 
 #new_group_menu_advanced {
@@ -337,7 +396,7 @@ body {
 }
 
 .edit_profile:hover {
-	background-color: #291a46;
+	background-color: #291a46 !important;
 }
 
 .edit_profile:hover img {
@@ -377,7 +436,7 @@ body {
 }
 
 .settings_menu_icon:hover {
-	background-color: #291a46;
+	background-color: #291a46 !important;
 }
 
 .settings_menu_icon .pic img {
@@ -560,6 +619,10 @@ body {
 	align-content: flex-end;
 }
 
+div[data-message] {
+	display: grid;
+}
+
 .message {
 	display: grid;
 	align-items: center;
@@ -727,51 +790,10 @@ input[type=range]::-moz-range-thumb {
 	border: 0;
 }
 
-.message audio {
-	display: none;
-}
-
 .audio_time {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	max-width: 92px;
 	min-width: 90px;
-}
-
-@media only screen and (max-width: 999px) {
-	#new_group_menu_advanced {
-		width: 50vw;
-	}
-
-	.chats {
-		display: none;
-	}
-
-	.pic img {
-		max-width: 69%;
-	}
-
-	.chat_selector {
-		width: 100%;
-	}
-
-	.chats header img {
-		display: initial;
-		width: 9%;
-		margin-right: 20px;
-		margin-left: 15px;
-		margin-top: 20px;
-		cursor: pointer;
-	}
-}
-
-@media only screen and (max-width: 619px) {
-	#new_group_menu_advanced {
-		width: 60vw;
-	}
-
-	.chat_selector header input {
-		height: calc(6vh * 0.6);
-	}
 }
