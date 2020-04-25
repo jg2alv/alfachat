@@ -3,15 +3,6 @@ $(document).ready(() => {
 
 	side_menu_img.addEventListener("click", showSideMenu);
 
-	if (atob(sessionStorage["cGhvdG8="]) != "null") {
-		document.querySelector("#user_img").src = atob(sessionStorage["cGhvdG8="]);
-	} else {
-		document.querySelector("#user_img").src = "assets/avatars/users/default.png";
-	}
-
-	document.querySelector("#user_name").innerHTML = decodeURIComponent(escape(atob(sessionStorage["bmFtZQ=="])));
-	document.querySelector("#user_rg").innerHTML = atob(sessionStorage["cmE="]);
-
 	document.addEventListener("keydown", (k) => {
 		if (k.keyCode === 27 && ($(".submenu:visible").length || $(".side_menu:visible").length)) {
 			hideSideMenu();
@@ -25,16 +16,9 @@ function showSideMenu() {
 
 	setTimeout(() => side_menu_img.style.visibility = "hidden", 50);
 
-	if (!$(".chats:visible").length) {
-		// Mobile
-		$(".side_menu_bg")[0].style.flex = $(
-			".side_menu_visible"
-		)[0].style.flex = 1;
-	} else {
-		$(".side_menu_bg")[0].style.flex = 4;
-		$(".side_menu_visible").css("flex", 1);
-		$(".side_menu_visible").css("display", "flex");
-	}
+	$(".side_menu_bg")[0].style.flex = 4;
+	$(".side_menu_visible").css("flex", 1);
+	$(".side_menu_visible").css("display", "flex");
 
 	$(side_menu).css("display", "flex").hide().fadeIn(300, () => {
 		document.querySelector(".side_menu_bg").addEventListener("click", hideSideMenu);

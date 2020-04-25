@@ -18,13 +18,9 @@ $(document).ready(() => {
 	});
 
 	$('#settings_menu_header_drop_down span').eq(0).click(() => {
+		sessionStorage.clear();
 		location.href += '?log_out=1';
 	});
-
-	$('.settings_menu_user_area .pic img')[0].src = (atob(sessionStorage['cGhvdG8=']) != 'null') ? atob(sessionStorage['cGhvdG8=']) : $('.settings_menu_user_area .pic img')[0].src = 'assets/avatars/users/default.png';
-
-	$('.settings_menu_user_area .info div').eq(0).html(decodeURIComponent(escape(atob(sessionStorage["bmFtZQ=="]))));
-	$('.settings_menu_user_area .info div').eq(1).html(atob(sessionStorage['cmE=']));
 
 	$('.edit_profile').click(() => {
 		const edit_profile = $('#settings_menu > *[hidden]');
@@ -41,11 +37,6 @@ $(document).ready(() => {
 			edit_profile.attr('hidden', 1);
 		});
 	});
-
-	$('#settings_menu_advanced_profile_pic')[0].src = (atob(sessionStorage['cGhvdG8=']) != 'null') ? atob(sessionStorage['cGhvdG8=']) : $('#settings_menu_advanced_profile_pic')[0].src = 'assets/avatars/users/default.png';
-
-	// $('#settings_menu_name').html(atob(sessionStorage['bmFtZQ==']));		**REPLACE WITH PHP**
-	// $("#settings_menu_ra").html(atob(sessionStorage['cmE=']));			**REPLACE WITH PHP**
 
 	const photo = $("#settings_menu input[type='file']")[0];
 	$(photo).on("change", () => {

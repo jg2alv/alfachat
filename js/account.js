@@ -38,9 +38,7 @@ $("form").on("submit", e => {
 			toast.destroy(2500);
 		} else {
 			const response = JSON.parse(xml.responseText);
-			$(response).each((index, value) => {
-				sessionStorage[btoa(index)] = btoa(value);
-			});
+			Array.from(Object.keys(response)).forEach(key => sessionStorage[btoa(key)] = btoa(unescape(encodeURIComponent(response[key]))))
 			location.href = "chats/";
 		}
 	}
