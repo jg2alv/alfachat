@@ -14,9 +14,9 @@
     $c = base64_encode(filter_input(INPUT_POST, "m", FILTER_SANITIZE_SPECIAL_CHARS));
     $t = time();
 
-    $sql = "INSERT INTO `messages` (sender, reciever, content, time) VALUES ('$s', '$r', '$c', '$t');";
+    $sql = "INSERT INTO `messages` (sender, receiver, content, time) VALUES ('$s', '$r', '$c', '$t');";
     $sql = mysqli_query($conn, $sql);
 
-    $reciever = $r;
+    $receiver = $r;
     require "add_to_chatlist.inc.php";
 ?>

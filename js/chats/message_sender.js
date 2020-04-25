@@ -3,7 +3,7 @@ function messageSender() {
         input = $(".input_area input[type='text']")[0],
         btn = $(".input_area img")[1],
         file = $(".input_area input[type='file']")[0];
-    
+
     $(".input_area img").eq(0).on("click", () => $(file).click());
 
     file.addEventListener("change", e => {
@@ -11,7 +11,7 @@ function messageSender() {
     });
 
     form.addEventListener("submit", e => {
-        new Message({sender: atob(sessionStorage["aWQ="]), reciever: atob(id), content: input.value, file: 0, seen: 0, time: (new Date().getSeconds() / 1000), photo: sessionStorage["cGhvdG8="]}).sendMessage(e);
+        new Message({ sender: atob(sessionStorage["aWQ="]), receiver: atob(id), content: input.value, file: 0, seen: 0, time: (new Date().getSeconds() / 1000), photo: sessionStorage["cGhvdG8="] }).sendMessage(e);
     });
 
     input.addEventListener("keydown", k => {
@@ -21,7 +21,7 @@ function messageSender() {
         } else {
             btn.src = "assets/icons/send.png";
         }
-        
+
         setTimeout(() => {
             if (!input.value) {
                 btn.src = "assets/icons/audio.png";
@@ -31,14 +31,14 @@ function messageSender() {
 
     btn.addEventListener("click", () => {
         if (btn.src.indexOf("assets/icons/send.png") > -1) {
-            new Message({sender: atob(sessionStorage["aWQ="]), reciever: atob(id), content: input.value, file: 0, seen: 0, time: (new Date().getSeconds() / 1000), photo: sessionStorage["cGhvdG8="]}).sendMessage(e);
+            new Message({ sender: atob(sessionStorage["aWQ="]), receiver: atob(id), content: input.value, file: 0, seen: 0, time: (new Date().getSeconds() / 1000), photo: sessionStorage["cGhvdG8="] }).sendMessage(e);
         } else if (btn.src.indexOf("assets/icons/audio.png") > -1) {
             if (navigator.mediaDevices) {
                 let chunks = [],
-                mediaStream
+                    mediaStream
                 time = 0;
 
-                navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
+                navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
                     $(".input_area div").removeAttr("hidden");
                     $(btn).attr("hidden", "");
 
@@ -76,7 +76,7 @@ function messageSender() {
                         mediaRecorder.stop();
 
                         setTimeout(() => {
-                            const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+                            const blob = new Blob(chunks, { 'type': 'audio/ogg; codecs=opus' });
                             new Message().sendFile(false, blob);
                         }, 1000);
                     };

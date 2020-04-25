@@ -9,11 +9,11 @@
 
     $sent = time();
     $id = $_SESSION["id"];
-    $reciever = base64_decode($_POST["id"]);
+    $receiver = base64_decode($_POST["id"]);
     $file_name = $_FILES["file_user_input"]["name"];
     $file_size = $_FILES["file_user_input"]["size"];
     $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
-    $file_location = base64_encode("assets/files/$sent/$id/$reciever/$file_name");
+    $file_location = base64_encode("assets/files/$sent/$id/$receiver/$file_name");
     $root = "../chats/assets/files";
 
     if (!empty($_POST["audio"]) && !empty($_FILES["file_user_input"]["type"])) 
@@ -24,7 +24,7 @@
     checkDirectory($root);
     $root .= "/$id";
     checkDirectory($root);
-    $root .= "/$reciever";
+    $root .= "/$receiver";
     checkDirectory($root);
     $root .= "/$file_name";
 
@@ -33,7 +33,7 @@
 
     $sql = mysqli_insert_id($conn);
     
-    $sql = "INSERT INTO `messages` (sender, reciever, content, file, time) VALUES ($id, '$reciever', '0', $sql, $sent)";
+    $sql = "INSERT INTO `messages` (sender, receiver, content, file, time) VALUES ($id, '$receiver', '0', $sql, $sent)";
     $sql = mysqli_query($conn, $sql);
 
     move_uploaded_file($_FILES["file_user_input"]["tmp_name"], $root);

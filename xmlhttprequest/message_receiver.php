@@ -6,7 +6,7 @@
     $c = base64_decode($_POST["c"]);
     require_once "../includes/db.inc.php";
     if (strpos($c, "group") !== false) { // If that's a group
-        $sql = "SELECT * FROM `messages` WHERE reciever = '$c' ORDER BY time;";
+        $sql = "SELECT * FROM `messages` WHERE receiver = '$c' ORDER BY time;";
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
         $response = "["; // Starting artificial JSON
@@ -36,7 +36,7 @@
         session_start();
         $user = $_SESSION["id"];
         // Select all messages sent by me to him AND sent by him to me. Order by time.
-        $sql = "(SELECT * FROM `messages` WHERE sender = '$user' AND reciever = '$c') UNION (SELECT * FROM `messages` WHERE sender = '$c' AND reciever = '$user') ORDER BY time;";
+        $sql = "(SELECT * FROM `messages` WHERE sender = '$user' AND receiver = '$c') UNION (SELECT * FROM `messages` WHERE sender = '$c' AND receiver = '$user') ORDER BY time;";
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
         $response = "["; // Starting artificial JSON
