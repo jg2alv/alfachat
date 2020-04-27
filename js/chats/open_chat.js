@@ -1,6 +1,6 @@
-let id; // Setting global ID
-let scrollState = true;
-let update = true;
+let id,
+	scrollState = true,
+	update = true;
 
 $(document).ready(() => {
 	statusTimer(); // Start timer when window (chats) loads
@@ -53,16 +53,17 @@ function openChat(e, custom = false) {
 
 	statusBackend(`i=${id}&o=get`).then(res => {
 		if (!custom)
-			$(".chats header div div")[0].innerHTML = e.currentTarget.children[1].children[0].innerHTML;
+			$(".chats header div div").eq(0).html(e.currentTarget.children[1].children[0].innerHTML);
 		else
-		$(".chats header div div")[0].innerHTML = custom.innerHTML;
-		document.querySelectorAll(".chats header div div")[1].innerHTML = res;
+			$(".chats header div div").eq(0).html(custom.innerHTML);
+		$(".chats header div div").eq(1).html(res);
 	});
 
+	$('[teacher]').attr('style', 'background: #291a46');
 	$('.chats header div div')[0].setAttribute('data-id', id);
 
 	$('.chat').attr('style', 'background: #35215a'); // Removing "selected" background from every other div
-	e.currentTarget.style.background = '#291a46'; // Setting background to a darker one, indicating "selected"
+	e.currentTarget.style.backgroundColor = '#291a46'; // Setting background to a darker one, indicating "selected"
 
 	const chat_result_list = $('.chat_result_list')[0];
 	const chat_list = $('.chat_list')[0];
