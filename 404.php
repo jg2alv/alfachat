@@ -1,3 +1,3 @@
 <?php
-	header("Location: /AlfaChat/");
+	header("Location: /alfachat/");
 ?>
