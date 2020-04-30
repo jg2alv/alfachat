@@ -44,7 +44,7 @@ $(document).ready(() => {
 	$(".chat:visible").on("click", openChat);
 });
 
-function openChat(e, custom = false) {
+function openChat(e, customName = false, customStatus = false) {
 	canUpdate = false;
 	id = $(e.currentTarget).attr("data-id"); // base64 id value. Example: 1; group:11 (in base64)
 
@@ -52,14 +52,18 @@ function openChat(e, custom = false) {
 		return;
 
 	statusBackend(`i=${id}&o=get`).then(res => {
-		if (!custom)
+		if (!customName)
 			$(".chats header div div").eq(0).html(e.currentTarget.children[1].children[0].innerHTML);
 		else
-			$(".chats header div div").eq(0).html("Suporte de " + custom.innerHTML);
-		$(".chats header div div").eq(1).html(res);
+			$(".chats header div div").eq(0).html("Suporte de " + customName.innerHTML);
+		
+		if (!customStatus)
+			$(".chats header div div").eq(1).html(res);
+		else
+			$(".chats header div div").eq(1).html(customStatus);
 	});
 
-	$('[teacher]').attr('style', 'background: #291a46');
+	$('[subject]').attr('style', 'background: #291a46');
 	$('.chats header div div')[0].setAttribute('data-id', id);
 
 	$('.chat').attr('style', 'background: #35215a'); // Removing "selected" background from every other div
