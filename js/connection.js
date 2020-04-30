@@ -1,12 +1,12 @@
 $(document).ready(() => {
     $(window).on("offline", () => {
-        update = false;
+        canUpdate = false;
 
         const toast = new Toast("Conex&atilde;o perdida!", "background-color: #c80003;");
         toast.show();
 
         $(window).on("online", () => {
-            update = true;
+            canUpdate = true;
             $(window).off("online");
 
             toast.update("Online novamente!", "background-color: green; display: block;");

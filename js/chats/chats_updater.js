@@ -1,5 +1,5 @@
-function updateChats() {
-	if (!update) {
+function chatsUpdater() {
+	if (!canUpdate) {
 		return;
 	}
 
@@ -18,8 +18,8 @@ function updateChats() {
 			response = JSON.parse(xml.responseText);
 		} catch (e) {
 			message_area.html('');
-			if (update)
-				timeToUpdate(t0);
+			if (canUpdate)
+				update(t0, "chatsUpdater");
 			return;
 		}
 		if (!$('.chats:visible').length) {
@@ -104,8 +104,8 @@ function updateChats() {
 				message_area[0].scrollTop = message_area[0].scrollHeight
 		}
 
-		if (update)
-			timeToUpdate(t0);
+		if (canUpdate)
+			update(t0, "chatsUpdater");
 	};
 	return;
 }
@@ -119,14 +119,22 @@ function convertUnits(bytes) {
 	return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
-function timeToUpdate(t0) {
+function update(t0, callback, limit = false) {
 	const diff = performance.now() - t0;
 
 	if (diff < UPDATE_TIME) {
-		setTimeout(updateChats, UPDATE_TIME - diff);
+		setTimeout(() => {
+			if (limit)
+				window[callback](limit);
+			else
+				window[callback]();
+		}, UPDATE_TIME - diff);
 		return;
 	} else {
-		updateChats();
+		if (limit)
+				window[callback](limit);
+			else
+				window[callback]();
 		return;
 	}
 }

@@ -1,6 +1,6 @@
 let id,
 	scrollState = true,
-	update = true;
+	canUpdate = true;
 
 $(document).ready(() => {
 	statusTimer(); // Start timer when window (chats) loads
@@ -45,7 +45,7 @@ $(document).ready(() => {
 });
 
 function openChat(e, custom = false) {
-	update = false;
+	canUpdate = false;
 	id = $(e.currentTarget).attr("data-id"); // base64 id value. Example: 1; group:11 (in base64)
 
 	if (id === e.currentTarget.children[1].children[0].getAttribute('data-id') && $('.chats:visible').length)
@@ -55,7 +55,7 @@ function openChat(e, custom = false) {
 		if (!custom)
 			$(".chats header div div").eq(0).html(e.currentTarget.children[1].children[0].innerHTML);
 		else
-			$(".chats header div div").eq(0).html(custom.innerHTML);
+			$(".chats header div div").eq(0).html("Suporte de " + custom.innerHTML);
 		$(".chats header div div").eq(1).html(res);
 	});
 
@@ -80,8 +80,8 @@ function openChat(e, custom = false) {
 	$('.input_area').attr('style', 'display: flex');
 	$('.chats header').attr('style', 'display: flex');
 	$('.input_area input').focus();
-	scrollState = update = true;
-	updateChats();
+	scrollState = canUpdate = true;
+	chatsUpdater();
 
 	// $('.chats header img')[1].addEventListener('click', () => {
 	// 	if ($('#settings_menu_header_drop_down_2').css('display') === 'block') {
@@ -105,11 +105,4 @@ function addZero(i) {
 		i = '0' + i;
 	}
 	return i;
-}
-
-function closeChat() {
-	$('.chat_selector')[0].style.display = 'block';
-	$('.chats')[0].style.display = 'none';
-	$('.chats')[0].style.width = '';
-	$('.chat').attr('style', 'background: #35215a'); // Removing "selected" background from every other div
 }
