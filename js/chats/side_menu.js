@@ -38,8 +38,8 @@ function hideSideMenu() {
 	setTimeout(() => side_menu_img.style.visibility = "", 150);
 	$(document.querySelector(".side_menu")).fadeOut(300, () => {
 		side_menu_img.addEventListener("click", showSideMenu);
-		$("#teachers_menu").removeClass("teachers_menu_active");
-		$("#teachers_menu img")[0].style.transform = "";
-		$("#teachers_menu div").eq(3).slideUp();
+		$("#subjects_menu").removeClass("subjects_menu_active");
+		$("#subjects_menu img")[0].style.transform = "";
+		$("#subjects_menu div").eq(3).slideUp();
 	});
 }
