@@ -27,14 +27,7 @@ function chatListUpdater() {
         }
     }
 
-    const t1 = performance.now(),
-        diff = t1 - t0;
-
-    if (diff < 300) {
-        setTimeout(chatListUpdater, 300 - diff);
-    } else {
-        chatListUpdater();
-    }
+    update(t0, "chatListUpdater");
 
     return;
 }
