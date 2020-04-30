@@ -9,15 +9,15 @@
 
     require_once "../includes/db.inc.php";
 
-    $s = $_SESSION["id"];
+    $sender = $_SESSION["id"];
     $receiver = base64_decode($_POST["id"]); // ID of the person I'm talking to
-    $c = base64_encode(filter_input(INPUT_POST, "m", FILTER_SANITIZE_SPECIAL_CHARS));
-    $t = time();
+    $content = base64_encode(filter_input(INPUT_POST, "m", FILTER_SANITIZE_SPECIAL_CHARS));
+    $time = time();
 
-    if (strpos($receiver, "teacher") !== false)
-        $sql = "INSERT INTO `doubts` (sender, assiginee, content, time) VALUES ('$s', '$receiver', '$c', '$t')";
+    if ($receiver === "0")
+        $sql = "INSERT INTO `doubts` (sender, assignee, content, time) VALUES ('$sender', '$receiver', '$content', '$time')";
     else
-        $sql = "INSERT INTO `messages` (sender, receiver, content, time) VALUES ('$s', '$receiver', '$c', '$t')";
+        $sql = "INSERT INTO `messages` (sender, receiver, content, time) VALUES ('$sender', '$receiver', '$content', '$time')";
 
     $sql = mysqli_query($conn, $sql);
 
