@@ -11,9 +11,9 @@
     function get($conn) {
         session_start();
         $i = base64_decode($_POST["i"]); // #encryption lol
-        $id = explode(":", $i)[1];
 
         if (strpos($i, "group") !== false) { // If that's a group (status is member count)
+            $id = explode(":", $i)[1];
             $sql = "SELECT * FROM `groups` WHERE id = $id"; // Getting info on group
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_assoc($sql);
@@ -37,10 +37,7 @@
                 $status .= ", " . $count . " online";
             }
         } else {
-            if (strpos($i, "teacher") !== false)
-                $sql = "SELECT * FROM `teachers` WHERE id = $id"; // Getting user info
-            else if (strpos($i, "student") !== false)
-                $sql = "SELECT * FROM `students` WHERE id = $id"; // Getting user info
+            $sql = "SELECT * FROM `users` WHERE id = $i"; // Getting user info
 
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_assoc($sql);
@@ -55,7 +52,7 @@
         session_start();
         $id = $_SESSION["id"];
         $i = $_POST["i"];
-        $sql = "UPDATE `students` SET `status` = '$i' WHERE id = $id"; // Updating user status to given
+        $sql = "UPDATE `users` SET `status` = '$i' WHERE id = $id"; // Updating user status to given
         mysqli_query($conn, $sql);
     }
 
