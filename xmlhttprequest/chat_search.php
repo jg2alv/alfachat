@@ -12,7 +12,7 @@
     $id = $_SESSION["id"];
     $city = $_SESSION["city"];
 
-    $sql = ($class === "0") ? $sql = "SELECT * FROM `users` WHERE (name LIKE '%$q%' OR ra LIKE '%$q%') AND id <> $id;" : $sql = "SELECT * FROM `users` WHERE (name LIKE '%$q%' OR ra LIKE '%$q%') AND class = '$class' AND city = '$city' AND id <> $id;";
+    $sql = "SELECT * FROM `users` WHERE (name LIKE '%$q%' OR ra LIKE '%$q%') AND class = '$class' AND city = '$city' AND id <> $id;";
     
     $sql = mysqli_query($conn, $sql); // Search
     if (mysqli_num_rows($sql))

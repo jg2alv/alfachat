@@ -28,11 +28,10 @@
         $sql = mysqli_query($conn, $sql);
         if (!mysqli_num_rows($sql)) {
             $bug_time = time();
-            if (strpos($user, ":") === false) {
+            if (strpos($user, "group") === false)
                 $sql = "INSERT INTO `log` (`file`, `session`, `msg`, `time`) VALUES ('xmlhttprequest/chat_list_refresher.php', 'PHP chat list loading', 'User ID $user does not exist', $bug_time)";
-            } else {
-                $sql = "INSERT INTO `log` (`file`, `session`, `msg`, `time`) VALUES ('xmlhttprequest/chat_list_refresher.php', 'PHP chat list loading', 'Class ID $user does not exist', $bug_time)";
-            }
+            else
+                $sql = "INSERT INTO `log` (`file`, `session`, `msg`, `time`) VALUES ('xmlhttprequest/chat_list_refresher.php', 'PHP chat list loading', 'Group ID $user does not exist', $bug_time)";
             mysqli_query($conn, $sql);
             continue;
         }
