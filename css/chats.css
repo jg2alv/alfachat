@@ -83,11 +83,11 @@ body {
 	box-sizing: border-box;
 }
 
-.teachers_menu_active {
+.subjects_menu_active {
 	height: auto;
 }
 
-.menu_icon:not(.teachers_menu_active):hover {
+.menu_icon:not(.subjects_menu_active):hover {
 	background-color: #35215a !important;
 }
 
@@ -113,39 +113,35 @@ body {
 	display: none;
 }
 
-[teacher] {
+[subject] {
 	padding-left: 70px;
 }
 
-.teacher_info_wrapper {
+.subject_info_wrapper {
 	flex: 4 !important;
 	flex-direction: row !important;
 	justify-content: space-around !important;
 }
 
-.teacher_info_general {
+.subject_info_general {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;
-	flex: 3
+	flex: 3;
 }
 
-.teacher_info_status {
-	flex: 3;
+.subject_info_status {
+	flex: 1;
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: left;
 }
 
-.teacher_status {
+.subject_status {
 	width: 15px;
 	height: 15px;
 	border-radius: 50%;
 	background-color: green;
-}
-
-.busy {
-	background-color: #a97000;
 }
 
 #new_group_menu {
