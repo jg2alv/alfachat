@@ -9,7 +9,7 @@ function updateChats() {
 
 	let chats = document.createElement("div");
 	
-	xml.open('POST', '../xmlhttprequest/message_reciever.php', true);
+	xml.open('POST', '../xmlhttprequest/message_receiver.php', true);
 	xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	xml.send('c=' + id);
 	xml.onload = () => {
