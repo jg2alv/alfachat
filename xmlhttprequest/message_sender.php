@@ -15,7 +15,7 @@
     $t = time();
 
     if (strpos($receiver, "teacher") !== false)
-        $sql = "INSERT INTO `doubts` (sender, assiginee, content, time) VALUES ('student:$s', '$receiver', '$c', '$t')";
+        $sql = "INSERT INTO `doubts` (sender, assiginee, content, time) VALUES ('$s', '$receiver', '$c', '$t')";
     else
         $sql = "INSERT INTO `messages` (sender, receiver, content, time) VALUES ('$s', '$receiver', '$c', '$t')";
 
