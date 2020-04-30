@@ -4,8 +4,7 @@
     require "../includes/report_bug.inc.php";
 
     $id = $_SESSION["id"];
-    $table = $_SESSION["table"];
-    $sql = "SELECT * FROM `$table` WHERE id = $id;";
+    $sql = "SELECT * FROM `users` WHERE id = $id";
     $sql = mysqli_query($conn, $sql);
 
     if ((!empty($_GET["log_out"])) || (empty($_SESSION) || !(mysqli_num_rows($sql)))) {
@@ -20,5 +19,5 @@
         }
     }
 
-    require ($_SESSION["table"] === "teachers") ? "../UI/teacher.php" : "../UI/student.php";
+    require ($_SESSION["type"] === "teacher") ? "../UI/teacher.php" : "../UI/student.php";
 ?>
