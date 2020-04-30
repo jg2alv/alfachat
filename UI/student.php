@@ -58,7 +58,7 @@
                                     $("#teacher_list").html(teachers_list.innerHTML);
                                     $("[subject]").on("click", e => {
                                         hideSideMenu();
-                                        openChat(e, e.currentTarget.children[1].children[0].children[0]);
+                                        atob($(e.currentTarget).attr("data-id")) === "0" ? openChat(e, e.currentTarget.children[1].children[0].children[0], "offline") : openChat(e, e.currentTarget.children[1].children[0].children[0], "online");
                                         $('[subject]').attr('style', 'background: #291a46'); // Removing "selected" background from every other div
                                         e.currentTarget.style.backgroundColor = '#35215a'; // Setting background to a darker one, indicating "selected"
                                     });

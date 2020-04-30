@@ -122,19 +122,10 @@ function convertUnits(bytes) {
 function update(t0, callback, limit = false) {
 	const diff = performance.now() - t0;
 
-	if (diff < UPDATE_TIME) {
-		setTimeout(() => {
-			if (limit)
-				window[callback](limit);
-			else
-				window[callback]();
-		}, UPDATE_TIME - diff);
-		return;
-	} else {
-		if (limit)
-				window[callback](limit);
-			else
-				window[callback]();
-		return;
-	}
+	if (diff < UPDATE_TIME)
+		setTimeout(() => limit ? window[callback](limit) : window[callback](), UPDATE_TIME - diff);
+	else
+		limit ? window[callback](limit) : window[callback]();
+	
+	return;
 }
