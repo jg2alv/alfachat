@@ -1,7 +1,5 @@
 <?php
 function reportBug($conn, $sql, $msg) {
-    $sql = mysqli_query($conn, $sql);
-    
     if (!mysqli_num_rows($sql)) {
         $bug_time = time();
         $sql = "INSERT INTO `log` (`file`, `session`, `msg`, `time`) VALUES ('chats/index.php', 'PHP chat page loading', '$msg', $bug_time)";
