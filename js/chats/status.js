@@ -2,7 +2,7 @@ function statusTimer() {
     let timer = 0;
     const msg = "o=set&i=Visto%20pela%20última%20vez%20há%20"; // Setting default message
     setInterval(() => {
-        statusBackend(`i=${id}&o=get`); // Getting user's classes status & setting on frontend.
+        statusBackend(`i=${id}&o=get`).then(res => atob(id) === "0" ? null : $(".chats header div div").eq(1).html(res))
         timer += 1; // Adding to timer (seconds)
         switch (true) {
             case timer >= 1 && timer < 6: // If timer is between 1 and 5 (both included) seconds
@@ -23,7 +23,6 @@ function statusTimer() {
         timer = 0;
         statusBackend("i=online&o=set"); // Setting MY status to online
         statusBackend(`i=${id}&o=get`); // Refreshing frontend
-
     };
 }
 
@@ -32,6 +31,5 @@ function statusBackend(arg) {
     xml.open("POST", "../xmlhttprequest/status.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xml.send(arg); // Sending request with given args
-    if (arg.indexOf("get") > -1) // If this is a GET operation
-        return new Promise(resolve => xml.onload = () => resolve(xml.responseText));
+    return new Promise(resolve => xml.onload = () => resolve(xml.responseText));
 }
