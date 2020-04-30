@@ -32,24 +32,47 @@
             </header>
             <main style="overflow-y: auto">
                 <div id="new_group" class="menu_icon"><div class="pic"><img style="max-width: 50%"  src="assets/icons/group.png" alt="Novo Grupo"></div><div class="info" style="flex: 4">Novo Grupo</div></div>
-                <div style="flex-direction: column; justify-content: center; padding: 0" id="teachers_menu" class="menu_icon">
+                <div style="flex-direction: column; justify-content: center; padding: 0" id="subjects_menu" class="menu_icon">
                     <div style="display: flex; padding-left: 20px; min-height: 100%; min-width: 100%; box-sizing: border-box">
                         <div class="pic"><img style="max-width: 50%"  src="assets/icons/play.png" alt="Professores"></div>
-                        <div class="info" style="flex: 4">Professores</div>
+                        <div class="info" style="flex: 4">Disciplinas</div>
                     </div>
-                    <div style="padding-top: 15px; height: auto; display: none; margin-bottom: 10px">
+                    <div id="teacher_list" style="padding-top: 15px; height: auto; display: none; margin-bottom: 10px">
                         <?php
-                            $sql = "SELECT * FROM `teachers` WHERE status = 'online'";
-                            $sql = mysqli_query($conn, $sql);
-                            $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
-
-                            foreach($sql as $teacher) {
-                                $teacher["photo"] = $teacher["photo"] === null ? "assets/avatars/users/default.png" : $teacher["photo"];
-
-                                echo "<div class='menu_icon' teacher='' data-id='" . base64_encode("teacher:" . $teacher["id"]) . "'><div class='pic'><img src='" . $teacher["photo"] . "'></div><div class='info teacher_info_wrapper'><div class='teacher_info_general'><div>" . $teacher["name"] . "</div><div>" . $teacher["subject"] . "</div></div><div class='teacher_info_status'><div class='teacher_status'></div></div></div></div>";
-                            }
+                            require "../includes/teachers_list.inc.php";
                         ?>
                     </div>
+                    <script>
+                        function teacherListUpdater() {
+                            const xml = new XMLHttpRequest(),
+                                t0 = performance.now();
+
+                            xml.open("POST", "../includes/teachers_list.inc.php", true);
+                            xml.send(null);
+
+                            xml.onload = e => {
+                                const teachers_list = document.createElement("div");
+                                teachers_list.innerHTML = e.target.responseText;
+
+                                if ($("#teacher_list").html() !== teachers_list.innerHTML) {
+                                    $("#teacher_list").html(teachers_list.innerHTML);
+                                    $("[subject]").on("click", e => {
+                                        hideSideMenu();
+                                        openChat(e, e.currentTarget.children[1].children[0].children[0]);
+                                        $('[subject]').attr('style', 'background: #291a46'); // Removing "selected" background from every other div
+                                        e.currentTarget.style.backgroundColor = '#35215a'; // Setting background to a darker one, indicating "selected"
+                                    });
+                                }
+                                
+                                $(document).remove(teachers_list);
+                                update(t0, "teacherListUpdater");
+                            }
+
+                            return;
+                        }
+
+                        teacherListUpdater();
+                        </script>
                 </div>
             </main>
             <footer style="padding: 0; margin-top: 15px; padding-top: 10px">
@@ -172,18 +195,14 @@
         <?php
             echo "<div class='chat_list' ";
             $id = $_SESSION["id"]; // Getting user id
-            $sql = "SELECT * FROM `students` WHERE id = $id"; // Selecting logged user
+            $sql = "SELECT chats FROM `users` WHERE id = $id"; // Selecting logged user
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_assoc($sql);
             echo "data-chats='" . base64_encode($sql["chats"]) . "'>";
-            foreach (explode(",", $sql["chats"]) as $chat) {
+            $sql = explode(",", $sql["chats"]);
+            foreach ($sql as $chat) {
                 $id = explode(":", $chat)[1];
-                if (strpos($chat, "student") !== false) {
-                    $sql = "SELECT * FROM `students` WHERE id = $id";
-                    if (reportBug($conn, $sql, "Student ID $id does not exist"))
-                        continue;
-                    $type = "student:";
-                } else if (strpos($chat, "group") !== false) { // If that's a group
+                if (strpos($chat, "group") !== false) { // If that's a group
                     if ($id < 13) { // If it's a class group (group:1 to group:12)
                         if ($id > 9) {
                             $chat = ($id-9) . "° Ano - Ensino M&eacute;dio";
@@ -195,22 +214,21 @@
                         continue;
                     } else { // If that's not a class group
                         $sql = "SELECT * FROM `groups` WHERE id = $id";
+                        $sql = mysqli_query($conn, $sql);
                         if (reportBug($conn, $sql, "Group ID $id does not exist"))
                             continue;
                         $type = "group:";
                     }
-                } else if (strpos($chat, "teacher") !== false) {
-                    $sql = "SELECT * FROM `teachers` WHERE id = $id";
+                } else {
+                    $sql = "SELECT * FROM `users` WHERE id = $id";
+                    $sql = mysqli_query($conn, $sql);
                     if (reportBug($conn, $sql, "Teacher ID $id does not exist"))
                         continue;
-                    $type = "teacher:";
+                    $type = "";
                 }
 
-                $sql = mysqli_query($conn, $sql);
-                $chat_info = mysqli_fetch_assoc($sql);
-                $photo = $chat_info["photo"] ? $chat_info["photo"] : "assets/avatars/users/default.png";
-                $name = $chat_info["name"];
-                echo "<div class='chat' data-id='" . base64_encode($type . $chat_info["id"]) . "'><div class='pic'><img src='$photo'></div><div class='info'><div>$name</div><div>$bio</div></div></div>";
+                $sql = mysqli_fetch_assoc($sql);
+                echo "<div class='chat' data-id='" . base64_encode($type . $sql["id"]) . "'><div class='pic'><img src='" . $sql["photo"] . "'></div><div class='info'><div>" . $sql["name"] . "</div><div>" . $sql["bio"] . "</div></div></div>";
             }
             echo "</div>";
         ?>
@@ -264,26 +282,18 @@
 
 
         $(".submenu_btns div:nth-of-type(1)").on("click", hideSideMenu);
-        $(".chats header img").eq(0).on("click", closeChat);
-        $("#teachers_menu div").eq(0).on("click", e => {
-            $("#teachers_menu").toggleClass("teachers_menu_active");
+        $("#subjects_menu div").eq(0).on("click", e => {
+            $("#subjects_menu").toggleClass("subjects_menu_active");
 
-            const icon = $("#teachers_menu img")[0];
+            const icon = $("#subjects_menu img")[0];
 
             if (!icon.style.transform) {
                 icon.style.transform = "rotate(90deg)";
-                $("#teachers_menu div").eq(3).slideDown();
+                $("#subjects_menu div").eq(3).slideDown();
             } else {
                 icon.style.transform = "";
-                $("#teachers_menu div").eq(3).slideUp();
+                $("#subjects_menu div").eq(3).slideUp();
             }
-        });
-
-        $("[teacher]").on("click", e => {
-            hideSideMenu();
-            openChat(e, e.currentTarget.children[1].children[0].children[0]);
-            $('[teacher]').attr('style', 'background: #291a46'); // Removing "selected" background from every other div
-            e.currentTarget.style.backgroundColor = '#35215a'; // Setting background to a darker one, indicating "selected"
         });
     </script>
 </body>
