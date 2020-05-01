@@ -1,17 +1,15 @@
-function chatsUpdater() {
-	if (!canUpdate) {
+function chatsUpdater(limit) {
+	if (!canUpdate)
 		return;
-	}
 
 	const xml = new XMLHttpRequest(),
 		message_area = $('.message_area'),
-		t0 = performance.now();
+		t0 = performance.now(),
+		chats = document.createElement("div");
 
-	let chats = document.createElement("div");
-	
 	xml.open('POST', '../xmlhttprequest/message_receiver.php', true);
 	xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	xml.send('c=' + id);
+	xml.send(`id=${id}&limit=${limit}`);
 	xml.onload = () => {
 		let response; // Try/ Catch has an specific scope. Declaring 'response' inside it doesn't work (since I'm using 'response' outside it as well)
 		try {
@@ -19,30 +17,23 @@ function chatsUpdater() {
 		} catch (e) {
 			message_area.html('');
 			if (canUpdate)
-				update(t0, "chatsUpdater");
+				update(t0, "chatsUpdater", limit);
 			return;
-		}
-		if (!$('.chats:visible').length) {
-			// Mobile
-			$('.chat_selector')[0].style.display = 'none';
-			$('.chats')[0].style.display = 'grid';
-			$('.chats')[0].style.width = '100%';
 		}
 
 		response.forEach((message, index) => chats.innerHTML += new Message(message, index).parse());
 
-		switch(true) {
+		switch (true) {
 			case $(message_area).css('display') === 'none':
 				$(message_area).css('display', 'block');
-			
+
 
 			case message_area[0].children.length !== chats.children.length:
 				$(message_area).html(chats.innerHTML);
+				$(document).remove(chats);
 
 				$(message_area).off("scroll");
-				$(message_area).on('scroll', () => {
-					scrollState = false;
-				});
+				$(message_area).on('scroll', () => canScroll = false);
 
 				if (!$(".audio").length)
 					$(message_area).css('visibility', 'visible');
@@ -90,33 +81,51 @@ function chatsUpdater() {
 				});
 
 				$("input[type='range']").off("input");
-				$("input[type='range']").on("input", e => {
-					const input = e.currentTarget;
-					$(input).siblings('audio')[0].currentTime = Number(input.value)
-				});
-				
-			
+				$("input[type='range']").on("input", e => $(e.currentTarget).siblings('audio')[0].currentTime = Number(e.currentTarget.value));
+
+				const observerOptions = { root: $(".message_area")[0], rootMargin: "50%" }; // Global options for both Intersection Observers
+
+				const imageObserver = new IntersectionObserver(entries => { // Observer to lazy-load images
+					entries.forEach(entry => {
+						if (!entry.isIntersecting) {
+							$(entry.target).attr("data-src", $(entry.target).attr("src"));
+							$(entry.target).removeAttr("src");
+						} else {
+							$(entry.target).attr("src", $(entry.target).attr("data-src"));
+							$(entry.target).removeAttr("data-src");
+						}
+					})
+				}, observerOptions); // Getting global options
+
+				const messageObserver = new IntersectionObserver((entries, observer) => { // Observer to lazy-load messages
+					entries.forEach(entry => {
+						if (!entry.isIntersecting)
+							return;
+
+						observer.unobserve(entry.target);
+
+						//chatsUpdater(limit + 100);
+						return;
+					});
+				}, observerOptions); // Getting global options
+
+				$("[data-src]").each((index, item) => imageObserver.observe(item)); // For every image with data-src attr (images to be lazy loaded)
+
+				messageObserver.observe($("[data-message=0]")[0]); // Observe the first message
+
+
 			case message_area[0].scrollTop === message_area[0].scrollHeight:
-				scrollState = true;
+				canScroll = true;
 
 
-			case scrollState:
+			case canScroll:
 				message_area[0].scrollTop = message_area[0].scrollHeight
 		}
 
 		if (canUpdate)
-			update(t0, "chatsUpdater");
+			update(t0, "chatsUpdater", limit);
 	};
 	return;
-}
-
-function convertUnits(bytes) {
-	if (bytes === 0)
-		return '0 bytes';
-	const k = 1024,
-		sizes = [ 'bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB' ],
-		i = Math.floor(Math.log(bytes) / Math.log(k));
-	return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
 function update(t0, callback, limit = false) {
@@ -126,6 +135,6 @@ function update(t0, callback, limit = false) {
 		setTimeout(() => limit ? window[callback](limit) : window[callback](), UPDATE_TIME - diff);
 	else
 		limit ? window[callback](limit) : window[callback]();
-	
+
 	return;
 }
