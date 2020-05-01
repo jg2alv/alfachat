@@ -122,7 +122,7 @@
             <div style="display: flex; justify-content: space-between; flex: 1;">
                 <span class="submenu_header_title" style="flex: 4">Configura&ccedil;&otilde;es:</span>
                 <div class="settings_header_btns">
-                    <img src="assets/icons/advanced_icon.png" alt="3 pontinhos">
+                    <img src="assets/icons/advanced.png" alt="3 pontinhos">
                     <div id="settings_menu_header_drop_down" class="settings_menu_header_drop_down">
                         <span>Encerrar sess&atilde;o</span>
                         <span class="edit_profile">Editar perfil</span>
@@ -235,7 +235,7 @@
                 <div></div>
                 <div></div>
             </div>
-            <img src="assets/icons/advanced_icon.png" alt="Avan&ccedil;ado">
+            <img src="assets/icons/advanced.png" alt="Avan&ccedil;ado">
             <div id="settings_menu_header_drop_down_2" class="settings_menu_header_drop_down">
                 <span>Encerrar sess&atilde;o</span>
                 <span class="edit_profile">Editar perfil</span>
