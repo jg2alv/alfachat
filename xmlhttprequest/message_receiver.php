@@ -1,12 +1,14 @@
 <?php
-    if (empty($_POST["c"])) {
+    if (empty($_POST["id"])) {
         header("Location: ../"); // Avoid users who tries to access directly
     }
 
-    $c = base64_decode($_POST["c"]);
+    $chat = base64_decode($_POST["id"]);
+    $limit = $_POST["limit"];
     require_once "../includes/db.inc.php";
-    if (strpos($c, "group") !== false) { // If that's a group
-        $sql = "SELECT * FROM `messages` WHERE receiver = '$c' ORDER BY time;";
+
+    if (strpos($chat, "group") !== false) { // If that's a group
+        $sql = "(SELECT * FROM `messages` WHERE receiver = '$chat' ORDER BY time DESC LIMIT $limit) ORDER BY time;";
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
         $response = "["; // Starting artificial JSON
@@ -23,11 +25,10 @@
             $sql = "SELECT * FROM `users` WHERE id = $sender"; // Getting user info
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_assoc($sql);
-            if (!$sql["photo"]) {
+            if (!$sql["photo"])
                 $response .= substr(json_encode($msg), 0, -1) . ',"photo"' . ":" .  '"assets/avatars/users/default.png","name":"' . $sql["name"] .'"},'; // Default pic
-            } else {
+            else
                 $response .= substr(json_encode($msg), 0, -1) . ',"photo":' . '"' . $sql["photo"] . '","name":"' . $sql["name"] . '"},'; // User's pic
-            }
         }
         $response = substr($response, 0, -1);
         $response .= "]"; // Finishing artificial JSON
@@ -36,7 +37,7 @@
         session_start();
         $user = $_SESSION["id"];
         // Select all messages sent by me to him AND sent by him to me. Order by time.
-        $sql = "(SELECT * FROM `messages` WHERE sender = '$user' AND receiver = '$c') UNION (SELECT * FROM `messages` WHERE sender = '$c' AND receiver = '$user') ORDER BY time;";
+        $sql = "((SELECT * FROM `messages` WHERE sender = '$user' AND receiver = '$chat') UNION (SELECT * FROM `messages` WHERE sender = '$chat' AND receiver = '$user') ORDER BY time DESC LIMIT $limit) ORDER BY time";
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
         $response = "["; // Starting artificial JSON
@@ -56,7 +57,7 @@
         $response .= "]"; // Finishing artificial JSON
         echo $response; // Returning it to JS
         // Select all messages he sent me and I didn't see yet.
-        $sql = "SELECT * FROM `messages` WHERE sender = $c AND seen = 0";
+        $sql = "SELECT * FROM `messages` WHERE sender = $chat AND seen = 0";
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
         foreach ($sql as $message) {
