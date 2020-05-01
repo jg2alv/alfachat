@@ -588,6 +588,7 @@ body {
 
 .chats header img:nth-of-type(2) {
 	max-width: 3%;
+	margin-right: 5px;
 }
 
 .message_area {
