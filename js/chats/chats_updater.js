@@ -83,16 +83,28 @@ function chatsUpdater(limit) {
 				$("input[type='range']").off("input");
 				$("input[type='range']").on("input", e => $(e.currentTarget).siblings('audio')[0].currentTime = Number(e.currentTarget.value));
 
-				const observerOptions = { root: $(".message_area")[0], rootMargin: "50%" }; // Global options for both Intersection Observers
+				const observerOptions = { root: $(".message_area")[0], rootMargin: "75%" }; // Global options for both Intersection Observers
 
-				const imageObserver = new IntersectionObserver(entries => { // Observer to lazy-load images
+				const mediaObserver = new IntersectionObserver(entries => { // Observer to lazy-load images/ videos
 					entries.forEach(entry => {
-						if (!entry.isIntersecting) {
-							$(entry.target).attr("data-src", $(entry.target).attr("src"));
-							$(entry.target).removeAttr("src");
+						if (entry.target instanceof HTMLVideoElement) {
+							if (!entry.isIntersecting) {
+								$(entry.target.firstChild).attr("data-src", $(entry.target.firstChild).attr("src"));
+								$(entry.target.firstChild).removeAttr("src");
+							} else {
+								$(entry.target.firstChild).attr("src", $(entry.target.firstChild).attr("data-src"));
+								$(entry.target.firstChild).removeAttr("data-src");
+								entry.target.load();
+							}
+							return;
 						} else {
-							$(entry.target).attr("src", $(entry.target).attr("data-src"));
-							$(entry.target).removeAttr("data-src");
+							if (!entry.isIntersecting) {
+								$(entry.target).attr("data-src", $(entry.target).attr("src"));
+								$(entry.target).removeAttr("src");
+							} else {
+								$(entry.target).attr("src", $(entry.target).attr("data-src"));
+								$(entry.target).removeAttr("data-src");
+							}
 						}
 					})
 				}, observerOptions); // Getting global options
@@ -109,7 +121,12 @@ function chatsUpdater(limit) {
 					});
 				}, observerOptions); // Getting global options
 
-				$("[data-src]").each((index, item) => imageObserver.observe(item)); // For every image with data-src attr (images to be lazy loaded)
+				$("[data-src]").each((index, item) => { // For every image with data-src attr (images to be lazy loaded)
+					if (item instanceof HTMLSourceElement)
+						mediaObserver.observe(item.parentElement);
+					else
+						mediaObserver.observe(item)
+				});
 
 				messageObserver.observe($("[data-message=0]")[0]); // Observe the first message
 
@@ -119,7 +136,7 @@ function chatsUpdater(limit) {
 
 
 			case canScroll:
-				message_area[0].scrollTop = message_area[0].scrollHeight
+				message_area[0].scrollTop = message_area[0].scrollHeight;
 		}
 
 		if (canUpdate)
