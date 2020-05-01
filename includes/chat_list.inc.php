@@ -12,8 +12,8 @@
     $sql = explode(",", $sql["chats"]);
 
     foreach ($sql as $chat) {
-        $id = explode(":", $chat)[1];
         if (strpos($chat, "group") !== false) { // If that's a group
+            $id = explode(":", $chat)[1];
             if ($id < 13) { // If it's a class group (group:1 to group:12)
                 if ($id > 9) {
                     $chat = ($id-9) . "° Ano - Ensino M&eacute;dio";
@@ -31,9 +31,9 @@
                 $type = "group:";
             }
         } else {
-            $sql = "SELECT * FROM `users` WHERE id = $id";
+            $sql = "SELECT * FROM `users` WHERE id = $chat";
             $sql = mysqli_query($conn, $sql);
-            if (reportBug($conn, $sql, "Teacher ID $id does not exist"))
+            if (reportBug($conn, $sql, "Teacher ID $chat does not exist"))
                 continue;
             $type = "";
         }
