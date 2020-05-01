@@ -2,7 +2,7 @@ function statusTimer() {
     let timer = 0;
     const msg = "o=set&i=Visto%20pela%20última%20vez%20há%20"; // Setting default message
     setInterval(() => {
-        statusBackend(`i=${id}&o=get`).then(res => atob(id) === "0" ? null : $(".chats header div div").eq(1).html(res))
+        id ? statusBackend(`i=${id}&o=get`).then(res => decodeURIComponent(escape(atob(id))).indexOf("teacher") > -1 ? null : $(".chats header div div").eq(1).html(res)) : null
         timer += 1; // Adding to timer (seconds)
         switch (true) {
             case timer >= 1 && timer < 6: // If timer is between 1 and 5 (both included) seconds
