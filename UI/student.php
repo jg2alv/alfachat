@@ -50,15 +50,15 @@
                             xml.open("POST", "../includes/teachers_list.inc.php", true);
                             xml.send(null);
 
-                            xml.onload = e => {
+                            xml.onload = () => {
                                 const teachers_list = document.createElement("div");
-                                teachers_list.innerHTML = e.target.responseText;
+                                teachers_list.innerHTML = xml.responseText;
 
                                 if ($("#teacher_list").html() !== teachers_list.innerHTML) {
                                     $("#teacher_list").html(teachers_list.innerHTML);
                                     $("[subject]").on("click", e => {
                                         hideSideMenu();
-                                        atob($(e.currentTarget).attr("data-id")) === "0" ? openChat(e, e.currentTarget.children[1].children[0].children[0], "offline") : openChat(e, e.currentTarget.children[1].children[0].children[0], "online");
+                                        $(e.currentTarget).attr("data-id") === "dGVhY2hlcjow" ? openChat(e, e.currentTarget.children[1].children[0].children[0], "offline") : openChat(e, e.currentTarget.children[1].children[0].children[0], "online");
                                         $('[subject]').attr('style', 'background: #291a46'); // Removing "selected" background from every other div
                                         e.currentTarget.style.backgroundColor = '#35215a'; // Setting background to a darker one, indicating "selected"
                                     });
@@ -192,46 +192,39 @@
             <input type="text" name="query" placeholder="Busca">
         </header>
         <div class="chat_result_list" hidden></div>
-        <?php
-            echo "<div class='chat_list' ";
-            $id = $_SESSION["id"]; // Getting user id
-            $sql = "SELECT chats FROM `users` WHERE id = $id"; // Selecting logged user
-            $sql = mysqli_query($conn, $sql);
-            $sql = mysqli_fetch_assoc($sql);
-            echo "data-chats='" . base64_encode($sql["chats"]) . "'>";
-            $sql = explode(",", $sql["chats"]);
-            foreach ($sql as $chat) {
-                $id = explode(":", $chat)[1];
-                if (strpos($chat, "group") !== false) { // If that's a group
-                    if ($id < 13) { // If it's a class group (group:1 to group:12)
-                        if ($id > 9) {
-                            $chat = ($id-9) . "° Ano - Ensino M&eacute;dio";
-                        } else {
-                            $chat = $id . "° Ano - Ensino Fundamental";
+        <div class="chat_list"><?php require "../includes/chat_list.inc.php"; ?></div>
+        <script>
+            function chatListUpdater() {
+                const xml = new XMLHttpRequest(),
+                    t0 = performance.now();
+
+                xml.open("POST", "../includes/chat_list.inc.php", true);
+                xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xml.send("chats=1");
+
+                xml.onload = () => {
+                    const xml = new XMLHttpRequest();
+
+                    $("chat_list").attr("data-chats", xml.responseText);
+                    xml.open("POST", "../includes/chat_list.inc.php", true);
+                    xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xml.send(null);
+
+                    xml.onload = () => {
+                        if (xml.responseText !== $("chat_list").html()) {
+                            $("chat_list").html(xml.responseText);
+                            $(".chat:visible").on("click", openChat);
                         }
-                        $bio = "Turma do " . str_replace("-", "do", $chat);
-                        echo "<div class='chat' data-id='" . base64_encode("group:" . $_SESSION["class"]) . "'><div class='pic'><img src='assets/avatars/groups/class/" . $_SESSION["class"] . ".png'></div><div class='info'><div>$chat</div><div>$bio</div></div></div>";
-                        continue;
-                    } else { // If that's not a class group
-                        $sql = "SELECT * FROM `groups` WHERE id = $id";
-                        $sql = mysqli_query($conn, $sql);
-                        if (reportBug($conn, $sql, "Group ID $id does not exist"))
-                            continue;
-                        $type = "group:";
+                        
+                        update(t0, "chatListUpdater");
                     }
-                } else {
-                    $sql = "SELECT * FROM `users` WHERE id = $id";
-                    $sql = mysqli_query($conn, $sql);
-                    if (reportBug($conn, $sql, "Teacher ID $id does not exist"))
-                        continue;
-                    $type = "";
                 }
 
-                $sql = mysqli_fetch_assoc($sql);
-                echo "<div class='chat' data-id='" . base64_encode($type . $sql["id"]) . "'><div class='pic'><img src='" . $sql["photo"] . "'></div><div class='info'><div>" . $sql["name"] . "</div><div>" . $sql["bio"] . "</div></div></div>";
+                return;
             }
-            echo "</div>";
-        ?>
+
+            chatListUpdater();
+        </script>
     </div>
 
     <div class="chats">
@@ -250,7 +243,7 @@
         </header>
         <div class="message_area"></div>
         <form class="input_area" enctype="multipart/form-data">
-            <input id="file_input" type="file" style="display: none">
+            <input id="file_input" type="file" style="display: none" name="file_input" multiple>
             <img src="assets/icons/file.png" alt="Carregar arquivo">
             <input placeholder="Escreva sua mensagem..." type="text">
             <div class="audio_control" style="background-color: green; bottom: 80px; left: 85px" hidden></div>
