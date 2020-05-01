@@ -86,31 +86,44 @@ class Message {
             d = new Date();
 
         this.btn.src = "assets/icons/audio.png";
+
         let toast;
 
         if (blob) {
             formData.set("file_user_input", blob, `AUD_${d.getFullYear() + (addZero(d.getMonth() + 1)) + addZero(d.getDate()) + addZero(d.getMilliseconds())}`);
             formData.set("audio", true);
         } else if (file.files.length) {
-            file.files.length > 1 ? toast = new Toast("Enviando arquivos...") : toast = new Toast("Enviando arquivo...");
-            toast.show();
             if (file.files.length > 1) {
+                toast = new Toast("Enviando arquivos...");
+                toast.show();
                 for (let i = 0; i < file.files.length; i++) {
-                    formData.set("file_user_input", file.files[i]);
+                    formData.set(`file_user_input${i}`, file.files[i]);
                     formData.set("id", id);
                     this.xml.open("POST", "../xmlhttprequest/chat_file_upload.php", true);
                     this.xml.send(formData);
                     this.xml.upload.onprogress = e => {
-                        const progress = e.loaded / e.total * 100
+                        const progress = e.loaded / e.total * 100;
 
-                        if (progress === 100)
-                            toast.update("Arquivo enviado com sucesso!");
-                        else
-                            toast.update(`Enviando arquivo (${progress}%)...`);
+                        toast.update(`Enviando arquivo (${progress}%)...`);
+                        toast.show();
                         toast.destroy(1250);
-                    }
+                    };
+
+                    this.xml.onload = () => {
+                        toast.update(`${i}° arquivo enviado com sucesso!`);
+                        toast.show();
+                        toast.destroy(1250);
+                    };
+
+                    this.xml.onerror = this.xml.onabort = e => {
+                        toast.update(`Erro no upload: ${e}`, "background-color: red; font-size: 18px; font-weigth: bold;");
+                        toast.show();
+                    };
                 }
                 return;
+            } else {
+                toast = new Toast("Enviando arquivo...");
+                toast.show();
             }
         } else
             return;

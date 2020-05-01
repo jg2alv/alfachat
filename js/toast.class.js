@@ -1,16 +1,19 @@
 class Toast {
-    constructor(txt, style = false) {
+    constructor(txt = false, style = false) {
         this.toast = document.createElement("div");
 
         this.toast.classList.add("toast");
         this.toast.setAttribute("style", style || "");
 
-        this.toast.innerHTML = txt;
+        this.toast.innerHTML = txt || "";
 
         return this;
     }
 
     show() {
+        if (!this.toast.innerHTML)
+            return;
+
         document.body.append(this.toast);
         $(this.toast).slideDown();
         return this;
@@ -21,8 +24,7 @@ class Toast {
     }
 
     update(txt, style = false) {
-        $(this.toast).html(txt);
-        this.toast.setAttribute("style", style || "");
+        $(this.toast).html(txt).attr("style", style || this.toast.style);
 
         return this;
     }
