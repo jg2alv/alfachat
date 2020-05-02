@@ -271,7 +271,7 @@
             keys.forEach(key => sessionStorage[btoa(key)] = btoa(unescape(encodeURIComponent(response[key]))));
         });
 
-        fetch("http://api.github.com/repos/alfachat/alfachat/tags").then(response =>  response.json().then(data => (data))).then(response => $("#version").html(response[response.length - 1]["name"]));
+        fetch("http://api.github.com/repos/alfachat/alfachat/tags").then(response =>  response.json().then(data => (data))).then(response => $("#version").html(response[response.length - 1]["name"]).attr("href", `https://github.com/alfachat/alfachat/releases/${response[response.length - 1]["name"]}`));
 
 
         $(".submenu_btns div:nth-of-type(1)").on("click", hideSideMenu);
