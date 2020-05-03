@@ -5,36 +5,46 @@
 
     $chat = base64_decode($_POST["id"]);
     $limit = $_POST["limit"];
-    require_once "../includes/db.inc.php";
+    require "../includes/db.inc.php";
+    require "../includes/remove_from_chatlist.inc.php";
 
-    if (strpos($chat, "group") !== false) { // If that's a group
-        $sql = "(SELECT * FROM `messages` WHERE receiver = '$chat' ORDER BY time DESC LIMIT $limit) ORDER BY time;";
-        $sql = mysqli_query($conn, $sql);
-        $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
-        $response = "["; // Starting artificial JSON
-        foreach($sql as $msg) {
-            if ($msg["file"]) {
-                $file = $msg["file"];
-                $sql = "SELECT * FROM `files` WHERE id = $file";
+    session_start();
+
+    if (strpos($chat, ":") !== false) {
+        if (strpos($chat, "group") !== false) {
+            $sql = "(SELECT * FROM `messages` WHERE receiver = '$chat' ORDER BY time DESC LIMIT $limit) ORDER BY time;";
+            $sql = mysqli_query($conn, $sql);
+            $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
+            $response = "["; // Starting artificial JSON
+            foreach($sql as $msg) {
+                if ($msg["file"]) {
+                    $file = $msg["file"];
+                    $sql = "SELECT * FROM `files` WHERE id = $file";
+                    $sql = mysqli_query($conn, $sql);
+                    $sql = mysqli_fetch_assoc($sql);
+                    $msg["file"] = json_encode($sql);
+                }
+                $msg["content"] = html_entity_decode(base64_decode($msg["content"]));
+                $sender = $msg["sender"]; // User ID
+                $sql = "SELECT * FROM `users` WHERE id = $sender"; // Getting user info
                 $sql = mysqli_query($conn, $sql);
                 $sql = mysqli_fetch_assoc($sql);
-                $msg["file"] = json_encode($sql);
+                if (!$sql["photo"])
+                    $response .= substr(json_encode($msg), 0, -1) . ',"photo"' . ":" .  '"assets/avatars/users/default.png","name":"' . $sql["name"] .'"},'; // Default pic
+                else
+                    $response .= substr(json_encode($msg), 0, -1) . ',"photo":' . '"' . $sql["photo"] . '","name":"' . $sql["name"] . '"},'; // User's pic
             }
-            $msg["content"] = html_entity_decode(base64_decode($msg["content"]));
-            $sender = $msg["sender"]; // User ID
-            $sql = "SELECT * FROM `users` WHERE id = $sender"; // Getting user info
+            $response = substr($response, 0, -1);
+            $response .= "]"; // Finishing artificial JSON
+            echo $response; // Returning it to JS
+        } else if (strpos($chat, "doubt") !== false) {
+            $id = explode(":", $chat)[1];
+            $sql = "SELECT * FROM `doubts` WHERE id = $id";
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_assoc($sql);
-            if (!$sql["photo"])
-                $response .= substr(json_encode($msg), 0, -1) . ',"photo"' . ":" .  '"assets/avatars/users/default.png","name":"' . $sql["name"] .'"},'; // Default pic
-            else
-                $response .= substr(json_encode($msg), 0, -1) . ',"photo":' . '"' . $sql["photo"] . '","name":"' . $sql["name"] . '"},'; // User's pic
+            echo json_encode($sql);
         }
-        $response = substr($response, 0, -1);
-        $response .= "]"; // Finishing artificial JSON
-        echo $response; // Returning it to JS
-    } else { // If that's a personal chat
-        session_start();
+    } else {
         $user = $_SESSION["id"];
         // Select all messages sent by me to him AND sent by him to me. Order by time.
         $sql = "((SELECT * FROM `messages` WHERE sender = '$user' AND receiver = '$chat') UNION (SELECT * FROM `messages` WHERE sender = '$chat' AND receiver = '$user') ORDER BY time DESC LIMIT $limit) ORDER BY time";
