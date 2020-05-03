@@ -50,12 +50,12 @@ input[type='submit'] {
     border: 1px solid #ccc;
     height: 40px;
     font-size: 16px;
-    background: rgb(52, 17, 118);
+    background-color: rgb(52, 17, 118);
     border-radius: 8px;
     cursor: pointer;
     text-align: center;
     box-shadow: 0px 0px 5px #bebebe;
-    transition: 0.25s;
+    transition: background-color 250ms;
 }
 
 input[type='submit']::-moz-focus-inner {
