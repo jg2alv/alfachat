@@ -1,7 +1,7 @@
 <?php
     session_start();
     require "../includes/db.inc.php";
-    require "../includes/report_bug.inc.php";
+    require "../includes/remove_from_chatlist.inc.php";
 
     $id = $_SESSION["id"];
     $sql = "SELECT * FROM `users` WHERE id = $id";

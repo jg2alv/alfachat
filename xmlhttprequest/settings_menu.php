@@ -22,14 +22,13 @@
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_assoc($sql)["photo"];
 
-        if ($sql) {
+        if ($sql !== "assets/avatars/users/default.png")
             unlink("../chats/$sql");
-        }
+
+        move_uploaded_file($_FILES["user_photo"]["tmp_name"], "../chats/$root");
 
         $sql = "UPDATE `users` SET `photo` = '$root' WHERE id = $id";
         mysqli_query($conn, $sql);
-
-        move_uploaded_file($_FILES["user_photo"]["tmp_name"], "../chats/$root");
     }
 
     die();

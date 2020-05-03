@@ -6,6 +6,7 @@
     session_start();
     require "../includes/db.inc.php";
     require "../includes/check_dir.inc.php";
+    require "../includes/add_to_chatlist.inc.php";
 
     $id = $_SESSION["id"];
     $receiver = base64_decode($_POST["id"]);
@@ -38,7 +39,8 @@
         $sql = mysqli_query($conn, $sql);
 
         move_uploaded_file($file["tmp_name"], $root);
+        usleep(5000);
     }
 
-    require "../includes/add_to_chatlist.inc.php";
+    addToChatList($receiver);
 ?>

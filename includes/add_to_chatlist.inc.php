@@ -1,5 +1,8 @@
 <?php
-    if (strpos($receiver, "group") === false) {
+    function addToChatList($receiver) {
+        if (strpos($receiver, "group") !== false)
+            return;
+
         $sql = "SELECT * FROM `users` WHERE id = '$receiver'"; // Info on person I'm talking to.
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_assoc($sql);
@@ -9,7 +12,7 @@
             $sql = "UPDATE `users` SET chats = '$chats' WHERE id = $receiver"; // DB update
             mysqli_query($conn, $sql);
         }
-        
+
         $sql = "SELECT * FROM `users` WHERE id = '$id'"; // Me.
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_assoc($sql);
@@ -19,14 +22,13 @@
             $sql = "UPDATE `users` SET chats = '$chats' WHERE id = $id"; // DB update
             mysqli_query($conn, $sql);
         }
-    
+
         $sql = "SELECT * FROM `users` WHERE id = '$id'"; // Resetting session data (since I based the chat list on session variable.)
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_assoc($sql);
         foreach($sql as $index => $value) {
             $_SESSION[$index] = $value;
         }
+        die();
     }
-    
-    die();
 ?>

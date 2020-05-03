@@ -32,18 +32,17 @@
             checkDirectory("../chats/$root");
             $root .= "/profile_pic.$extension";
 
-            $sql = "UPDATE `groups` SET `photo` = '$root' WHERE id = $id"; // Insert INTO groups table values: name, members (the user) and creation time
-            mysqli_query($conn, $sql);
-
             $sql = "SELECT * FROM `groups` WHERE id = $id";
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_assoc($sql)["photo"];
 
-            if ($sql) {
+            if ($sql !== "assets/avatars/groups/default.png")
                 unlink("../chats/$sql");
-            }
 
             move_uploaded_file($_FILES["p"]["tmp_name"], "../chats/$root");
+
+            $sql = "UPDATE `groups` SET `photo` = '$root' WHERE id = $id";
+            mysqli_query($conn, $sql);
         }
 
         $sql = "SELECT * FROM `groups` WHERE `name` = '$name' AND `members` = '$members' AND `created` = '$created'"; // Getting the new-born group ID
