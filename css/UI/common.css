@@ -1,0 +1,270 @@
+.pic {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.pic img {
+	border-radius: 50%;
+	max-width: 75%;
+	height: auto;
+}
+
+.info {
+	padding-left: 10px;
+	box-sizing: border-box;
+	flex: 7;
+	display: flex;
+	justify-content: space-evenly;
+	flex-direction: column;
+}
+
+.chats {
+	color: black;
+	flex: 3;
+	min-height: 100vh;
+	max-height: 100vh;
+	background-color: #291a46;
+	display: grid;
+}
+
+.choose_chat {
+	font-weight: 700;
+	display: flex;
+	align-content: center;
+	align-self: center;
+	justify-self: center;
+	box-sizing: border-box;
+	background: #35215a;
+	color: white;
+	padding: 10px 20px;
+	border-radius: 20px;
+}
+
+.chats header {
+	display: none;
+	align-self: flex-start;
+	background-color: #35215a;
+	padding-bottom: 20px;
+	margin: 0;
+	color: white;
+	font-size: 20px;
+	border-bottom: 1px solid black;
+	justify-content: flex-start;
+}
+
+.chats header div:nth-of-type(1) {
+	flex: 7;
+}
+
+.chats header div div:nth-of-type(1) {
+	margin: 15px 0 10px 15px;
+}
+
+.chats header div div:nth-of-type(2) {
+	margin-left: 15px;
+	font-size: 16px;
+	color: #cccccc;
+	font-weight: bolder;
+}
+
+.chats header img {
+	flex: 1;
+	margin: 15px 0 0 15px;
+	cursor: pointer;
+	max-width: 3%;
+	margin-right: 5px;
+}
+
+.message_area {
+	min-height: calc(87vh - 36px);
+	max-height: calc(87vh - 36px);
+	width: 100%;
+	display: none;
+	visibility: hidden;
+	background: #291a46;
+	align-items: flex-end;
+	overflow-y: auto;
+	overflow-x: hidden;
+	align-content: flex-end;
+}
+
+div[data-message] {
+	display: grid;
+}
+
+.message {
+	display: grid;
+	align-items: center;
+	justify-content: center;
+	border-radius: 15px;
+	background: #35215a;
+	color: white;
+	padding: 10px 35px 10px 25px;
+	margin: 5px 0 5px 85px;
+	font-size: 18px;
+	overflow-wrap: anywhere;
+	word-wrap: break-word;
+}
+
+.mine {
+	justify-self: flex-end;
+	display: grid;
+	border-bottom-right-radius: 0;
+	margin-right: 20px;
+}
+
+.their {
+	justify-self: flex-start;
+	display: grid;
+	border-bottom-left-radius: 0;
+	margin-right: 85px;
+}
+
+.profile_img {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	justify-self: flex-start;
+	align-self: flex-end;
+	margin: -60px 0 0 20px;
+}
+
+.message_time {
+	font-size: 14px;
+	margin: 5px -20px 5px
+		0;
+	justify-self: end;
+	color: #cccccc;
+}
+
+.message img,
+.message video {
+	margin: 10px 0;
+}
+
+.message a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.message a:focus {
+	outline: 0;
+}
+
+.message[class="message their"] {
+	margin-left: 20px;
+}
+
+.input_area {
+	display: none;
+	max-height: 400px;
+	align-self: flex-end;
+	background-color: #35215a;
+}
+
+.input_area img {
+	cursor: pointer;
+	filter: brightness(60%);
+	flex: 1;
+	max-width: 60px;
+}
+
+.input_area img:hover {
+	filter: brightness(100%);
+}
+
+.input_area input[type="text"] {
+	min-height: 6vh;
+	background: #35215a;
+	border: none;
+	justify-self: right;
+	padding-left: 15px;
+	color: white;
+	box-sizing: border-box;
+	font-size: 18px;
+	flex: 10;
+}
+
+.input_area input[type="text"]:focus {
+	outline: 0;
+}
+
+.countdown {
+	font-size: 20px;
+	color: white;
+	flex: 1;
+	text-align: center;
+}
+
+.audio_control {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	position: relative;
+	cursor: pointer;
+}
+
+.audio_btns {
+	max-width: 7%;
+	cursor: pointer;
+}
+
+input[type=range] {
+	-webkit-appearance: none;
+	width: 100%;
+	background: none;
+	margin: 0 15px;
+}
+
+input[type=range]:focus {
+	outline: none;
+}
+
+input[type=range]::-moz-focus-outer {
+    border: 0;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+	width: 100%;
+	height: 5px;
+	cursor: pointer;
+	background: #291a46;
+}
+
+input[type=range]::-webkit-slider-thumb {
+	height: 20px;
+	width: 20px;
+	border-radius: 50%;
+	background: #291a46;
+	cursor: pointer;
+	-webkit-appearance: none;
+	margin-top: -0.7px;
+}
+
+input[type=range]::-moz-range-track {
+	width: 100%;
+	height: 5px;
+	cursor: pointer;
+	background: #291a46;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+}
+
+input[type=range]::-moz-range-thumb {
+	height: 20px;
+	width: 20px;
+	border-radius: 50%;
+	background: #291a46;
+	cursor: pointer;
+	border: 0;
+}
+
+.audio_time {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 92px;
+	min-width: 90px;
+}
