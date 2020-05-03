@@ -1,27 +1,3 @@
-<!doctype html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta name='viewport' content='initial-scale=1, maximum-scale=1'>
-    <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Didact+Gothic'>
-    <link rel='icon' type='image/png' href='../img/logo_short.png'>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="../js/connection.js"></script>
-    <script src="../js/toast.class.js"></script>
-    <?php
-        foreach (array_diff(scandir("../js/chats"), array(".", "..")) as $file) {
-            echo "<script src='../js/chats/$file'></script>";   // Load JS files
-        }
-
-        foreach (array_diff(scandir("../css"), array(".", "..")) as $file) {
-            if ($file === "login.css") {
-                continue;
-            }
-            echo "<link rel='stylesheet' type='text/css' href='../css/$file'></link>";   // Load JS files
-        }
-    ?>
-    <title>AlfaChat | Conversas</title>
-</head>
 <body>
     <div class="side_menu">
         <div class="side_menu_visible">
