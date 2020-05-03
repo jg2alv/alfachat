@@ -255,7 +255,6 @@
     <div class="chats">
         <div class="choose_chat">Escolha uma conversa para entrar</div>
         <header>
-            <img src="assets/icons/arrow.png" alt="Back Arrow">
             <div style="display: flex; justify-content: flex-start; align-items: flex-start; flex-direction: column">
                 <div></div>
                 <div></div>
