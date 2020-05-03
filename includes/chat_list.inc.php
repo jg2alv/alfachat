@@ -10,35 +10,58 @@
     }
 
     $sql = explode(",", $sql["chats"]);
-
     foreach ($sql as $chat) {
-        if (strpos($chat, "group") !== false) { // If that's a group
+        if (strpos($chat, ":") !== false) {
             $id = explode(":", $chat)[1];
-            if ($id < 13) { // If it's a class group (group:1 to group:12)
-                if ($id > 9) {
-                    $chat = ($id-9) . "° Ano - Ensino M&eacute;dio";
-                } else {
-                    $chat = $id . "° Ano - Ensino Fundamental";
+
+            if (strpos($chat, "group") !== false) {
+                $type = "group:$id";
+                
+                if ($id < 13) { // If it's a class group (group:1 to group:12)
+                    $name = ($id > 9) ? ($id-9) . "° Ano - Ensino M&eacute;dio" : $id . "° Ano - Ensino Fundamental";
+                    $photo = "assets/avatars/groups/class/$id.png' style='border-radius: 0";
+                    $bio = "Turma do " . str_replace("-", "do", $name);
+                } else { // If that's not a class group
+                    $sql = "SELECT * FROM `groups` WHERE id = $id";
+                    if (removeFromChatList($conn, $sql, $id))
+                        continue;
+                    $sql = mysqli_query($sql);
+                    $sql = mysqli_fetch_assoc($sql);
+
+                    $name = $sql["name"];
+                    $photo = $sql["photo"];
+                    $bio = $sql["bio"];
                 }
-                $bio = "Turma do " . str_replace("-", "do", $chat);
-                echo "<div class='chat' data-id='" . base64_encode("group:" . $_SESSION["class"]) . "'><div class='pic'><img style='border-radius: 0' src='assets/avatars/groups/class/" . $_SESSION["class"] . ".png'></div><div class='info'><div>$chat</div><div>$bio</div></div></div>";
-                continue;
-            } else { // If that's not a class group
-                $sql = "SELECT * FROM `groups` WHERE id = $id";
-                $sql = mysqli_query($conn, $sql);
-                if (reportBug($conn, $sql, "Group ID $id does not exist"))
+            } else if (strpos($chat, "doubt") !== false) {
+                $doubt = explode(":", $chat)[1];
+                $sql = "SELECT * FROM `doubts` WHERE id = $doubt AND solved = 0";
+                if (removeFromChatList($conn, $sql, $id))
                     continue;
-                $type = "group:";
+                $sql = mysqli_query($conn, $sql);
+                $sql = mysqli_fetch_assoc($sql);
+                $sql = "SELECT * FROM subjects WHERE name = " . $sql["subject"];
+                if (!mysqli_num_rows($sql))
+                    continue;
+                $sql = mysqli_fetch_assoc($sql);
+
+                $name = "Suporte de " . $sql["name"];
+                $photo = "assets/avatars/subjects/" . $sql["name"] . ".png' style='border-radius: 0";
+                $bio = "";
+                $type = "doubt:$id";
             }
         } else {
             $sql = "SELECT * FROM `users` WHERE id = $chat";
-            $sql = mysqli_query($conn, $sql);
-            if (reportBug($conn, $sql, "Teacher ID $chat does not exist"))
+            if (removeFromChatList($conn, $sql, $chat))
                 continue;
-            $type = "";
+            $sql = mysqli_query($conn, $sql);
+            $sql = mysqli_fetch_assoc($sql);
+
+            $name = $sql["name"];
+            $photo = $sql["photo"];
+            $bio = $sql["bio"];
+            $type = $chat;
         }
 
-        $sql = mysqli_fetch_assoc($sql);
-        echo "<div class='chat' data-id='" . base64_encode($type . $sql["id"]) . "'><div class='pic'><img src='" . $sql["photo"] . "'></div><div class='info'><div>" . $sql["name"] . "</div><div>" . $sql["bio"] . "</div></div></div>";
+        echo "<div class='chat' data-id='" . base64_encode($type) . "'><div class='pic'><img src='$photo'></div><div class='info'><div>$name</div><div>$bio</div></div></div>";
     }
 ?>
