@@ -77,7 +77,7 @@
             </main>
             <footer style="padding: 0; margin-top: 15px; padding-top: 10px">
                 <div id="config" class="menu_icon"><div class="pic"><img style="max-width: 50%" src="assets/icons/settings.png" alt="Config"></div><div class="info" style="flex: 4">Configura&ccedil;&otilde;es</div></div>
-                <div class="menu_icon"><div class="pic" style="margin: 0 15px"><img src="assets/icons/release.png" style="width: 200%; border-radius: 0"></div><div class="info"><a target="_blank" href="https://github.com/alfachat/alfachat/releases" id="version"></a></div></div>
+                <div class="menu_icon"><div class="pic" style="margin: 0 15px"><img src="assets/icons/release.png" style="width: 200%; border-radius: 0"></div><div class="info"><a style="width: 100%; min-height: 100%; display: flex; align-items: center; justify-content: left" target="_blank" id="version"></a></div></div>
             </footer>
         </div>
         <div class="side_menu_bg"></div>
@@ -189,7 +189,7 @@
     <div class="modal" style="width: 20vw; height: 20vh; flex-direction: column" id="doubt_send">
         <div style="flex: 3; display: flex; align-items: center; justify-content: center; flex-direction: column">
             <p style="font-size: 18px; margin: 2em 0">Deseja enviar suas d&uacute;vidas ao suporte?</p>
-            <div style="display: flex; justify-content: space-evenly; width: 100%; font-size: 16px"><input type="checkbox" id="send_to_forum"><label>Disponibilizar a pergunta e a resposta no f&oacute;rum</label></div>
+            <div style="display: flex; justify-content: space-evenly; width: 100%; font-size: 16px"><input type="checkbox" id="send_to_forum"><label for="send_to_forum">Disponibilizar a pergunta e a resposta no f&oacute;rum</label></div>
             <script>
                 $("#send_to_forum").on("change", e => {
                     if (e.target.checked)
@@ -231,10 +231,15 @@
                     xml.send(null);
 
                     xml.onload = () => {
-                        if (xml.responseText !== $("chat_list").html()) {
-                            $("chat_list").html(xml.responseText);
+                        const chat_list = document.createElement("div");
+                        chat_list.innerHTML = xml.responseText;
+
+                        if (chat_list.children.length !== $(".chat_list")[0].children.length) {
+                            $(".chat_list").html(xml.responseText);
                             $(".chat:visible").on("click", openChat);
                         }
+
+                        $(document).remove(chat_list);
                         
                         update(t0, "chatListUpdater");
                     }
@@ -293,7 +298,7 @@
             keys.forEach(key => sessionStorage[btoa(key)] = btoa(unescape(encodeURIComponent(response[key]))));
         });
 
-        fetch("http://api.github.com/repos/alfachat/alfachat/tags").then(response =>  response.json().then(data => (data))).then(response => $("#version").html(response[response.length - 1]["name"]).attr("href", `https://github.com/alfachat/alfachat/releases/${response[response.length - 1]["name"]}`));
+        fetch("http://api.github.com/repos/alfachat/alfachat/tags").then(response =>  response.json().then(data => (data))).then(response => $("#version").html(response[0]["name"]).attr("href", `https://github.com/alfachat/alfachat/releases/${response[0]["name"]}`));
 
 
         $(".modal_btns div:nth-of-type(1)").on("click", hideSideMenu);
