@@ -6,8 +6,8 @@ $(document).ready(() => {
     $(photo).on("change", () => {
         if (photo.files.length < 1) {
             return;
-		}
-		
+        }
+
         $('#new_group_menu label img')[0].src = URL.createObjectURL(photo.files[0]);
         $('#new_group_menu label img')[0].style.maxWidth = "100%";
 
@@ -16,7 +16,7 @@ $(document).ready(() => {
 
     $("#new_group_menu")[0].addEventListener("submit", (e) => {
         e.preventDefault();
-        group_name = $(".submenu_container .info input[type='text']")[0]
+        group_name = $(".modal_container .info input[type='text']")[0]
         if (!group_name.value) {
             group_name.style.borderBottom = "3px solid red";
             $(group_name).siblings().css("color", "red");
@@ -37,7 +37,7 @@ $(document).ready(() => {
                 let member_list = "";
                 response.forEach(user => {
                     if (user["photo"] === null) {
-                      user["photo"] = "assets/avatars/users/default.png";
+                        user["photo"] = "assets/avatars/users/default.png";
                     }
                     member_list += `<div data-id='${user["id"]}' class='menu_icon' style='padding-left: 7px'><div class='pic'><img style='filter: brightness(100%)' src='${user["photo"]}' alt='Foto do usu&aacute;rio'></div><div class='info'><div style="font-weight: bold;">${user["name"]}</div><div>${user["status"]}</div></div></div>`
                 })
@@ -92,7 +92,7 @@ $(document).ready(() => {
         }
         const xml = new XMLHttpRequest();
         xml.open("POST", "../xmlhttprequest/chat_search.php", true);
-        xml.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xml.send(`q=${member_search.value}`); // XML content is user input
         xml.onload = () => {
             member_result_list.innerHTML = ""; // Removing list's HTML to avoid duplicate results
@@ -102,7 +102,7 @@ $(document).ready(() => {
                 let result = "";
                 response.forEach(user => {
                     if (user["photo"] === null) {
-                      user["photo"] = "assets/avatars/users/default.png";
+                        user["photo"] = "assets/avatars/users/default.png";
                     }
                     result += `<div data-id='${user["id"]}' class='menu_icon' style='padding-left: 7px'><div class='pic'><img style='filter: brightness(100%)' src='${user["photo"]}' alt='Foto do usu&aacute;rio'></div><div class='info'><div style="font-weight: bold;">${user["name"]}</div><div>${user["status"]}</div></div></div>`
                 })
@@ -117,7 +117,7 @@ $(document).ready(() => {
     $("#new_group_menu_advanced")[0].addEventListener("submit", e => {
         e.preventDefault();
 
-        if (!$(`span[data-member-id]`).length) 
+        if (!$(`span[data-member-id]`).length)
             return;
 
         let id_list = "";
@@ -130,7 +130,7 @@ $(document).ready(() => {
 
         const xml = new XMLHttpRequest(),
             toast = new Toast("Criando grupo...");
-        
+
         toast.show();
 
         xml.open("POST", "../xmlhttprequest/new_group.php", true);

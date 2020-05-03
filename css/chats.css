@@ -103,7 +103,7 @@ body {
 	filter: brightness(100%);
 }
 
-.submenu {
+.modal {
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -186,13 +186,13 @@ body {
 	transition: 200ms all;
 }
 
-.submenu_btns {
+.modal_btns {
 	display: flex;
 	justify-content: flex-end;
 	padding-bottom: 5px;
 }
 
-.submenu_btns * {
+.modal_btns * {
 	padding: 10px;
 	border-radius: 5px;
 	font-weight: bold;
@@ -202,11 +202,11 @@ body {
 	color: white;
 }
 
-.submenu_btns:last-child {
+.modal_btns:last-child {
 	margin: 0 10px;
 }
 
-.submenu_btns *:hover {
+.modal_btns *:hover {
 	background-color: #291a46;
 	transition: 200ms all;
 }
@@ -232,7 +232,7 @@ body {
 	border-bottom: 1px solid black;
 }
 
-.submenu_header_title {
+.modal_header_title {
 	font-weight: bold;
 	font-size: 20px;
 	margin-bottom: 25px;

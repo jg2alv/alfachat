@@ -82,8 +82,8 @@
         </div>
         <div class="side_menu_bg"></div>
     </div>
-    <form class="submenu" id="new_group_menu" enctype="multipart/form-data">
-        <div class="submenu_container" style="display: flex; flex: 1">
+    <form class="modal" id="new_group_menu" enctype="multipart/form-data">
+        <div class="modal_container" style="display: flex; flex: 1">
             <div class="pic">
                 <input id="group_pic_input" type="file" style="display: none" accept="image/*">
                 <label for="group_pic_input" style="display: flex; cursor: pointer;">
@@ -95,14 +95,14 @@
                 <input type="text" autofocus>
             </div>
         </div>
-        <footer class="submenu_btns">
+        <footer class="modal_btns">
             <div>FECHAR</div>
             <button type="submit">PROSSEGUIR</button>
         </footer>
     </form>
-    <form class="submenu" id="new_group_menu_advanced">
+    <form class="modal" id="new_group_menu_advanced">
        <header>
-           <span class="submenu_header_title">Adicionar Membros:</span>
+           <span class="modal_header_title">Adicionar Membros:</span>
            <div id="member_search_container">
                 <div style="display: flex;"></div>
                 <input type="text" placeholder="Busca">
@@ -111,16 +111,16 @@
        <main>
             <div class="members_result" hidden></div>
             <div class="members"></div>
-            <footer class="submenu_btns" style="flex: 1">
+            <footer class="modal_btns" style="flex: 1">
                 <div>FECHAR</div>
                 <button type="submit">PROSSEGUIR</button>
             </footer>    
        </main> 
     </form>
-    <div class="submenu" id="settings_menu">
+    <div class="modal" id="settings_menu">
         <header>
             <div style="display: flex; justify-content: space-between; flex: 1;">
-                <span class="submenu_header_title" style="flex: 4">Configura&ccedil;&otilde;es:</span>
+                <span class="modal_header_title" style="flex: 4">Configura&ccedil;&otilde;es:</span>
                 <div class="settings_header_btns">
                     <img src="assets/icons/advanced.png" alt="3 pontinhos">
                     <div id="settings_menu_header_drop_down" class="settings_menu_header_drop_down">
@@ -147,7 +147,7 @@
         <header hidden style="border: 0; padding-left: 0">
             <div style="flex: 1; flex-direction: column; display: flex">
                 <div style="justify-content: space-between; display: flex; flex: 1;">
-                    <div class="submenu_header_title" style="flex: 20; display: flex; align-items: start; padding-left: 0; padding-left: 25px">
+                    <div class="modal_header_title" style="flex: 20; display: flex; align-items: start; padding-left: 0; padding-left: 25px">
                         <img id="settings_menu_back" src="assets/icons/arrow.png" alt="Voltar">
                         <span style="margin: 12px 0 0 10px;">Informa&ccedil;&otilde;es:</span>
                     </div>
@@ -185,6 +185,26 @@
             </div>
         </form>
         <footer hidden></footer>
+    </div>
+    <div class="modal" style="width: 20vw; height: 20vh; flex-direction: column" id="doubt_send">
+        <div style="flex: 3; display: flex; align-items: center; justify-content: center; flex-direction: column">
+            <p style="font-size: 18px; margin: 2em 0">Deseja enviar suas d&uacute;vidas ao suporte?</p>
+            <div style="display: flex; justify-content: space-evenly; width: 100%; font-size: 16px"><input type="checkbox" id="send_to_forum"><label>Disponibilizar a pergunta e a resposta no f&oacute;rum</label></div>
+            <script>
+                $("#send_to_forum").on("change", e => {
+                    if (e.target.checked)
+                        $(e.target).attr("data-checked", 1);
+                    else
+                        $(e.target).attr("data-checked", 0);
+                });
+            </script>
+        </div>
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: end">
+            <footer class="modal_btns">
+                <div>CANCELAR</div>
+                <button>CONFIRMAR</button>
+            </footer>
+        </div>
     </div>
     <div class="chat_selector">
         <header>
@@ -254,6 +274,8 @@
     </div>
     </div>
     <script>
+        $(".modal_btns div").on("click", hideSideMenu);
+
         async function getSessionData() {
             const xml = new XMLHttpRequest();
             xml.open("POST", "./", true);
@@ -274,7 +296,7 @@
         fetch("http://api.github.com/repos/alfachat/alfachat/tags").then(response =>  response.json().then(data => (data))).then(response => $("#version").html(response[response.length - 1]["name"]).attr("href", `https://github.com/alfachat/alfachat/releases/${response[response.length - 1]["name"]}`));
 
 
-        $(".submenu_btns div:nth-of-type(1)").on("click", hideSideMenu);
+        $(".modal_btns div:nth-of-type(1)").on("click", hideSideMenu);
         $("#subjects_menu div").eq(0).on("click", e => {
             $("#subjects_menu").toggleClass("subjects_menu_active");
 

@@ -4,7 +4,7 @@ $(document).ready(() => {
 	side_menu_img.addEventListener("click", showSideMenu);
 
 	document.addEventListener("keydown", (k) => {
-		if (k.keyCode === 27 && ($(".submenu:visible").length || $(".side_menu:visible").length)) {
+		if (k.keyCode === 27 && ($(".modal:visible").length || $(".side_menu:visible").length)) {
 			hideSideMenu();
 		}
 	});
@@ -33,7 +33,7 @@ function hideSideMenu() {
 
 	document.querySelector(".side_menu_bg").removeEventListener("click", hideSideMenu);
 	document.querySelector(".chats").removeEventListener("keypress", hideSideMenu);
-	$(".submenu").css("display", "none");
+	$(".modal").css("display", "none");
 	document.querySelector(".side_menu_visible").style.flex = 1;
 	setTimeout(() => side_menu_img.style.visibility = "", 150);
 	$(document.querySelector(".side_menu")).fadeOut(300, () => {
