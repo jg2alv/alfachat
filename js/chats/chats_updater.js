@@ -15,12 +15,13 @@ function chatsUpdater(limit) {
 		try {
 			response = JSON.parse(xml.responseText);
 		} catch (e) {
-			message_area.html('');
+			if (!(message_area[0].children.length > chats.children.length && atob(id).indexOf("teacher") > -1))
+				message_area.html('');
+				
 			if (canUpdate)
 				update(t0, "chatsUpdater", limit);
 			return;
 		}
-
 		response.forEach((message, index) => chats.innerHTML += new Message(message, index).parse());
 
 		switch (true) {
@@ -29,17 +30,22 @@ function chatsUpdater(limit) {
 
 
 			case message_area[0].children.length !== chats.children.length:
+				if (message_area[0].children.length > chats.children.length && atob(id).indexOf("teacher") > -1) {
+					update(t0, "chatsUpdater", limit);
+					return;
+				}
+
 				$(message_area).html(chats.innerHTML);
 				$(document).remove(chats);
 
 				$(message_area).off("scroll");
 				$(message_area).on('scroll', () => canScroll = false);
 
-				if (!$(".audio").length)
+				if (!$(".message_area audio").length)
 					$(message_area).css('visibility', 'visible');
 
-				$("audio").off("loadedmetadata");
-				$("audio").on("loadedmetadata", e => {
+				$("audio").reverse().off("loadedmetadata");
+				$("audio").reverse().on("loadedmetadata", e => {
 					$(e.target).siblings("span").html(`00:00/${convertTime(Math.floor(e.target.duration))}`);
 					$(message_area).css('visibility', 'visible');
 				});
@@ -75,7 +81,7 @@ function chatsUpdater(limit) {
 
 					if (Math.floor(input.value) === duration) {
 						e.target.pause();
-						$(input).siblings("img")[0].src = "assets/icons/play.png";
+						$(input).siblings("img").attr("src", "assets/icons/play.png");
 						e.target.currentTime = 0;
 					}
 				});
@@ -83,7 +89,7 @@ function chatsUpdater(limit) {
 				$("input[type='range']").off("input");
 				$("input[type='range']").on("input", e => $(e.currentTarget).siblings('audio')[0].currentTime = Number(e.currentTarget.value));
 
-				const observerOptions = { root: $(".message_area")[0], rootMargin: "75%" }; // Global options for both Intersection Observers
+				const observerOptions = { root: $(".message_area")[0], rootMargin: "100%" }; // Global options for both Intersection Observers
 
 				const mediaObserver = new IntersectionObserver(entries => { // Observer to lazy-load images/ videos
 					entries.forEach(entry => {
@@ -128,15 +134,15 @@ function chatsUpdater(limit) {
 						mediaObserver.observe(item)
 				});
 
-				messageObserver.observe($("[data-message=0]")[0]); // Observe the first message
+				messageObserver.observe($("[data-message=0]").get(0)); // Observe the first message
 
 
-			case message_area[0].scrollTop === message_area[0].scrollHeight:
+			case message_area[0].scrollHeight - message_area[0].clientHeight <= message_area[0].scrollTop + 1:
 				canScroll = true;
 
 
 			case canScroll:
-				message_area[0].scrollTop = message_area[0].scrollHeight;
+				message_area[0].scrollTop = message_area[0].scrollHeight - message_area[0].clientHeight;
 		}
 
 		if (canUpdate)
