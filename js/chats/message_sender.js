@@ -6,16 +6,12 @@ function messageSender() {
 
     $(".input_area img").eq(0).on("click", () => $(file).click());
 
-    file.addEventListener("change", e => {
-        new Message().sendFile(e);
-    });
+    file.onchange = e => new Message({sender: atob(sessionStorage["aWQ="]), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000)}).sendFile(e);
 
-    form.addEventListener("submit", e => {
-        new Message({ sender: atob(sessionStorage["aWQ="]), receiver: atob(id), content: input.value, file: 0, seen: 0, time: (new Date().getSeconds() / 1000), photo: sessionStorage["cGhvdG8="] }).sendMessage(e);
-    });
-
-    input.addEventListener("keydown", k => {
-        if (input.value.length > 2 && k.keyCode === 8) {
+    form.onsubmit = e => new Message({sender: atob(sessionStorage["aWQ="]), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000), file: 0}).sendMessage(e);
+    
+    input.onkeydown = k => {
+        if ((input.value.length > 2 && k.keyCode === 8) || input.value === " ") {
             btn.src = "assets/icons/audio.png";
             return;
         } else {
@@ -23,20 +19,19 @@ function messageSender() {
         }
 
         setTimeout(() => {
-            if (!input.value) {
+            if (!input.value)
                 btn.src = "assets/icons/audio.png";
-            }
         }, 1)
-    });
+    };
 
-    btn.addEventListener("click", () => {
-        if (btn.src.indexOf("assets/icons/send.png") > -1) {
-            new Message({ sender: atob(sessionStorage["aWQ="]), receiver: atob(id), content: input.value, file: 0, seen: 0, time: (new Date().getSeconds() / 1000), photo: sessionStorage["cGhvdG8="] }).sendMessage(e);
-        } else if (btn.src.indexOf("assets/icons/audio.png") > -1) {
+    btn.onclick = e => {
+        if (btn.src.indexOf("assets/icons/send.png") > -1)
+            new Message({sender: atob(sessionStorage["aWQ="]), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000), file: 0}).sendMessage(e);
+        else if (btn.src.indexOf("assets/icons/audio.png") > -1) {
             if (navigator.mediaDevices) {
                 let chunks = [],
-                    mediaStream
-                time = 0;
+                    mediaStream,
+                    time = 0;
 
                 navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
                     $(".input_area div").removeAttr("hidden");
@@ -72,12 +67,12 @@ function messageSender() {
                         clearInterval(countdownTime);
                     }
 
-                    $(".input_area div")[0].onclick = () => {
+                    $(".input_area div")[0].onclick = e => {
                         mediaRecorder.stop();
 
                         setTimeout(() => {
                             const blob = new Blob(chunks, { 'type': 'audio/ogg; codecs=opus' });
-                            new Message().sendFile(false, blob);
+                            new Message().sendFile(e, blob);
                         }, 1000);
                     };
 
@@ -85,7 +80,7 @@ function messageSender() {
                 });
             }
         }
-    })
+    };
 }
 
 function convertTime(s) {
