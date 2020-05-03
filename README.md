@@ -9,7 +9,7 @@ Para conseguir usar a ferramenta, o usu&aacute;rio precisa:
 - ter acesso &agrave; internet;
 - estar disposto a turbinar seus estudos;
 
-(\*): consequ&ecirc;ncia do passo anterior
+(*): consequ&ecirc;ncia do passo anterior
 
 Voc&ecirc;, professor, que deseja se cadastrar, entre em contato conosco, por meio do <a href='https://t.me/bored_user' target='_blank'>Telegram</a> ou por <a href='https://github.com/bored-user/AlfaChat/issues' target='_blank'>aqui</a> mesmo!
 
