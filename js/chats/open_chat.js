@@ -78,17 +78,17 @@ function openChat(e, customName = false, customStatus = false) {
 			document.querySelector(`.chat_list div[data-id='${e.currentTarget.attributes['data-id'].value}']`).style.background = '#291a46';
 		}
 	}
-	$('.choose_chat').remove(); // Removing "choose chat" balloon
-	$('.input_area').attr('style', 'display: flex');
-	$('.chats header').attr('style', 'display: flex');
+	$('.choose_chat').css("display", "none"); // Removing "choose chat" balloon
+	$('.input_area').css('display', 'flex');
+	$('.chats header').css('display', 'flex');
 	$('.input_area input').focus();
 	canScroll = canUpdate = true;
 	chatsUpdater(100);
 
 	if (atob(id).indexOf("teacher") === -1) {
 		$('.chats header img').attr("src", "assets/icons/advanced.png").removeAttr("title");
-		$('.chats header img').eq(1).off("click");
-		// $('.chats header img')[1].addEventListener('click', () => {
+		$('.chats header img').off("click");
+		// $('.chats header img').on('click', () => {
 			// 	if ($('#settings_menu_header_drop_down_2').css('display') === 'block') {
 			// 		$('#settings_menu_header_drop_down_2').fadeOut(200);
 			// 	}
@@ -105,8 +105,7 @@ function openChat(e, customName = false, customStatus = false) {
 		// });
 	} else {
 		$('.chats header img').attr("src", "assets/icons/check.png").attr("title", "Começar atendimento");
-		$('.chats header img').eq(1).on("click", sendDoubts);
-		setTimeout(() => $(".message_area").html(""), 400);
+		$('.chats header img').on("click", sendDoubts);
 	}
 }
 
