@@ -1,4 +1,10 @@
 <?php
+    if (empty($_SESSION))
+        session_start();
+
+    require_once "remove_from_chatlist.inc.php";
+    require "db.inc.php";
+
     $id = $_SESSION["id"]; // Getting user id
     $sql = "SELECT chats FROM `users` WHERE id = $id"; // Selecting logged user
     $sql = mysqli_query($conn, $sql);
@@ -23,7 +29,7 @@
                     $bio = "Turma do " . str_replace("-", "do", $name);
                 } else { // If that's not a class group
                     $sql = "SELECT * FROM `groups` WHERE id = $id";
-                    if (removeFromChatList($conn, $sql, $id))
+                    if (removeFromChatList($conn, $sql, $chat))
                         continue;
                     $sql = mysqli_query($sql);
                     $sql = mysqli_fetch_assoc($sql);
@@ -33,13 +39,13 @@
                     $bio = $sql["bio"];
                 }
             } else if (strpos($chat, "doubt") !== false) {
-                $doubt = explode(":", $chat)[1];
-                $sql = "SELECT * FROM `doubts` WHERE id = $doubt AND solved = 0";
-                if (removeFromChatList($conn, $sql, $id))
+                $sql = "SELECT * FROM `doubts` WHERE id = $id AND solved = 0";
+                if (removeFromChatList($conn, $sql, $chat))
                     continue;
                 $sql = mysqli_query($conn, $sql);
                 $sql = mysqli_fetch_assoc($sql);
-                $sql = "SELECT * FROM subjects WHERE name = " . $sql["subject"];
+                $sql = "SELECT * FROM `subjects` WHERE name = '" . $sql["subject"] . "'";
+                $sql = mysqli_query($conn, $sql);
                 if (!mysqli_num_rows($sql))
                     continue;
                 $sql = mysqli_fetch_assoc($sql);

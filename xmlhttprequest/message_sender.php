@@ -40,7 +40,7 @@
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_assoc($sql);
         $chats = $sql["chats"] . ",doubt:$id";
-        $sql = "UPDATE `users` SET chats = $chats WHERE id = $sender";
+        $sql = "UPDATE `users` SET chats = '$chats' WHERE id = $sender";
         mysqli_query($conn, $sql);
         die();
     } else {
