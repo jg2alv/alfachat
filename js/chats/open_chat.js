@@ -1,15 +1,13 @@
-let id,
-	scrollState = true,
-	canUpdate = true;
-
 $(document).ready(() => {
 	statusTimer(); // Start timer when window (chats) loads
 	statusBackend('i=online&o=set'); // Setting MY status to online
 	messageSender();
 	chatListUpdater();
+	
 	const header_input = document.querySelector(".chat_selector header input[type='text']"),
 		chat_result_list = $('.chat_result_list')[0],
 		chat_list = $('.chat_list')[0];
+		
 	header_input.value = ''; // Removing input's value
 	header_input.addEventListener('keyup', k => {
 		// When user press any key, the result list will appear
@@ -28,7 +26,7 @@ $(document).ready(() => {
 			chat_result_list.removeAttribute('hidden'); // Removing just to be sure
 			if (xml.responseText) {
 				// If there's a valid response text
-				response = JSON.parse(xml.responseText); // Parsing JSON's server response text
+				const response = JSON.parse(xml.responseText); // Parsing JSON's server response text
 				response.forEach(user => {
 					user['bio'] = !isNaN(header_input.value) ? user['ra'] : user['bio'];
 					addChat(user, chat_result_list);
@@ -56,7 +54,7 @@ function openChat(e, customName = false, customStatus = false) {
 			$(".chats header div div").eq(0).html(e.currentTarget.children[1].children[0].innerHTML);
 		else
 			$(".chats header div div").eq(0).html("Suporte de " + customName.innerHTML);
-		
+
 		if (!customStatus)
 			$(".chats header div div").eq(1).html(res);
 		else
@@ -84,24 +82,32 @@ function openChat(e, customName = false, customStatus = false) {
 	$('.input_area').attr('style', 'display: flex');
 	$('.chats header').attr('style', 'display: flex');
 	$('.input_area input').focus();
-	scrollState = canUpdate = true;
-	chatsUpdater();
+	canScroll = canUpdate = true;
+	chatsUpdater(100);
 
-	// $('.chats header img')[1].addEventListener('click', () => {
-	// 	if ($('#settings_menu_header_drop_down_2').css('display') === 'block') {
-	// 		$('#settings_menu_header_drop_down_2').fadeOut(200);
-	// 	}
-	// 	else {
-	// 		$('#settings_menu_header_drop_down_2').fadeIn(200, () => {
-	// 			setTimeout(() => {
-	// 				$('.chats header').click(() => {
-	// 					$('.chats header').off('click');
-	// 					$('#settings_menu_header_drop_down_2').fadeOut(200);
-	// 				});
-	// 			}, 50);
-	// 		});
-	// 	}
-	// });
+	if (atob(id).indexOf("teacher") === -1) {
+		$('.chats header img').attr("src", "assets/icons/advanced.png").removeAttr("title");
+		$('.chats header img').eq(1).off("click");
+		// $('.chats header img')[1].addEventListener('click', () => {
+			// 	if ($('#settings_menu_header_drop_down_2').css('display') === 'block') {
+			// 		$('#settings_menu_header_drop_down_2').fadeOut(200);
+			// 	}
+			// 	else {
+			// 		$('#settings_menu_header_drop_down_2').fadeIn(200, () => {
+			// 			setTimeout(() => {
+			// 				$('.chats header').click(() => {
+			// 					$('.chats header').off('click');
+			// 					$('#settings_menu_header_drop_down_2').fadeOut(200);
+			// 				});
+			// 			}, 50);
+			// 		});
+			// 	}
+		// });
+	} else {
+		$('.chats header img').attr("src", "assets/icons/check.png").attr("title", "Começar atendimento");
+		$('.chats header img').eq(1).on("click", sendDoubts);
+		setTimeout(() => $(".message_area").html(""), 400);
+	}
 }
 
 function addZero(i) {
