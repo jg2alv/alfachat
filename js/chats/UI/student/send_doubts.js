@@ -20,9 +20,10 @@ function sendDoubts() {
         
         xml.open("POST", "../xmlhttprequest/message_sender.php", true);
         xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xml.send(`f=${$("#send_to_forum").attr("data-checked")}&m=${JSON.stringify(doubts)}&id=${id}&subject=${$(".chats header div div").eq(0).html().replace("Suporte de ", "")}`);
+        xml.send(`f=${$("#send_to_forum").attr("data-checked") || 0}&m=${JSON.stringify(doubts)}&id=${id}&subject=${$(".chats header div div").eq(0).html().replace("Suporte de ", "")}`);
         doubts = [];
         xml.onload = () => {
+            debugger;
             const toast = new Toast("Dúvida enviada com sucesso! Assim que possível, será respondida.");
             toast.show();
             toast.destroy(2500);
