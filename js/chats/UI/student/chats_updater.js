@@ -22,6 +22,7 @@ function chatsUpdater(limit) {
 				update(t0, "chatsUpdater", limit);
 			return;
 		}
+		
 		response.forEach((message, index) => chats.innerHTML += new Message(message, index).parse());
 
 		switch (true) {

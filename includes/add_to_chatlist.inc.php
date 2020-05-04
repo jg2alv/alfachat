@@ -1,5 +1,8 @@
 <?php
     function addToChatList($receiver) {
+        require "db.inc.php";
+        $id = $_SESSION["id"];
+
         if (strpos($receiver, "group") !== false)
             return;
 
@@ -29,6 +32,7 @@
         foreach($sql as $index => $value) {
             $_SESSION[$index] = $value;
         }
+
         die();
     }
 ?>
