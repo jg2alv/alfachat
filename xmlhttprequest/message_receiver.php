@@ -39,10 +39,10 @@
             echo $response; // Returning it to JS
         } else if (strpos($chat, "doubt") !== false) {
             $id = explode(":", $chat)[1];
-            $sql = "SELECT * FROM `doubts` WHERE id = $id";
+            $sql = "SELECT * FROM `messages` WHERE id = $id";
             $sql = mysqli_query($conn, $sql);
-            $sql = mysqli_fetch_assoc($sql);
-            echo json_encode($sql);
+            $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
+            echo fetchMessages($sql);
         }
     } else {
         $user = $_SESSION["id"];
@@ -50,6 +50,20 @@
         $sql = "((SELECT * FROM `messages` WHERE sender = '$user' AND receiver = '$chat') UNION (SELECT * FROM `messages` WHERE sender = '$chat' AND receiver = '$user') ORDER BY time DESC LIMIT $limit) ORDER BY time";
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
+        echo fetchMessages($sql);
+        // Select all messages he sent me and I didn't see yet.
+        $sql = "SELECT * FROM `messages` WHERE sender = $chat AND seen = 0";
+        $sql = mysqli_query($conn, $sql);
+        $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
+        foreach ($sql as $message) {
+            $id = $message["id"];
+            // Mark messages as 'seen'.
+            $sql = "UPDATE `messages` SET seen = 1 WHERE id = $id";
+            mysqli_query($conn, $sql);
+        }
+    }
+
+    function fetchMessages($sql) {
         $response = "["; // Starting artificial JSON
         foreach($sql as $msg) {
             if ($msg["file"]) {
@@ -65,17 +79,7 @@
         }
         $response = substr($response, 0, -1);
         $response .= "]"; // Finishing artificial JSON
-        echo $response; // Returning it to JS
-        // Select all messages he sent me and I didn't see yet.
-        $sql = "SELECT * FROM `messages` WHERE sender = $chat AND seen = 0";
-        $sql = mysqli_query($conn, $sql);
-        $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
-        foreach ($sql as $message) {
-            $id = $message["id"];
-            // Mark messages as 'seen'.
-            $sql = "UPDATE `messages` SET seen = 1 WHERE id = $id";
-            mysqli_query($conn, $sql);
-        }
+        return $response; // Returning it to JS
     }
 
     die();
