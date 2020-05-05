@@ -20,7 +20,7 @@
         $content = json_decode($_POST["m"]);
         $doubts = array();
         $subject = $_POST["subject"];
-        $public = $_POST["f"];
+        $public = $_POST["public"];
 
         foreach($content as $msg) {
             $msg = base64_encode(filter_var($msg, FILTER_SANITIZE_SPECIAL_CHARS));
@@ -45,25 +45,17 @@
             $sql = "UPDATE `messages` SET doubt = $id WHERE id = $doubt";
             mysqli_query($conn, $sql);
         }
-
-        $sql = "SELECT * FROM `users` WHERE id = $sender";
-        $sql = mysqli_query($conn, $sql);
-        $sql = mysqli_fetch_assoc($sql);
-        $chats = $sql["chats"] . ",doubt:$id";
-        $sql = "UPDATE `users` SET chats = '$chats' WHERE id = $sender";
-        mysqli_query($conn, $sql);
-        die();
     } else if (strpos($receiver, "doubt") !== false) {
-        $receiver = explode(":", $receiver)[1];
-        $sql = "SELECT * FROM `doubts` WHERE id = $receiver";
+        $doubt = explode(":", $receiver)[1];
+        $sql = "SELECT * FROM `doubts` WHERE id = $doubt";
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_assoc($sql);
         $assignee = $sql["assignee"];
 
         if ($assignee) 
-            $sql = "INSERT INTO `messages` (sender, receiver, content, doubt, time) VALUES ($sender, $assignee, '$content', $receiver, $time)";
+            $sql = "INSERT INTO `messages` (sender, receiver, content, doubt, time) VALUES ($sender, $assignee, '$content', $doubt, $time)";
         else
-            $sql = "INSERT INTO `messages` (sender, content, doubt, time) VALUES ($sender, '$content', $receiver, $time)";
+            $sql = "INSERT INTO `messages` (sender, content, doubt, time) VALUES ($sender, '$content', $doubt, $time)";
         
         mysqli_query($conn, $sql);
     } else {
