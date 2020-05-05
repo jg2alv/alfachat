@@ -1,5 +1,5 @@
 function chatsUpdater(limit) {
-	if (!canUpdate)
+	if (!canUpdate || atob(id).indexOf("teacher") > -1)
 		return;
 
 	const xml = new XMLHttpRequest(),
@@ -15,9 +15,6 @@ function chatsUpdater(limit) {
 		try {
 			response = JSON.parse(xml.responseText);
 		} catch (e) {
-			if (!(message_area[0].children.length > chats.children.length && atob(id).indexOf("teacher") > -1))
-				message_area.html('');
-				
 			if (canUpdate)
 				update(t0, "chatsUpdater", limit);
 			return;
