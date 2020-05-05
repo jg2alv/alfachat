@@ -94,61 +94,51 @@ class Message {
 
         this.btn.src = "assets/icons/audio.png";
 
-        let toast = new Toast();
-
         if (blob) {
             formData.set("file_user_input", blob, `AUD_${d.getFullYear() + (addZero(d.getMonth() + 1)) + addZero(d.getDate()) + addZero(d.getMilliseconds())}`);
             formData.set("audio", true);
+            this.xml.open("POST", "../xmlhttprequest/chat_file_upload.php", true);
+            this.xml.send(formData);
         } else if (file.files.length) {
-            if (file.files.length > 1) {
+            let toast;
+            if (atob(id).indexOf("teacher") === -1) {
                 toast = new Toast("Enviando arquivos...");
                 toast.show();
-                for (let i = 0; i < file.files.length; i++) {
-                    if (this.renderFile())
-                        continue;
-
-                    formData.set(`file_user_input${i}`, file.files[i]);
-                    formData.set("id", id);
-                    this.xml.open("POST", "../xmlhttprequest/chat_file_upload.php", true);
-                    this.xml.send(formData);
-                    this.xml.upload.onprogress = e => {
-                        const progress = e.loaded / e.total * 100;
-
-                        toast.update(`Enviando arquivo (${progress}%)...`);
-                        toast.show();
-                        toast.destroy(1250);
-                    };
-
-                    this.xml.onload = () => {
-                        toast.update(`${i}° arquivo enviado com sucesso!`);
-                        toast.show();
-                        toast.destroy(1250);
-                    };
-
-                    this.xml.onerror = this.xml.onabort = e => {
-                        toast.update(`Erro no upload: ${e}`, "background-color: red; font-size: 18px; font-weigth: bold;");
-                        toast.show();
-                        toast.destroy(1250)
-                    };
-                }
-                return;
-            } else {
-                formData.set("file_user_input", file.files[0]);
-                formData.set("id", id);
-                if (this.renderFile())
-                    return;
             }
-        } else
-            return;
 
-        this.xml.open("POST", "../xmlhttprequest/chat_file_upload.php", true);
-        this.xml.send(formData);
+            for (let i = 0; i < file.files.length; i++) {
+                this.message.file = {};
+                this.index = $("[data-message]").length;
+                this.message.file.location = btoa(URL.createObjectURL(file.files[i]));
+                this.message.file.extension = file.files[i].name.slice((Math.max(0, file.files[i].name.lastIndexOf(".")) || Infinity) + 1);
+                this.message.file = JSON.stringify(this.message.file);
 
-        this.xml.onload = () => {
-            if (file.files.length) {
-                (file.files.length > 1) ? toast.update("Arquivos enviados com sucesso!") : toast.update("Arquivo enviado com sucesso!");
-                toast.show();
-                toast.destroy(2500);
+                $(".message_area").html($(".message_area").html() + this.parse());
+                $(".message_area [data-src*='blob']").each((index, item) => $(item).attr("src", $(item).attr("data-src")).removeAttr("data-src"));
+                
+                if (atob(id).indexOf("teacher") > -1) {
+                    const fd = new FormData();
+                    fd.set(`file_user_input${i}`, file.files[i])
+                    doubts.push(fd);
+                    continue;
+                }
+
+                formData.set(`file_user_input${i}`, file.files[i]);
+                formData.set("id", id);
+                this.xml.open("POST", "../xmlhttprequest/chat_file_upload.php", true);
+                this.xml.send(formData);
+
+                if (i === file.files.length - 1) {
+                    console.log(i)
+                    this.xml.onload = () => {
+                        if (i === 0)
+                            toast.update("Arquivo enviado com sucesso!");
+                        else
+                            toast.update("Arquivos enviados com sucesso!");
+                        toast.show();
+                        toast.destroy(2500);
+                    }
+                }
             }
         }
     }
@@ -160,22 +150,5 @@ class Message {
             sizes = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
             i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    }
-
-    renderFile() {
-        const file = $(".input_area input[type='file']")[0];
-
-        this.message.file = {};
-        this.index = $("[data-message]").length;
-        this.message.file.location = btoa(URL.createObjectURL(file.files[0]));
-        this.message.file.extension = file.files[0].name.slice((Math.max(0, file.files[0].name.lastIndexOf(".")) || Infinity) + 1);
-        this.message.file = JSON.stringify(this.message.file);
-        $(".message_area").html($(".message_area").html() + this.parse());
-        $(".message_area [data-src*='blob']").each((index, item) => $(item).attr("src", $(item).attr("data-src")));
-        if (atob(id).indexOf("teacher") > -1) {
-            doubts.push(this.parse(true));
-            return true;
-        } else
-            return false;
     }
 }
