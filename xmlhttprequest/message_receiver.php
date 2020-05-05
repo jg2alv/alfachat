@@ -39,18 +39,18 @@
             echo $response; // Returning it to JS
         } else if (strpos($chat, "doubt") !== false) {
             $id = explode(":", $chat)[1];
-            $sql = "SELECT * FROM `messages` WHERE id = $id";
+            $sql = "SELECT * FROM `messages` WHERE doubt = $id";
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
-            echo fetchMessages($sql);
+            echo fetchMessages($conn, $sql);
         }
     } else {
         $user = $_SESSION["id"];
         // Select all messages sent by me to him AND sent by him to me. Order by time.
-        $sql = "((SELECT * FROM `messages` WHERE sender = '$user' AND receiver = '$chat') UNION (SELECT * FROM `messages` WHERE sender = '$chat' AND receiver = '$user') ORDER BY time DESC LIMIT $limit) ORDER BY time";
+        $sql = "((SELECT * FROM `messages` WHERE sender = '$user' AND receiver = '$chat' AND doubt = 0) UNION (SELECT * FROM `messages` WHERE sender = '$chat' AND receiver = '$user' AND doubt = 0) ORDER BY time DESC LIMIT $limit) ORDER BY time";
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
-        echo fetchMessages($sql);
+        echo fetchMessages($conn, $sql);
         // Select all messages he sent me and I didn't see yet.
         $sql = "SELECT * FROM `messages` WHERE sender = $chat AND seen = 0";
         $sql = mysqli_query($conn, $sql);
@@ -63,7 +63,7 @@
         }
     }
 
-    function fetchMessages($sql) {
+    function fetchMessages($conn, $sql) {
         $response = "["; // Starting artificial JSON
         foreach($sql as $msg) {
             if ($msg["file"]) {
