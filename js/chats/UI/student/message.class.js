@@ -117,9 +117,8 @@ class Message {
                 $(".message_area [data-src*='blob']").each((index, item) => $(item).attr("src", $(item).attr("data-src")).removeAttr("data-src"));
                 
                 if (atob(id).indexOf("teacher") > -1) {
-                    const fd = new FormData();
-                    fd.set(`file_user_input${i}`, file.files[i])
-                    doubts.push(fd);
+                    this.message.file = JSON.stringify(this.message.file);
+                    doubts.push(this.parse(true));
                     continue;
                 }
 
@@ -129,7 +128,6 @@ class Message {
                 this.xml.send(formData);
 
                 if (i === file.files.length - 1) {
-                    console.log(i)
                     this.xml.onload = () => {
                         if (i === 0)
                             toast.update("Arquivo enviado com sucesso!");
