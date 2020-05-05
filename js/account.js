@@ -1,8 +1,6 @@
 $("span[data-teacher]").on("click", e => {
-	$("input").each((index, item) => {
-		if ($(item).attr("type") !== "submit")
-			item.value = ""
-	})
+	document.forms[0].reset();
+	
 	if (e.target.getAttribute("data-teacher") == 0) {
 		$("input[name='ra']").attr("placeholder", "E-mail").removeAttr("minlength maxlength pattern inputmode").attr("type", "email");
 		$("select").css("display", "none");
@@ -31,11 +29,11 @@ $("form").on("submit", e => {
 
 	xml.onload = () => {
 		if (!xml.responseText) {
-			ra.value = password.value = "";
-
 			const toast = new Toast("Credenciais incorreta(s)!", "background-color: red; font-size: 18px; font-weigth: bold;");
+
 			toast.show();
 			toast.destroy(2500);
+			document.forms[0].reset();
 		} else {
 			const response = JSON.parse(xml.responseText);
 			Array.from(Object.keys(response)).forEach(key => sessionStorage[btoa(key)] = btoa(unescape(encodeURIComponent(response[key]))))
