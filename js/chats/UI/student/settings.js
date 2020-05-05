@@ -18,6 +18,7 @@ $(document).ready(() => {
 	});
 
 	$('#settings_menu_header_drop_down span').eq(0).click(() => {
+		canUpdate = false;
 		sessionStorage.clear();
 		location.href += '?log_out=1';
 	});

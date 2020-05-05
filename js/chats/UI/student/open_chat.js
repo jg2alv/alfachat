@@ -106,6 +106,7 @@ function openChat(e, customName = false, customStatus = false) {
 	} else {
 		$('.chats header img').attr("src", "assets/icons/check.png").attr("title", "Começar atendimento");
 		$('.chats header img').on("click", sendDoubts);
+		$(".message_area").html("");
 	}
 }
 
