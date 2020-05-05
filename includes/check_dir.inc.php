@@ -1,7 +1,6 @@
 <?php
-    function checkDirectory($root) {
-        if (!file_exists($root)) {
-            mkdir($root);
-        }
+    function checkDirectory($path) {
+        if (!file_exists($path))
+            mkdir($path);
     }
 ?>
