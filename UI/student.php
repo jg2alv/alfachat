@@ -161,7 +161,7 @@
     <div class="modal" style="width: 20vw; height: 20vh; flex-direction: column" id="doubt_send">
         <div style="flex: 3; display: flex; align-items: center; justify-content: center; flex-direction: column">
             <p style="font-size: 18px; margin: 2em 0">Deseja enviar suas d&uacute;vidas ao suporte?</p>
-            <div style="display: flex; justify-content: space-evenly; width: 100%; font-size: 16px"><input type="checkbox" id="send_to_forum"><label for="send_to_forum">Disponibilizar a pergunta e a resposta no f&oacute;rum</label></div>
+            <div style="display: flex; justify-content: space-evenly; width: 100%; font-size: 16px"><input checked type="checkbox" id="send_to_forum"><label for="send_to_forum">Disponibilizar a pergunta e a resposta no f&oacute;rum</label></div>
             <script>
                 $("#send_to_forum").on("change", e => {
                     if (e.target.checked)
