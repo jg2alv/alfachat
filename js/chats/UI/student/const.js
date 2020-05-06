@@ -14,4 +14,4 @@ let canScroll = true;
 let canUpdate = true;
 
 // Set containing asked doubts.
-let doubts = [];
+let doubts = new FormData();
