@@ -13,7 +13,7 @@
         header("Location: ../"); // If user isn't logged in
     } else {
         $sql = mysqli_fetch_assoc($sql);
-        if (!empty($_POST["s"])) {
+        if (!empty($_POST["cred"]) && $_POST["cred"] === $_SESSION["ra"] . ":" . $_SESSION["password"]) {
             echo json_encode($sql);
             die();
         }
