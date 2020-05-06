@@ -13,15 +13,18 @@ function sendDoubts() {
     $("#doubt_send").css("display", "flex");
 
     $("#doubt_send button").on("click", () => {
+        doubts.set("public", $("#send_to_forum").attr("data-checked") || 1);
+        doubts.set("receiver", id);
+        doubts.set("subject", $(".chats header div div").eq(0).html().replace("Suporte de ", ""));
+
         $("#doubt_send").css("display", "none");
         $(".side_menu").css("display", "none");
 
         const xml = new XMLHttpRequest();
         
-        xml.open("POST", "../xmlhttprequest/message_sender.php", true);
-        xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xml.send(`public=${$("#send_to_forum").attr("data-checked") || 0}&m=${JSON.stringify(doubts)}&id=${id}&subject=${$(".chats header div div").eq(0).html().replace("Suporte de ", "")}`);
-        doubts = [];
+        xml.open("POST", "../xmlhttprequest/doubts_sender.php", true);
+        xml.send(doubts);
+        doubts = new FormData();
         xml.onload = () => {
             const toast = new Toast("Dúvida enviada com sucesso! Assim que possível, será respondida.");
             toast.show();
