@@ -41,9 +41,6 @@
         $receiver = $assignee;
         $assignee = explode(":", $assignee)[1];
 
-        echo $assignee . "\n";
-        echo $receiver . "\n";
-
         for ($i = 0; $i < sizeof($_FILES["files"]["name"]); $i++) {
             $file = $_FILES["files"];
 
