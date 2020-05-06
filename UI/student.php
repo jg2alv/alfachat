@@ -13,17 +13,13 @@
                         <div class="pic"><img style="max-width: 50%"  src="assets/icons/play.png" alt="Professores"></div>
                         <div class="info" style="flex: 4">Disciplinas</div>
                     </div>
-                    <div id="teacher_list" style="padding-top: 15px; height: auto; display: none; margin-bottom: 10px">
-                        <?php
-                            require "../includes/teachers_list.inc.php";
-                        ?>
-                    </div>
+                    <div id="teacher_list" style="padding-top: 15px; height: auto; display: none; margin-bottom: 10px"></div>
                     <script>
                         function teacherListUpdater() {
                             const xml = new XMLHttpRequest(),
                                 t0 = performance.now();
 
-                            xml.open("POST", "../includes/teachers_list.inc.php", true);
+                            xml.open("POST", "../xmlhttprequest/teachers_list.php", true);
                             xml.send(null);
 
                             xml.onload = () => {
@@ -188,13 +184,13 @@
             <input type="text" name="query" placeholder="Busca">
         </header>
         <div class="chat_result_list" hidden></div>
-        <div class="chat_list"><?php require "../includes/chat_list.inc.php"; ?></div>
+        <div class="chat_list"><span style="display: inline-block; margin-top: 10vh; font-size: 16px; text-align: center; width: 100%; padding: 10px; box-sizing: border-box">Carregando...</span></div>
         <script>
             function chatListUpdater() {
                 const xml = new XMLHttpRequest(),
                     t0 = performance.now();
 
-                xml.open("POST", "../includes/chat_list.inc.php", true);
+                xml.open("POST", "../xmlhttprequest/chat_list.php", true);
                 xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xml.send("chats=1");
 
@@ -202,7 +198,7 @@
                     const xml = new XMLHttpRequest();
 
                     $("chat_list").attr("data-chats", xml.responseText);
-                    xml.open("POST", "../includes/chat_list.inc.php", true);
+                    xml.open("POST", "../xmlhttprequest/chat_list.php", true);
                     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xml.send(null);
 
@@ -260,7 +256,7 @@
             const xml = new XMLHttpRequest();
             xml.open("POST", "./", true);
             xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xml.send("s=1");
+            xml.send("cred=<?php echo $_SESSION["ra"] . ":" . $_SESSION["password"] ?>");
 
             return new Promise(resolve => {
                 xml.onload = () => resolve(JSON.parse(xml.responseText));

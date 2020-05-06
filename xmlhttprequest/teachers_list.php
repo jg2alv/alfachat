@@ -1,5 +1,5 @@
 <?php
-    require "db.inc.php";
+    require "../includes/db.inc.php";
 
     $sql = "SELECT * FROM `subjects`";
     $sql = mysqli_query($conn, $sql);

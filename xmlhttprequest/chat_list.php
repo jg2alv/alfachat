@@ -2,8 +2,8 @@
     if (empty($_SESSION))
         session_start();
 
-    require_once "remove_from_chatlist.inc.php";
-    require "db.inc.php";
+    require_once "../includes/remove_from_chatlist.inc.php";
+    require "../includes/db.inc.php";
 
     $id = $_SESSION["id"]; // Getting user id
     $sql = "SELECT chats FROM `users` WHERE id = $id"; // Selecting logged user
