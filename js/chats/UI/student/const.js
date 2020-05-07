@@ -11,7 +11,9 @@ let id;
 let canScroll = true;
 
 // Boolean indicating whether or not the recursive update() function should execute.
-let canUpdate = true;
+let canUpdate = new Object();
 
 // Set containing asked doubts.
 let doubts = new FormData();
+
+const addZero = i => i < 10 ? String(`${i}0`) : String(i);
