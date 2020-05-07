@@ -1,7 +1,5 @@
 $(document).ready(() => {
-	const side_menu_img = document.querySelector(".chat_selector header img");
-
-	side_menu_img.addEventListener("click", showSideMenu);
+	$(".chat_selector header img, #forum header img").on("click", showSideMenu);
 
 	document.addEventListener("keydown", (k) => {
 		if (k.keyCode === 27 && ($(".modal:visible").length || $(".side_menu:visible").length)) {
@@ -11,35 +9,30 @@ $(document).ready(() => {
 });
 
 function showSideMenu() {
-	const side_menu = document.querySelector(".side_menu");
-	const side_menu_img = document.querySelector(".chat_selector header img");
+	setTimeout(() => $(".chat_selector header img, #forum header img").css("visibility", "hidden"), 50);
 
-	setTimeout(() => side_menu_img.style.visibility = "hidden", 50);
-
-	$(".side_menu_bg")[0].style.flex = 4;
-	$(".side_menu_visible").css("flex", 1);
+	$(".side_menu_bg").css("flex", "4 !important");
+	$(".side_menu_visible").css("flex", "4 !important");
 	$(".side_menu_visible").css("display", "flex");
 
-	$(side_menu).css("display", "flex").hide().fadeIn(300, () => {
-		document.querySelector(".side_menu_bg").addEventListener("click", hideSideMenu);
-		document.querySelector(".chats").addEventListener("keypress", hideSideMenu);
-		document.querySelector("#new_group").addEventListener("click", newGroupMenu);
-		document.querySelector("#config").addEventListener("click", settingsMenu);
+	$(".side_menu").css("display", "flex").hide().fadeIn(300, () => {
+		$(".side_menu_bg").on("click", hideSideMenu);
+		$(".chats").on("keypress", hideSideMenu);
+		$("#new_group").on("click", newGroupMenu);
+		$("#config").on("click", settingsMenu);
 	});
 }
 
 function hideSideMenu() {
-	const side_menu_img = document.querySelector(".chat_selector header img");
-
-	document.querySelector(".side_menu_bg").removeEventListener("click", hideSideMenu);
-	document.querySelector(".chats").removeEventListener("keypress", hideSideMenu);
+	$(".side_menu_bg").off("click", hideSideMenu);
+	$(".chats").off("keypress", hideSideMenu);
 	$(".modal").css("display", "none");
-	document.querySelector(".side_menu_visible").style.flex = 1;
-	setTimeout(() => side_menu_img.style.visibility = "", 150);
-	$(document.querySelector(".side_menu")).fadeOut(300, () => {
-		side_menu_img.addEventListener("click", showSideMenu);
+	$(".side_menu_visible").css("flex", "4 !important");
+	setTimeout(() => $(".chat_selector header img").css("visibility", ""), 150);
+	$(".side_menu").fadeOut(300, () => {
+		$(".chat_selector header img").on("click", showSideMenu);
 		$("#subjects_menu").removeClass("subjects_menu_active");
-		$("#subjects_menu img")[0].style.transform = "";
+		$("#subjects_menu img").css("transform", "");
 		$("#subjects_menu div").eq(3).slideUp();
 	});
 }
