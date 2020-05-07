@@ -1,5 +1,5 @@
 function chatsUpdater(limit) {
-	if (!canUpdate || atob(id).indexOf("teacher") > -1)
+	if (atob(id).indexOf("teacher") > -1)
 		return;
 
 	const xml = new XMLHttpRequest(),
@@ -15,8 +15,7 @@ function chatsUpdater(limit) {
 		try {
 			response = JSON.parse(xml.responseText);
 		} catch (e) {
-			if (canUpdate)
-				update(t0, "chatsUpdater", limit);
+			update(t0, "chatsUpdater", limit);
 			return;
 		}
 		
@@ -28,7 +27,7 @@ function chatsUpdater(limit) {
 
 
 			case message_area[0].children.length !== chats.children.length:
-				if (message_area[0].children.length > chats.children.length && atob(id).indexOf("teacher") > -1) {
+				if (message_area[0].children.length > chats.children.length) {
 					update(t0, "chatsUpdater", limit);
 					return;
 				}
@@ -143,14 +142,16 @@ function chatsUpdater(limit) {
 				message_area[0].scrollTop = message_area[0].scrollHeight - message_area[0].clientHeight;
 		}
 
-		if (canUpdate)
-			update(t0, "chatsUpdater", limit);
+		update(t0, "chatsUpdater", limit);
 	};
 	return;
 }
 
 function update(t0, callback, limit = false) {
 	const diff = performance.now() - t0;
+
+	if (!canUpdate[callback])
+		return;
 
 	if (diff < UPDATE_TIME)
 		setTimeout(() => limit ? window[callback](limit) : window[callback](), UPDATE_TIME - diff);
