@@ -8,6 +8,7 @@
             </header>
             <main style="overflow-y: auto">
                 <div id="new_group" class="menu_icon"><div class="pic"><img style="max-width: 50%"  src="assets/icons/group.png" alt="Novo Grupo"></div><div class="info" style="flex: 4">Novo Grupo</div></div>
+                <div id="forum_menu" class="menu_icon"><div class="pic"><img src="assets/icons/forum.png" alt="F&oacute;rum"></div><div class="info" style="flex: 4">F&oacute;rum</div></div>
                 <div style="flex-direction: column; justify-content: center; padding: 0" id="subjects_menu" class="menu_icon">
                     <div style="display: flex; padding-left: 20px; min-height: 100%; min-width: 100%; box-sizing: border-box">
                         <div class="pic"><img style="max-width: 50%"  src="assets/icons/play.png" alt="Professores"></div>
@@ -43,6 +44,7 @@
                             return;
                         }
 
+                        canUpdate.teacherListUpdater = true;
                         teacherListUpdater();
                         </script>
                 </div>
@@ -178,6 +180,46 @@
             </footer>
         </div>
     </div>
+    <div id="forum">
+        <header>
+            <img src="assets/icons/menu.png" alt="Menu icon">
+            <input type="text" name="query" placeholder="Busca">
+        </header>
+        <div class="subject_list">
+                <div class="menu_icon">
+                    <div class="pic"><img src="assets/avatars/subjects/Quimica.png"></div>
+                    <div class="info">Quimica</div>
+                </div>
+                <div class="menu_icon">
+                    <div class="pic"><img src="assets/avatars/subjects/Fisica.png"></div>
+                    <div class="info">Fisica</div>
+                </div>
+                <div class="menu_icon">
+                    <div class="pic"><img src="assets/avatars/subjects/Biologia.png"></div>
+                    <div class="info">Biologia</div>
+                </div>
+                <div class="menu_icon">
+                    <div class="pic"><img src="assets/avatars/subjects/Historia.png"></div>
+                    <div class="info">Historia</div>
+                </div>
+                <div class="menu_icon">
+                    <div class="pic"><img src="assets/avatars/subjects/Geografia.png"></div>
+                    <div class="info">Geografia</div>
+                </div>
+                <div class="menu_icon">
+                    <div class="pic"><img src="assets/avatars/subjects/Portugues.png"></div>
+                    <div class="info">Portugues</div>
+                </div>
+                <div class="menu_icon">
+                    <div class="pic"><img src="assets/avatars/subjects/Matematica.png"></div>
+                    <div class="info">Matematica</div>
+                </div>
+                <div class="menu_icon">
+                    <div class="pic"><img src="assets/avatars/subjects/Ingles.png"></div>
+                    <div class="info">Ingles</div>
+                </div>
+        </div>
+    </div>
     <div class="chat_selector">
         <header>
             <img src="assets/icons/menu.png" alt="Menu icon">
@@ -220,6 +262,7 @@
                 return;
             }
 
+            canUpdate.chatListUpdater = true;
             chatListUpdater();
         </script>
     </div>
@@ -252,7 +295,7 @@
     <script>
         $(".modal_btns div").on("click", hideSideMenu);
 
-        async function getSessionData() {
+        function getSessionData() {
             const xml = new XMLHttpRequest();
             xml.open("POST", "./", true);
             xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -269,9 +312,13 @@
             keys.forEach(key => sessionStorage[btoa(key)] = btoa(unescape(encodeURIComponent(response[key]))));
         });
 
+    </script>
+
+    <script>
         fetch("http://api.github.com/repos/alfachat/alfachat/tags").then(response =>  response.json().then(data => (data))).then(response => $("#version").html(response[0]["name"]).attr("href", `https://github.com/alfachat/alfachat/releases/${response[0]["name"]}`));
+    </script>
 
-
+    <script>
         $(".modal_btns div:nth-of-type(1)").on("click", hideSideMenu);
         $("#subjects_menu div").eq(0).on("click", e => {
             $("#subjects_menu").toggleClass("subjects_menu_active");
