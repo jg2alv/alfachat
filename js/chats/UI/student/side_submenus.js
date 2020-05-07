@@ -4,7 +4,6 @@ function newGroupMenu() {
 
     side_menu_img.style.display = "initial";
     $(document.querySelector(".side_menu_visible")).fadeOut(100, () => {
-        document.querySelector(".side_menu_bg").style.flex = 1;
         $("#new_group_menu input[type='text']")[0].value = "";
         new_group_menu.style.display = "flex";
         $('#new_group_menu label img')[0].src = "assets/icons/camera.png";
@@ -17,7 +16,6 @@ function settingsMenu() {
 
     side_menu_img.style.display = "initial";
     $(document.querySelector(".side_menu_visible")).fadeOut(100, () => {
-        document.querySelector(".side_menu_bg").style.flex = 1;
         document.querySelector("#settings_menu").style.display = "flex";
     });
 }

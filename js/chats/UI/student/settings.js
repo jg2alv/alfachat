@@ -1,7 +1,7 @@
 $(document).ready(() => {
-	$('#settings_menu .settings_header_btns img')[1].addEventListener('click', hideSideMenu);
+	$('#settings_menu .settings_header_btns img').eq(1).on('click', hideSideMenu);
 
-	$('#settings_menu .settings_header_btns img')[0].addEventListener('click', () => {
+	$('#settings_menu .settings_header_btns img').eq(0).on('click', () => {
 		if ($('#settings_menu_header_drop_down').css('display') === 'block') {
 			$('#settings_menu_header_drop_down').fadeOut(200);
 		}
@@ -18,7 +18,7 @@ $(document).ready(() => {
 	});
 
 	$('#settings_menu_header_drop_down span').eq(0).click(() => {
-		canUpdate = false;
+		Object.keys(canUpdate).forEach(key => canUpdate[key] = false);
 		sessionStorage.clear();
 		location.href += '?log_out=1';
 	});
@@ -40,7 +40,7 @@ $(document).ready(() => {
 	});
 
 	const photo = $("#settings_menu input[type='file']")[0];
-	$(photo).on("change", () => {
+	$("#settings_menu input[type='file']").eq(0).on("change", () => {
 		if (photo.files.length < 1) {
             return;
 		}
