@@ -1,5 +1,5 @@
 function sendDoubts() {
-    if (doubts == false) {
+    if (Array.from(doubts.entries()) == false) {
         const toast = new Toast("Faça uma pergunta antes de enviar!");
         toast.show();
         toast.destroy(2500);
@@ -33,7 +33,7 @@ function sendDoubts() {
 	        $('.input_area').css('display', 'none');
             $('.chats header').css('display', 'none');
             $(".message_area").html("").css({display: "none", visibility: "none"});
-            canUpdate = false;
+            canUpdate.chatsUpdater = false;
         }
     });
 }

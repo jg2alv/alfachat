@@ -43,7 +43,7 @@ $(document).ready(() => {
 });
 
 function openChat(e, customName = false, customStatus = false) {
-	canUpdate = false;
+	canUpdate.chatsUpdater = false;
 	id = $(e.currentTarget).attr("data-id"); // base64 id value. Example: 1; group:11 (in base64)
 
 	if (id === e.currentTarget.children[1].children[0].getAttribute('data-id') && $('.chats:visible').length)
@@ -82,7 +82,7 @@ function openChat(e, customName = false, customStatus = false) {
 	$('.input_area').css('display', 'flex');
 	$('.chats header').css('display', 'flex');
 	$('.input_area input').focus();
-	canScroll = canUpdate = true;
+	canScroll = canUpdate.chatsUpdater = true;
 	chatsUpdater(100);
 
 	if (atob(id).indexOf("teacher") === -1) {
@@ -108,11 +108,4 @@ function openChat(e, customName = false, customStatus = false) {
 		$('.chats header img').on("click", sendDoubts);
 		$(".message_area").html("");
 	}
-}
-
-function addZero(i) {
-	if (i < 10) {
-		i = '0' + i;
-	}
-	return i;
 }
