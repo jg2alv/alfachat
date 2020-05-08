@@ -185,40 +185,39 @@
             <img src="assets/icons/menu.png" alt="Menu icon">
             <input type="text" name="query" placeholder="Busca">
         </header>
-        <div class="subject_list">
-                <div class="menu_icon">
-                    <div class="pic"><img src="assets/avatars/subjects/Quimica.png"></div>
-                    <div class="info">Quimica</div>
-                </div>
-                <div class="menu_icon">
-                    <div class="pic"><img src="assets/avatars/subjects/Fisica.png"></div>
-                    <div class="info">Fisica</div>
-                </div>
-                <div class="menu_icon">
-                    <div class="pic"><img src="assets/avatars/subjects/Biologia.png"></div>
-                    <div class="info">Biologia</div>
-                </div>
-                <div class="menu_icon">
-                    <div class="pic"><img src="assets/avatars/subjects/Historia.png"></div>
-                    <div class="info">Historia</div>
-                </div>
-                <div class="menu_icon">
-                    <div class="pic"><img src="assets/avatars/subjects/Geografia.png"></div>
-                    <div class="info">Geografia</div>
-                </div>
-                <div class="menu_icon">
-                    <div class="pic"><img src="assets/avatars/subjects/Portugues.png"></div>
-                    <div class="info">Portugues</div>
-                </div>
-                <div class="menu_icon">
-                    <div class="pic"><img src="assets/avatars/subjects/Matematica.png"></div>
-                    <div class="info">Matematica</div>
-                </div>
-                <div class="menu_icon">
-                    <div class="pic"><img src="assets/avatars/subjects/Ingles.png"></div>
-                    <div class="info">Ingles</div>
-                </div>
-        </div>
+        <main>
+            <div class="subject_result_list" hidden></div>
+            <div class="subject_list"></div>
+            <script>
+                for (subject in subjects) {
+                    if (typeof subjects[subject] === "function")
+                        continue;
+                    $(".subject_list").append(subjects.draw(subject));
+                }
+                $(".subject_list .menu_icon").on("click", openSubject);
+
+                $("#forum header input").on("keyup", e => {
+                    const input = $("#forum header input")[0];
+                    $(".subject_result_list .menu_icon").off("click");
+                    $(".subject_result_list").html("");
+
+                    if (!input.value || input.value === " ") {
+                        $(".subject_list").css("display", "block");
+                        $(".subject_result_list").attr("hidden", "");
+                        return;
+                    }
+
+                    for (subject in subjects) {
+                        if (subject.includes(input.value) && typeof subjects[subject] !== "function") {
+                            $(".subject_result_list").append(subjects.draw(subject));
+                            $(".subject_list").css("display", "none")
+                            $(".subject_result_list").removeAttr("hidden");
+                        }
+                    }
+                    $(".subject_result_list .menu_icon").on("click", openSubject);
+                });
+            </script>
+        </main>
     </div>
     <div class="chat_selector">
         <header>
