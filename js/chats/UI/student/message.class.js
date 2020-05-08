@@ -5,7 +5,7 @@ class Message {
         this.time = `<div class="message_time">${addZero(d.getDate()) + "/" + addZero(d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div>`;
         this.message = message;
         this.index = index;
-        this.sent = message.sender === atob(sessionStorage["aWQ="]);
+        this.sender = JSON.parse(message.sender);
         this.xml = new XMLHttpRequest();
         this.btn = $(".input_area img")[1];
     }
@@ -18,7 +18,7 @@ class Message {
 
             this.message.file = JSON.parse(this.message.file);
 
-            if (this.sent) {
+            if (this.sender.id === atob(sessionStorage["aWQ="])) {
                 if (img.includes(this.message.file.extension))
                     return `<div data-message=${this.index}><div class="message mine" style="margin-left: 0"><img data-src="${atob(this.message.file.location)}">${this.time}</div></div>`;
                 else if (video.includes(this.message.file.extension))
@@ -30,13 +30,13 @@ class Message {
             } else {
                 if (atob(id).indexOf("group") > -1) {
                     if (img.includes(this.message.file.extension))
-                        return `<div data-message=${this.index}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${this.message.name}</span><img data-src="${atob(this.message.file.location)}">${this.time}</div><img class="profile_img" src="${this.message.photo}"></div></div>`;
+                        return `<div data-message=${this.index}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${this.sender.name}</span><img data-src="${atob(this.message.file.location)}">${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
                     else if (video.includes(this.message.file.extension))
-                        return `<div data-message=${this.index}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${this.message.name}</span><video controls="" preload=""><source data-src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video>${this.time}</div><img class="profile_img" src="${this.message.photo}"></div></div>`;
+                        return `<div data-message=${this.index}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${this.sender.name}</span><video controls="" preload=""><source data-src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video>${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
                     else if (audio.includes(this.message.file.extension))
-                        return `<div data-message=${this.index}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${this.message.name}</span><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source data-src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div>${this.time}</div><img class="profile_img" src="${this.message.photo}"></div></div>`;
+                        return `<div data-message=${this.index}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${this.sender.name}</span><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source data-src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div>${this.time}</div><img class="profile_img" src="${this.message.photo}"></div></div>`;
                     else
-                        return `<div data-message=${this.index}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${this.message.name}</span><div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div><img class="profile_img" src="${this.message.photo}"></div></div>`;
+                        return `<div data-message=${this.index}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${this.sender.name}</span><div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
                 } else {
                     if (img.includes(this.message.file.extension))
                         return `<div data-message=${this.index}><div class="message their"><img data-src="${atob(this.message.file.location)}">${this.time}</div></div>`;
@@ -49,11 +49,11 @@ class Message {
                 }
             }
         } else {
-            if (this.sent) {
+            if (this.sender.id === atob(sessionStorage["aWQ="])) {
                 return `<div data-message=${this.index}><div class="message mine">${this.message.content + this.time}</div></div>`;
             } else {
                 if (atob(id).indexOf("group") > -1) {
-                    return `<div data-message=${this.index}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${this.message.name}</span>${this.message.content + this.time}</div><img class="profile_img" src="${this.message.photo}"></div></div>`;
+                    return `<div data-message=${this.index}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${this.sender.name}</span>${this.message.content + this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
                 } else {
                     return `<div data-message=${this.index}><div class="message their">${this.message.content + this.time}</div></div>`;
                 }
@@ -63,13 +63,13 @@ class Message {
 
     sendMessage(e) {
         e.preventDefault();
-        this.index = $("[data-message]").length;
-        this.btn.src = "assets/icons/audio.png";
-        canScroll = true;
-
         if (this.message.content === " ")
             return;
 
+        this.index = $("[data-message]").length;
+        this.btn.src = "assets/icons/audio.png";
+        this.sender.id = atob(sessionStorage["aWQ="]);
+        canScroll = true;
         $(".input_area input[type='text']")[0].value = "";
         $(".message_area").css("visibility", "visible").css("display", "block");
         $(".message_area").append(this.parse());

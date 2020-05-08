@@ -6,9 +6,9 @@ function messageSender() {
 
     $(".input_area img").eq(0).on("click", () => $(file).click());
 
-    file.onchange = e => new Message({sender: atob(sessionStorage["aWQ="]), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000)}).sendFile(e);
+    file.onchange = e => new Message({sender: JSON.stringify({id: atob(sessionStorage["aWQ="])}), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000)}).sendFile(e);
 
-    form.onsubmit = e => new Message({sender: atob(sessionStorage["aWQ="]), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000), file: 0}).sendMessage(e);
+    form.onsubmit = e => new Message({sender: JSON.stringify({id: atob(sessionStorage["aWQ="])}), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000), file: 0}).sendMessage(e);
     
     input.onkeydown = k => {
         if ((input.value.length > 2 && k.keyCode === 8) || input.value === " ") {
@@ -26,7 +26,7 @@ function messageSender() {
 
     btn.onclick = e => {
         if (btn.src.indexOf("assets/icons/send.png") > -1)
-            new Message({sender: atob(sessionStorage["aWQ="]), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000), file: 0}).sendMessage(e);
+            new Message({sender: JSON.stringify({id: atob(sessionStorage["aWQ="])}), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000), file: 0}).sendMessage(e);
         else if (btn.src.indexOf("assets/icons/audio.png") > -1) {
             if (navigator.mediaDevices) {
                 let chunks = [],
