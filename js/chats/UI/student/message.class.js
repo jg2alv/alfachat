@@ -10,7 +10,7 @@ class Message {
         this.btn = $(".input_area img")[1];
     }
 
-    parse(doubt = false) {
+    parse() {
         if (JSON.parse(this.message.file)) {
             const img = ["png", "jpg", "jpeg", "gif", "jfif"],
                 video = ["mp4", "webm"],
@@ -72,7 +72,7 @@ class Message {
 
         $(".input_area input[type='text']")[0].value = "";
         $(".message_area").css("visibility", "visible").css("display", "block");
-        $(".message_area").html($(".message_area").html() + this.parse());
+        $(".message_area").append(this.parse());
         $(".message_area")[0].scrollTop = $(".message_area")[0].scrollHeight - $(".message_area")[0].clientHeight;
 
         if (atob(id).indexOf("teacher") > -1) {
@@ -117,7 +117,7 @@ class Message {
                 this.message.file.extension = file.files[i].name.slice((Math.max(0, file.files[i].name.lastIndexOf(".")) || Infinity) + 1);
                 this.message.file = JSON.stringify(this.message.file);
 
-                $(".message_area").html($(".message_area").html() + this.parse());
+                $(".message_area").append(this.parse());
                 $(".message_area [data-src*='blob']").each((index, item) => $(item).attr("src", $(item).attr("data-src")).removeAttr("data-src"));
                 
                 if (atob(id).indexOf("teacher") > -1) {
