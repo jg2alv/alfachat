@@ -53,20 +53,25 @@ body {
 	width: 100% !important;
 }
 
-#forum .subject_list .menu_icon {
+#forum .subject_list .menu_icon,
+#forum .subject_result_list .menu_icon {
 	padding-left: 0;
 	background-color: #35215a !important;
 }
 
-#forum .subject_list .menu_icon:hover {
+#forum .subject_list .menu_icon:hover,
+#forum .subject_result_list .menu_icon:hover {
 	background-color: #291a46 !important;
 }
 
-#forum .subject_list .menu_icon .pic img {
+#forum .subject_list .menu_icon .pic img,
+#forum .subject_result_list .menu_icon .pic img {
 	max-width: 50%;
+	border-radius: 0;
 }
 
-#forum .subject_list .menu_icon .info {
+#forum .subject_list .menu_icon .info,
+#forum .subject_result_list .menu_icon .info {
 	flex: 20;
 }
 
@@ -515,7 +520,9 @@ body {
 }
 
 .chat_result_list,
-.chat_list {
+.chat_list,
+.subject_list,
+.subject_result_list {
 	max-height: calc(93vh - 20px);
 	overflow-y: auto;
 }
