@@ -75,6 +75,26 @@ body {
 	flex: 20;
 }
 
+#forum main {
+	overflow-y: auto;
+}
+
+#forum main .doubt {
+	background-color: #291a46;
+	border-radius: 10px;
+	margin: 5px;
+	padding: 10px;
+	cursor: pointer;
+	transition: all 250ms;
+	min-height: 15vh;
+	display: flex;
+}
+
+#forum main .doubt:hover {
+	padding: 15px;
+	margin: 0;
+}
+
 .side_menu_visible header,
 .side_menu_visible footer,
 #new_group_menu_advanced header,
