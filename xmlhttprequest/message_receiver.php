@@ -5,8 +5,10 @@
 
     $chat = base64_decode($_POST["id"]);
     $limit = $_POST["limit"];
+    
     require "../includes/db.inc.php";
     require "../includes/remove_from_chatlist.inc.php";
+    require "../includes/fetch_messages.inc.php";
 
     session_start();
 
@@ -61,25 +63,6 @@
             $sql = "UPDATE `messages` SET seen = 1 WHERE id = $id";
             mysqli_query($conn, $sql);
         }
-    }
-
-    function fetchMessages($conn, $sql) {
-        $response = "["; // Starting artificial JSON
-        foreach($sql as $msg) {
-            if ($msg["file"]) {
-                $file = $msg["file"];
-                $sql = "SELECT * FROM `files` WHERE id = $file";
-                $sql = mysqli_query($conn, $sql);
-                $sql = mysqli_fetch_assoc($sql);
-                $msg["file"] = json_encode($sql);
-            }
-            $msg["content"] = html_entity_decode(base64_decode($msg["content"]));
-            $response .= json_encode($msg);
-            $response .= ",";
-        }
-        $response = substr($response, 0, -1);
-        $response .= "]"; // Finishing artificial JSON
-        return $response; // Returning it to JS
     }
 
     die();
