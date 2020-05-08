@@ -17,28 +17,7 @@
             $sql = "(SELECT * FROM `messages` WHERE receiver = '$chat' ORDER BY time DESC LIMIT $limit) ORDER BY time;";
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
-            $response = "["; // Starting artificial JSON
-            foreach($sql as $msg) {
-                if ($msg["file"]) {
-                    $file = $msg["file"];
-                    $sql = "SELECT * FROM `files` WHERE id = $file";
-                    $sql = mysqli_query($conn, $sql);
-                    $sql = mysqli_fetch_assoc($sql);
-                    $msg["file"] = json_encode($sql);
-                }
-                $msg["content"] = html_entity_decode(base64_decode($msg["content"]));
-                $sender = $msg["sender"]; // User ID
-                $sql = "SELECT * FROM `users` WHERE id = $sender"; // Getting user info
-                $sql = mysqli_query($conn, $sql);
-                $sql = mysqli_fetch_assoc($sql);
-                if (!$sql["photo"])
-                    $response .= substr(json_encode($msg), 0, -1) . ',"photo"' . ":" .  '"assets/avatars/users/default.png","name":"' . $sql["name"] .'"},'; // Default pic
-                else
-                    $response .= substr(json_encode($msg), 0, -1) . ',"photo":' . '"' . $sql["photo"] . '","name":"' . $sql["name"] . '"},'; // User's pic
-            }
-            $response = substr($response, 0, -1);
-            $response .= "]"; // Finishing artificial JSON
-            echo $response; // Returning it to JS
+            echo fetchMessages($conn, $sql); // Returning it to JS
         } else if (strpos($chat, "doubt") !== false) {
             $id = explode(":", $chat)[1];
             $sql = "SELECT * FROM `messages` WHERE doubt = $id";
