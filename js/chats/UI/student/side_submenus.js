@@ -10,12 +10,3 @@ function newGroupMenu() {
         $('#new_group_menu label img')[0].style.maxWidth = "";
     });
 }
-
-function settingsMenu() {
-    const side_menu_img = document.querySelector(".chat_selector header img");
-
-    side_menu_img.style.display = "initial";
-    $(document.querySelector(".side_menu_visible")).fadeOut(100, () => {
-        document.querySelector("#settings_menu").style.display = "flex";
-    });
-}
