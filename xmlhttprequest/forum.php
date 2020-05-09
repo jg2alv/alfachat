@@ -6,16 +6,17 @@
     require "../includes/fetch_messages.inc.php";
 
     $subject = addslashes(html_entity_decode((base64_decode($_POST["subject"]))));
-    $sql = "SELECT id FROM `doubts` WHERE subject = '$subject' AND public = 1";
+    $sql = "SELECT * FROM `doubts` WHERE subject = '$subject' AND public = 1 AND assignee IS NOT NULL";
     $sql = mysqli_query($conn, $sql);
     $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
+
     $response = array();
     foreach($sql as $doubt) {
-        $doubt = $doubt["id"];
-        $sql = "SELECT * FROM `messages` WHERE doubt = $doubt";
+        $id = $doubt["id"];
+        $sql = "SELECT * FROM `messages` WHERE doubt = $id";
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
-        array_push($response, fetchMessages($conn, $sql));
+        array_push($response, array(fetchMessages($conn, $sql), array($doubt["name"], $doubt["tags"])));
     }
     echo json_encode($response);
     

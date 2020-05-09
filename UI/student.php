@@ -46,7 +46,7 @@
 
                         canUpdate.teacherListUpdater = true;
                         teacherListUpdater();
-                        </script>
+                    </script>
                 </div>
             </main>
             <footer style="padding: 0; margin-top: 15px; padding-top: 10px">
@@ -189,26 +189,19 @@
             <div class="subject_result_list" hidden></div>
             <div class="subject_list"></div>
             <script>
-                for (subject in subjects) {
-                    if (typeof subjects[subject] === "function")
-                        continue;
-                    $(".subject_list").append(subjects.draw(subject));
-                }
-                $(".subject_list .menu_icon").on("click", openSubject);
-
                 $("#forum header input").on("keyup", e => {
                     const input = $("#forum header input")[0];
                     $(".subject_result_list .menu_icon").off("click");
                     $(".subject_result_list").html("");
 
-                    if (!input.value || input.value === " ") {
+                    if (!e.target.value || e.target.value === " ") {
                         $(".subject_list").css("display", "block");
                         $(".subject_result_list").attr("hidden", "");
                         return;
                     }
 
                     for (subject in subjects) {
-                        if (subject.includes(input.value) && typeof subjects[subject] !== "function") {
+                        if (subject.includes(e.target.value) && typeof subjects[subject] !== "function") {
                             $(".subject_result_list").append(subjects.draw(subject));
                             $(".subject_list").css("display", "none")
                             $(".subject_result_list").removeAttr("hidden");
@@ -225,7 +218,7 @@
             <input type="text" name="query" placeholder="Busca">
         </header>
         <div class="chat_result_list" hidden></div>
-        <div class="chat_list"><span style="display: inline-block; margin-top: 10vh; font-size: 16px; text-align: center; width: 100%; padding: 10px; box-sizing: border-box">Carregando...</span></div>
+        <div class="chat_list"><div class="loading">Carregando...</div></div>
         <script>
             function chatListUpdater() {
                 const xml = new XMLHttpRequest(),
