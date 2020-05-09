@@ -527,8 +527,7 @@ body {
 .chat_selector header img,
 #forum header img {
 	height: 5.5vh;
-	margin-right: 10px;
-	margin-left: 10px;
+	margin: 0 10px;
 	cursor: pointer;
 	filter: brightness(60%);
 }

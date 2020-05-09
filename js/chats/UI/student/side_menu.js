@@ -1,5 +1,5 @@
 $(document).ready(() => {
-	$(".chat_selector header img, #forum header img").on("click", showSideMenu);
+	$(".chat_selector header img:nth-of-type(1), #forum header img:nth-of-type(1)").on("click", showSideMenu);
 
 	document.addEventListener("keydown", (k) => {
 		if (k.keyCode === 27 && ($(".modal:visible").length || $(".side_menu:visible").length)) {
