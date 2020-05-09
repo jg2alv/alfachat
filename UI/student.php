@@ -160,10 +160,13 @@
         </form>
         <footer hidden></footer>
     </div>
-    <div class="modal" style="width: 20vw; height: 20vh; flex-direction: column" id="doubt_send">
-        <div style="flex: 3; display: flex; align-items: center; justify-content: center; flex-direction: column">
-            <p style="font-size: 18px; margin: 2em 0">Deseja enviar suas d&uacute;vidas ao suporte?</p>
-            <div style="display: flex; justify-content: space-evenly; width: 100%; font-size: 16px"><input checked type="checkbox" id="send_to_forum"><label for="send_to_forum">Disponibilizar a pergunta e a resposta no f&oacute;rum</label></div>
+    <div class="modal" style="width: 25vw; height: 25vh; flex-direction: column" id="doubt_send">
+        <div style="flex: 4; display: flex; align-items: center; justify-content: center; flex-direction: column">
+            <p style="font-size: 18px; margin: 2em 0 1em 0; flex: 1">Deseja enviar suas d&uacute;vidas ao suporte?</p>
+            <div style="display: flex; flex-direction: column; flex: 4">
+                <div style="width: 100%; font-size: 16px; flex: 1"><input style="margin-right: 20px; margin-top: 10px" checked type="checkbox" id="send_to_forum"><label for="send_to_forum">Disponibilizar a pergunta no f&oacute;rum</label></div>
+                <input type="text" placeholder="Nome da d&uacute;vida" id="doubt_name" style="width: 100%; margin: 15px 0">
+            </div>
             <script>
                 $("#send_to_forum").on("change", e => {
                     if (e.target.checked)
