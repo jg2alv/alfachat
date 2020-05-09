@@ -86,8 +86,7 @@ body {
 	padding: 10px;
 	cursor: pointer;
 	transition: all 250ms;
-	min-height: 15vh;
-	display: flex;
+	min-height: 20vh;
 }
 
 #forum main .doubt:hover {
