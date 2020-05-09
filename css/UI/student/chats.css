@@ -506,12 +506,13 @@ body {
 }
 
 .chat_selector header input,
-#forum header input {
+#forum header input,
+#doubt_name {
 	background: #291a46;
 	color: white;
 	width: 90%;
 	margin-right: 15px;
-	height: calc(7vh * 0.7);
+	height: 4.9vh;
 	font-size: 16px;
 	border-radius: 3px;
 	box-sizing: border-box;
