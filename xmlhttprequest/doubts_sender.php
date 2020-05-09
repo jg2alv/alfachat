@@ -41,6 +41,11 @@
         $receiver = $assignee;
         $assignee = explode(":", $assignee)[1];
 
+        if ($_SESSION["class"] > 9)
+            $tags = "#fund_" . $_SESSION["class"];
+        else
+            $tags = "#med_" . $_SESSION["class"];
+
         for ($i = 0; $i < sizeof($_FILES["files"]["name"]); $i++) {
             $file = $_FILES["files"];
 
@@ -67,9 +72,11 @@
             $id = mysqli_insert_id($conn);
 
             if (strpos($receiver, "teacher") !== false) {
-                $sql = $assignee ? "INSERT INTO `doubts` (subject, sender, assignee, public, time) VALUES ('$subject', $sender, $assignee, $public, $time)" : "INSERT INTO `doubts` (subject, sender, public, time) VALUES ('$subject', $sender, $public, $time)";
+                $sql = $assignee ? "INSERT INTO `doubts` (subject, sender, assignee, public, tags, time) VALUES ('$subject', $sender, $assignee, $public, $tags, $time)" : "INSERT INTO `doubts` (subject, sender, public, time) VALUES ('$subject', $sender, $public, $time)";
                 mysqli_query($conn, $sql);
                 $doubt = mysqli_insert_id($conn);
+                $tags .= "#$doubt";
+                $sql = "UPDATE `doubts` SET tags = '$tags' WHERE id = $doubt";
 
                 $sql = "INSERT INTO `messages` (sender, receiver, file, doubt, time) VALUES ($sender, $assignee, $id, $doubt, $time)";
                 mysqli_query($conn, $sql);
