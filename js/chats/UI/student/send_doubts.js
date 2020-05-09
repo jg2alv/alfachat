@@ -7,15 +7,23 @@ function sendDoubts() {
     }
 
     $(".side_menu_visible").css("display", "none");
-    $(".side_menu_bg").css("flex", 1);
     $(".side_menu").css("display", "flex");
 
     $("#doubt_send").css("display", "flex");
 
     $("#doubt_send button").on("click", () => {
+        const name = $("#doubt_name")[0].value;
+
+        if (!name || name === " ") {
+            $("#doubt_name").css({"border": "1px solid red", "color": "red"});
+            $("#doubt_name").on("keypress", function() {$(this).css({"border": "", "color": ""})});
+            return;
+        }
+
         doubts.set("public", $("#send_to_forum").attr("data-checked") || 1);
         doubts.set("receiver", id);
         doubts.set("subject", $(".chats header div div").eq(0).html().replace("Suporte de ", ""));
+        doubts.set("name", name);
 
         $("#doubt_send").css("display", "none");
         $(".side_menu").css("display", "none");
