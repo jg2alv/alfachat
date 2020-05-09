@@ -182,7 +182,9 @@
     </div>
     <div id="forum">
         <header>
-            <img src="assets/icons/menu.png" alt="Menu icon">
+            <img src="assets/icons/menu.png" alt="Menu icon" style="margin-right: 0">
+            <img src="assets/icons/arrow.png" alt="Back" style="height: 9vh; transform: rotate(90deg); margin: 0">
+            <img src="assets/icons/update.png" alt="Back" style="height: 4.5vh; margin: 0 20px 0 10px !important; display: none">
             <input type="text" name="query" placeholder="Busca">
         </header>
         <main>
