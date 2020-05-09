@@ -12,12 +12,19 @@
             $msg["content"] = html_entity_decode(base64_decode($msg["content"]));
             $sender = $msg["sender"]; // User ID
             $sql = "SELECT * FROM `users` WHERE id = $sender"; // Getting user info
-            $sql = mysqli_query($conn, $sql);
-            $sql = mysqli_fetch_assoc($sql);
-            unset($sql["password"], $sql["ra"], $sql["chats"], $sql["class"], $sql["city"], $sql["bio"]);
-            $msg["sender"] = json_encode($sql);
+            $msg["sender"] = json_encode(formatMessages($conn, $sql));
+            $receiver = empty($msg["receiver"]) ? $msg["assignee"] : $msg["receiver"];
+            $sql = "SELECT * FROM `users` WHERE id = $receiver";
+            $msg["receiver"] = json_encode(formatMessages($conn, $sql));
             array_push($response, $msg);
         }
         return json_encode($response);
+    }
+
+    function formatMessages($conn, $sql) {
+        $sql = mysqli_query($conn, $sql);
+        $sql = mysqli_fetch_assoc($sql);
+        unset($sql["password"], $sql["ra"], $sql["chats"], $sql["class"], $sql["city"], $sql["bio"]);
+        return $sql;
     }
 ?>
