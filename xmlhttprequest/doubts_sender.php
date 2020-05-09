@@ -10,6 +10,7 @@
     $assignee = base64_decode($_POST["receiver"]);
     $public = $_POST["public"];
     $subject = $_POST["subject"];
+    $name = $_POST["name"];
     $sender = $_SESSION["id"];
     $time = time();
 
@@ -17,7 +18,7 @@
         if (strpos($assignee, "teacher") !== false) {
             $assignee = explode(":", $assignee)[1];
             $content = $_POST["messages"];
-            $sql = $assignee ? "INSERT INTO `doubts` (subject, sender, assignee, public, time) VALUES ('$subject', $sender, $assignee, $public, $time)" : "INSERT INTO `doubts` (subject, sender, public, time) VALUES ('$subject', $sender, $public, $time)";
+            $sql = $assignee ? "INSERT INTO `doubts` (subject, name, sender, assignee, public, time) VALUES ('$subject', '$name', $sender, $assignee, $public, $time)" : "INSERT INTO `doubts` (subject, sender, public, time) VALUES ('$subject', $sender, $public, $time)";
             mysqli_query($conn, $sql);
             $id = mysqli_insert_id($conn);
 
@@ -72,7 +73,7 @@
             $id = mysqli_insert_id($conn);
 
             if (strpos($receiver, "teacher") !== false) {
-                $sql = $assignee ? "INSERT INTO `doubts` (subject, sender, assignee, public, tags, time) VALUES ('$subject', $sender, $assignee, $public, $tags, $time)" : "INSERT INTO `doubts` (subject, sender, public, time) VALUES ('$subject', $sender, $public, $time)";
+                $sql = $assignee ? "INSERT INTO `doubts` (subject, name, sender, assignee, public, tags, time) VALUES ('$subject', '$name', $sender, $assignee, $public, $tags, $time)" : "INSERT INTO `doubts` (subject, sender, public, time) VALUES ('$subject', $sender, $public, $time)";
                 mysqli_query($conn, $sql);
                 $doubt = mysqli_insert_id($conn);
                 $tags .= "#$doubt";
