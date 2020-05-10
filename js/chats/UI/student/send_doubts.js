@@ -1,4 +1,6 @@
 function sendDoubts() {
+    $("#doubt_name")[0].value = "";
+
     if (Array.from(doubts.entries()) == false) {
         const toast = new Toast("Faça uma pergunta antes de enviar!");
         toast.show();
