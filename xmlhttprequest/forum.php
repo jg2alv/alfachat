@@ -6,7 +6,7 @@
     require "../includes/fetch_messages.inc.php";
 
     $subject = addslashes(html_entity_decode((base64_decode($_POST["subject"]))));
-    $sql = "SELECT * FROM `doubts` WHERE subject = '$subject' AND public = 1 AND assignee IS NOT NULL";
+    $sql = "SELECT * FROM `doubts` WHERE subject = '$subject' AND public = 1 AND assignee IS NOT NULL ORDER BY time DESC";
     $sql = mysqli_query($conn, $sql);
     $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
 
