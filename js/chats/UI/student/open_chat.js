@@ -81,7 +81,7 @@ function openChat(e, customName = false, customStatus = false) {
 	$('.choose_chat').css("display", "none"); // Removing "choose chat" balloon
 	$('.input_area').css('display', 'flex');
 	$('.chats header').css('display', 'flex');
-	$('.input_area input').focus();
+	$('.input_area textarea').focus();
 	canScroll = canUpdate.chatsUpdater = true;
 	chatsUpdater(100);
 

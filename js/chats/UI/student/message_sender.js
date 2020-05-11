@@ -1,6 +1,6 @@
 function messageSender() {
     const form = $(".input_area")[0],
-        input = $(".input_area input[type='text']")[0],
+        input = $(".input_area textarea")[0],
         btn = $(".input_area img")[1],
         file = $(".input_area input[type='file']")[0];
 
@@ -10,18 +10,13 @@ function messageSender() {
 
     form.onsubmit = e => new Message({sender: JSON.stringify({id: atob(sessionStorage["aWQ="])}), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000), file: 0}).sendMessage(e);
     
-    input.onkeydown = k => {
-        if ((input.value.length > 2 && k.keyCode === 8) || input.value === " ") {
+    input.oninput = () => {
+        if (!input.value || input.value === " ") {
             btn.src = "assets/icons/audio.png";
             return;
         } else {
             btn.src = "assets/icons/send.png";
         }
-
-        setTimeout(() => {
-            if (!input.value)
-                btn.src = "assets/icons/audio.png";
-        }, 1)
     };
 
     btn.onclick = e => {

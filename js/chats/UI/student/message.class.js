@@ -70,7 +70,7 @@ class Message {
         this.btn.src = "assets/icons/audio.png";
         this.sender.id = atob(sessionStorage["aWQ="]);
         canScroll = true;
-        $(".input_area input[type='text']")[0].value = "";
+        $(".input_area textarea")[0].value = "";
         $(".message_area").css("visibility", "visible").css("display", "block");
         $(".message_area").append(this.parse());
         $(".message_area")[0].scrollTop = $(".message_area")[0].scrollHeight - $(".message_area")[0].clientHeight;
@@ -88,7 +88,7 @@ class Message {
     sendFile(e, blob = false) {
         e.preventDefault();
 
-        const file = $(".input_area input[type='file']")[0],
+        const file = $(".input_area textarea")[0],
             formData = new FormData(),
             d = new Date();
 
