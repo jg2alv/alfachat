@@ -1,15 +1,12 @@
-$(document).ready(() => {
-	$(".chat_selector header img:nth-of-type(1), #forum header img:nth-of-type(1)").on("click", showSideMenu);
-
-	document.addEventListener("keydown", (k) => {
-		if (k.keyCode === 27 && ($(".modal:visible").length || $(".side_menu:visible").length)) {
-			hideSideMenu();
-		}
-	});
-});
+$(document).ready(() => $(".chat_selector header img:nth-of-type(1), #forum header img:nth-of-type(1)").on("click", showSideMenu));
 
 function showSideMenu() {
 	setTimeout(() => $(".chat_selector header img, #forum header img").css("visibility", "hidden"), 50);
+
+	document.addEventListener("keydown", k => {
+		if (k.keyCode === 27 && ($(".modal:visible").length || $(".side_menu:visible").length))
+			hideSideMenu();
+	});
 
 	$(".side_menu_bg").css("flex", "4 !important");
 	$(".side_menu_visible").css("flex", "4 !important");
