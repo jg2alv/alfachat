@@ -281,7 +281,8 @@
         <form class="input_area" enctype="multipart/form-data">
             <input id="file_input" type="file" style="display: none" name="file_input" multiple>
             <img src="assets/icons/file.png" alt="Carregar arquivo">
-            <input placeholder="Escreva sua mensagem..." type="text">
+            <ul id="doubt_suggester"></ul>
+            <textarea placeholder="Escreva sua mensagem..."></textarea>
             <div class="audio_control" style="background-color: green; bottom: 80px; left: 85px" hidden></div>
             <div class="audio_control" style="background-color: red; bottom: 40px; left: 60px" hidden></div>
             <span class="countdown" hidden>00:00</span>
