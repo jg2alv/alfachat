@@ -109,6 +109,33 @@
 	align-content: flex-end;
 }
 
+#doubt_suggester {
+	display: none;
+	position: absolute;
+	background-color: #35215a;
+	padding-left: 0;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	list-style: none;
+	margin-top: 0;
+	max-width: 500px;
+}
+
+#doubt_suggester li,
+#doubt_suggester li[aria-selected=false] {
+	padding: 15px;
+	display: flex;
+	color: white;
+	cursor: pointer;
+	flex-direction: column;
+	border-bottom: 1px solid #646464;
+	outline: 0;
+}
+
+#doubt_suggester li:hover,
+#doubt_suggester li[aria-selected=true] {
+	background-color: #291a46;
+}
+
 div[data-message] {
 	display: grid;
 }
@@ -194,20 +221,15 @@ div[data-message] {
 	filter: brightness(100%);
 }
 
-.input_area input[type="text"] {
+.input_area textarea {
 	min-height: 6vh;
 	background: #35215a;
 	border: none;
-	justify-self: right;
 	padding-left: 15px;
 	color: white;
 	box-sizing: border-box;
 	font-size: 18px;
 	flex: 10;
-}
-
-.input_area input[type="text"]:focus {
-	outline: 0;
 }
 
 .countdown {
