@@ -1,12 +1,14 @@
 <?php
-    if (empty($_POST["subject"]))
-        header("Location: ../");
-
     require "../includes/db.inc.php";
     require "../includes/fetch_messages.inc.php";
 
-    $subject = addslashes(html_entity_decode((base64_decode($_POST["subject"]))));
-    $sql = "SELECT * FROM `doubts` WHERE subject = '$subject' AND public = 1 AND assignee IS NOT NULL ORDER BY time DESC";
+    if (empty($_POST["subject"]))
+        $sql = "SELECT * FROM `doubts` WHERE public = 1 AND assignee IS NOT NULL ORDER BY time DESC";
+    else {
+        $subject = addslashes(html_entity_decode(base64_decode($_POST["subject"])));
+        $sql = "SELECT * FROM `doubts` WHERE subject = '$subject' AND public = 1 AND assignee IS NOT NULL ORDER BY time DESC";
+    }
+
     $sql = mysqli_query($conn, $sql);
     $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
 
@@ -16,8 +18,9 @@
         $sql = "SELECT * FROM `messages` WHERE doubt = $id";
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
-        array_push($response, array(fetchMessages($conn, $sql), array($doubt["name"], $doubt["tags"])));
+        array_push($response, array(fetchMessages($conn, $sql), array($doubt["name"], $doubt["tags"], $doubt["subject"], $id)));
     }
+
     echo json_encode($response);
     
     die();
