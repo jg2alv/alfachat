@@ -39,10 +39,10 @@ function sendDoubts() {
             const toast = new Toast("Dúvida enviada com sucesso! Assim que possível, será respondida.");
             toast.show();
             toast.destroy(2500);
-            $('.choose_chat').css("display", "flex");
-	        $('.input_area').css('display', 'none');
-            $('.chats header').css('display', 'none');
+            $('.input_area').css('display', 'none');
+            $('.chats').css("grid-template-rows", "").children("header").css('display', 'none');
             $(".message_area").html("").css({display: "none", visibility: "none"});
+            $('.choose_chat').css("display", "flex");
             canUpdate.chatsUpdater = false;
         }
     });

@@ -79,6 +79,7 @@ function openChat(e, customName = false, customStatus = false) {
 		}
 	}
 	$('.choose_chat').css("display", "none"); // Removing "choose chat" balloon
+	$(".chats").css("grid-template-rows", "1fr 9fr");
 	$('.input_area').css('display', 'flex');
 	$('.chats header').css('display', 'flex');
 	$('.input_area textarea').focus();

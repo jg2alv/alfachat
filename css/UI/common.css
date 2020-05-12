@@ -97,8 +97,6 @@
 }
 
 .message_area {
-	min-height: calc(87vh - 36px);
-	max-height: calc(87vh - 36px);
 	width: 100%;
 	display: none;
 	visibility: hidden;
@@ -205,16 +203,16 @@ div[data-message] {
 
 .input_area {
 	display: none;
-	max-height: 400px;
 	align-self: flex-end;
 	background-color: #35215a;
+	align-items: center;
 }
 
 .input_area img {
 	cursor: pointer;
 	filter: brightness(60%);
-	flex: 1;
-	max-width: 60px;
+	width: 60px;
+	height: 60px;
 }
 
 .input_area img:hover {
@@ -229,9 +227,10 @@ div[data-message] {
 	color: white;
 	box-sizing: border-box;
 	font-size: 18px;
-	flex: 10;
+	width: 100%;
 	overflow-y: hidden;
 	resize: none;
+	max-height: 250px;
 }
 
 .countdown {
