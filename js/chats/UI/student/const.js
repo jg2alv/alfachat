@@ -39,3 +39,6 @@ const subjects = {
         return `<div class="menu_icon" subject="${btoa(subject)}"><div class="pic"><img src="assets/avatars/subjects/${subject}.png" alt="${subject}"></div><div class="info"><div>${subject}</div><div>${this[subject]}</div></div></div>`;
     }
 };
+
+// Array of all doubts available on the DB
+let forum_doubts = new Array();
