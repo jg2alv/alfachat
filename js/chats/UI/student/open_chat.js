@@ -82,10 +82,10 @@ function openChat(e, customName = false, customStatus = false) {
 	$('.input_area').css('display', 'flex');
 	$('.chats header').css('display', 'flex');
 	$('.input_area textarea').focus();
-	canScroll = canUpdate.chatsUpdater = true;
-	chatsUpdater(100);
 
 	if (atob(id).indexOf("teacher") === -1) {
+		canScroll = canUpdate.chatsUpdater = true;
+		chatsUpdater(100);
 		$('.chats header img').attr("src", "assets/icons/advanced.png").removeAttr("title");
 		$('.chats header img').off("click");
 		// $('.chats header img').on('click', () => {

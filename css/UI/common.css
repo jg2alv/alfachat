@@ -230,6 +230,8 @@ div[data-message] {
 	box-sizing: border-box;
 	font-size: 18px;
 	flex: 10;
+	overflow-y: hidden;
+	resize: none;
 }
 
 .countdown {
