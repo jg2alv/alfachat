@@ -120,7 +120,7 @@
 
 #doubt_suggester li,
 #doubt_suggester li[aria-selected=false] {
-	padding: 15px;
+	padding: 10px 15px;
 	display: flex;
 	color: white;
 	cursor: pointer;
