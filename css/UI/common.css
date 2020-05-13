@@ -115,12 +115,14 @@
 	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 	list-style: none;
 	margin-top: 0;
+	width: 250px;
 	max-width: 500px;
+	max-height: 400px;
+	overflow-y: auto;
 }
 
-#doubt_suggester li,
-#doubt_suggester li[aria-selected=false] {
-	padding: 10px 15px;
+#doubt_suggester li {
+	padding: 10px 20px;
 	display: flex;
 	color: white;
 	cursor: pointer;
@@ -132,6 +134,10 @@
 #doubt_suggester li:hover,
 #doubt_suggester li[aria-selected=true] {
 	background-color: #291a46;
+}
+
+#doubt_suggester li:last-of-type {
+	border: none;
 }
 
 div[data-message] {
