@@ -49,6 +49,8 @@ class Message {
                 }
             }
         } else {
+            this.format();
+
             if (this.sender.id === atob(sessionStorage["aWQ="])) {
                 return `<div data-message=${this.index}><div class="message mine">${this.message.content + this.time}</div></div>`;
             } else {
@@ -151,5 +153,21 @@ class Message {
             sizes = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
             i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    format() {
+        const hashtags = this.message.content.match(/(^|\B)#([a-zA-Z0-9_]{1,})(\b|\r)/g);
+
+        if (hashtags === null)
+            return;
+        
+        hashtags.forEach(hashtag => {
+            const doubt = hashtag.replace("#", "");
+
+            if (!forum_doubts[doubt - 1])
+                return;
+
+            this.message.content = this.message.content.replace(hashtag, `<span style="color: #337ab7; cursor: pointer" data-hashtag="${doubt}">${hashtag}</span>`)
+        });
     }
 }
