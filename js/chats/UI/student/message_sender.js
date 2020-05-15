@@ -1,28 +1,28 @@
 function messageSender() {
     const form = $(".input_area")[0],
         input = $(".input_area textarea")[0],
-        btn = $(".input_area img")[1],
+        btn = $(".input_area img"),
         file = $(".input_area input[type='file']")[0];
 
     $(".input_area img").eq(0).on("click", () => $(file).click());
 
-    file.onchange = e => new Message({sender: JSON.stringify({id: atob(sessionStorage["aWQ="])}), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000)}).sendFile(e);
+    file.onchange = e => new Message({ sender: JSON.stringify({ id: atob(sessionStorage["aWQ="]) }), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000) }).sendFile(e);
 
-    form.onsubmit = e => new Message({sender: JSON.stringify({id: atob(sessionStorage["aWQ="])}), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000), file: 0}).sendMessage(e);
-    
+    form.onsubmit = e => new Message({ sender: JSON.stringify({ id: atob(sessionStorage["aWQ="]) }), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000), file: 0 }).sendMessage(e);
+
     input.oninput = () => {
         if (!input.value || input.value === " ") {
-            btn.src = "assets/icons/audio.png";
+            btn[2].src = "assets/icons/audio.png";
             return;
         } else {
-            btn.src = "assets/icons/send.png";
+            btn[2].src = "assets/icons/send.png";
         }
     };
 
-    btn.onclick = e => {
-        if (btn.src.indexOf("assets/icons/send.png") > -1)
-            new Message({sender: JSON.stringify({id: atob(sessionStorage["aWQ="])}), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000), file: 0}).sendMessage(e);
-        else if (btn.src.indexOf("assets/icons/audio.png") > -1) {
+    btn[2].onclick = e => {
+        if (btn[2].src.indexOf("assets/icons/send.png") > -1)
+            new Message({ sender: JSON.stringify({ id: atob(sessionStorage["aWQ="]) }), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000), file: 0 }).sendMessage(e);
+        else if (btn[2].src.indexOf("assets/icons/audio.png") > -1) {
             if (navigator.mediaDevices) {
                 let chunks = [],
                     mediaStream,
@@ -76,6 +76,26 @@ function messageSender() {
             }
         }
     };
+
+    btn[1].onclick = () => {
+        $(".suggester.emoji").css({ "display": "grid", "bottom": `${$(".input_area").height()}px` }).on("mouseout", function(e) {
+            if (e.relatedTarget === null || e.relatedTarget.parentNode === this || e.relatedTarget === this)
+                return;
+            $(this).hide();
+            $(this).off("mouseout");
+        });
+    }
+
+    $(".suggester.emoji li").on("click", function() {
+        const before = input.value.slice(0, input.selectionStart);
+        let emoji = this.innerHTML;
+        const after = input.value.slice(input.selectionStart);
+
+        before ? emoji = ` ${emoji}` : null;
+        after ? emoji = `${emoji} ` : null
+
+        input.value = before + emoji + after;
+    });
 }
 
 function convertTime(s) {
