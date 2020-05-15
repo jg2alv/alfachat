@@ -107,7 +107,7 @@
 	align-content: flex-end;
 }
 
-#doubt_suggester {
+.suggester {
 	display: none;
 	position: absolute;
 	background-color: #35215a;
@@ -119,6 +119,28 @@
 	max-width: 500px;
 	max-height: 400px;
 	overflow-y: auto;
+}
+
+.emoji {
+	right: 0;
+	align-items: center;
+	justify-content: center;
+	font-size: 2.5rem;
+	grid-template-columns: repeat(3, 1fr);
+	padding: 15px 5px;
+}
+
+.emoji li {
+	display: inline-block;
+	padding: 10px;
+	cursor: pointer;
+	border-radius: 5px;
+	justify-self: center;
+	color: white;
+}
+
+.emoji li:hover {
+	background-color: rgba(255, 255, 255, 0.3);
 }
 
 #doubt_suggester li {
