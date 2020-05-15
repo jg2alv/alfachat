@@ -143,7 +143,7 @@
 	background-color: rgba(255, 255, 255, 0.3);
 }
 
-#doubt_suggester li {
+#suggester li {
 	padding: 10px 20px;
 	display: flex;
 	color: white;
@@ -153,12 +153,12 @@
 	outline: 0;
 }
 
-#doubt_suggester li:hover,
-#doubt_suggester li[aria-selected=true] {
+#suggester li:hover,
+#suggester li[aria-selected=true] {
 	background-color: #291a46;
 }
 
-#doubt_suggester li:last-of-type {
+#suggester li:last-of-type {
 	border: none;
 }
 

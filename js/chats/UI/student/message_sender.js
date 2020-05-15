@@ -91,8 +91,11 @@ function messageSender() {
         let emoji = this.innerHTML;
         const after = input.value.slice(input.selectionStart);
 
-        before ? emoji = ` ${emoji}` : null;
-        after ? emoji = `${emoji} ` : null
+        if (before && before.slice(-1) !== " ")
+            emoji = ` ${emoji}`
+        
+        if (after && after[0] !== " ")
+            emoji = `${emoji} `
 
         input.value = before + emoji + after;
     });
