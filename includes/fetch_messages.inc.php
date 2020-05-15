@@ -14,6 +14,7 @@
             $sql = "SELECT * FROM `users` WHERE id = $sender"; // Getting user info
             $msg["sender"] = json_encode(formatMessages($conn, $sql));
             $receiver = empty($msg["receiver"]) ? $msg["assignee"] : $msg["receiver"];
+            $receiver = strpos($receiver, ":") !== false ? explode(":", $receiver)[1] : $receiver;
             $sql = "SELECT * FROM `users` WHERE id = $receiver";
             $msg["receiver"] = json_encode(formatMessages($conn, $sql));
             array_push($response, $msg);
