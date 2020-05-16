@@ -121,7 +121,7 @@ class Message {
 
                 $(".message_area").append(this.parse());
                 $(".message_area [data-src*='blob']").each((index, item) => $(item).attr("src", $(item).attr("data-src")).removeAttr("data-src"));
-                
+
                 if (atob(id).indexOf("teacher") > -1) {
                     doubts.append("files[]", file.files[i]);
                     continue;
@@ -157,17 +157,21 @@ class Message {
 
     format() {
         const hashtags = this.message.content.match(/(^|\B)#([a-zA-Z0-9_]{1,})(\b|\r)/g);
-
         if (hashtags === null)
             return;
-        
+
         hashtags.forEach(hashtag => {
             const doubt = hashtag.replace("#", "");
-
             if (!forum_doubts[doubt - 1])
                 return;
-
-            this.message.content = this.message.content.replace(hashtag, `<span style="color: #337ab7; cursor: pointer" data-hashtag="${doubt}">${hashtag}</span>`)
+            this.message.content = this.message.content.replace(hashtag, `<span style="color: #337ab7; cursor: pointer" data-hashtag="${doubt}">${hashtag}</span>`);
         });
+
+        const bold = this.message.content.match(/\*([^)]+)\*/g);
+
+        if (bold === null)
+            return;
+
+        bold.forEach(txt => this.message.content = this.message.content.replace(txt, `<strong>${txt.replace(new RegExp("*", "g"), "")}</strong>`));
     }
 }
