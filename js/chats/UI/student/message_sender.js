@@ -78,7 +78,7 @@ function messageSender() {
     };
 
     btn[1].onclick = () => {
-        $(".suggester.emoji").css({ "display": "grid", "bottom": `${$(".input_area").height()}px` }).on("mouseout", function(e) {
+        $(".suggester.emoji:not(#suggester)").css({ "display": "grid", "bottom": `${$(".input_area").height()}px` }).on("mouseout", function(e) {
             if (e.relatedTarget === null || e.relatedTarget.parentNode === this || e.relatedTarget === this)
                 return;
             $(this).hide();
@@ -86,7 +86,7 @@ function messageSender() {
         });
     }
 
-    $(".suggester.emoji li").on("click", function() {
+    $(".suggester.emoji:not(#suggester) li").on("click", function() {
         const before = input.value.slice(0, input.selectionStart);
         let emoji = this.innerHTML;
         const after = input.value.slice(input.selectionStart);
