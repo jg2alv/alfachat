@@ -9,7 +9,7 @@ function Suggester(e) {
         document.body.append(sizeSpan);
 
         let size = $(sizeSpan).width();
-        //$(sizeSpan).remove();
+        $(sizeSpan).remove();
 
         while (size > $(this).width())
             size -= $(this).width();
@@ -37,10 +37,10 @@ function Suggester(e) {
             $("#suggester").css("display", "none");
             $(".input_area textarea").focus();
 
-            const result = this.value.lastIndexOf("#") > this.value.lastIndexOf(":") ? (() => {
+            const result = (() => {
                 let sel = this.selectionStart,
                     before = this.value.slice(0, sel).split(""),
-                    hashtag = e.type === "click" ? $(e.target).closest("li").attr("data-value") : $("#suggester li[aria-selected=true]").attr("data-value"),
+                    middle = e.type === "click" ? $(e.target).closest("li").attr("data-value") : $("#suggester li[aria-selected=true]").attr("data-value"),
                     after = this.value.slice(sel);
                 sel--;
 
@@ -51,8 +51,8 @@ function Suggester(e) {
 
                 before = before.join("");
                 const result = addSpaces(before, after);
-                return [result[0], `#${hashtag}`, result[1]];
-            })() : this.value.lastIndexOf(":") > this.value.lastIndexOf("#") ? [addSpaces(this.value.slice(0, this.selectionStart - 1), this.value.slice(this.selectionStart))[0], e.type === "click" ? $(e.target).closest("li").html() : $("#suggester li[aria-selected=true]").html(), addSpaces(this.value.slice(0, this.selectionStart), this.value.slice(this.selectionStart))[1]] : null;
+                return this.value.lastIndexOf("#") > this.value.lastIndexOf(":") ? [result[0], `#${middle}`, result[1]] : [result[0], middle, result[1]];
+            })();
             $(this).val(new String(result[0] + result[1] + result[2]));
         } else if (e.keyCode === 38) { // Up
             if ($("#suggester li[aria-selected=true]")[0] !== $("#suggester li:first")[0]) {
@@ -108,8 +108,8 @@ function Suggester(e) {
         if ($("#suggester").css("display") === "grid") {
             const content = this.value.split("");
 
-            let emoji = new Array()
-            num = this.selectionStart - 1;
+            let emoji = new Array(),
+                num = this.selectionStart - 1;
 
             while (content[num] !== " " && content[num] !== undefined) {
                 emoji.push(content[num]);
@@ -133,7 +133,7 @@ function Suggester(e) {
                 } catch(e) {
                     continue;
                 }
-                $("#suggester").append(`<li>${code}</li>`)                  
+                $("#suggester").append(`<li data-value="${emote}">${code}</li>`)                  
             }
         } else {
             const content = this.value.split("");
