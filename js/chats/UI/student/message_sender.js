@@ -88,7 +88,7 @@ function messageSender() {
 
     $(".suggester.emoji:not(#suggester) li").on("click", function() {
         const before = input.value.slice(0, input.selectionStart);
-        let emoji = this.innerHTML;
+        let emoji = $(this).attr("data-value");
         const after = input.value.slice(input.selectionStart);
 
         if (before && before.slice(-1) !== " ")
