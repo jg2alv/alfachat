@@ -2,12 +2,12 @@ class Message {
     constructor(message = false, index = false) {
         const d = new Date(Number(message.time) * 1000);
 
-        this.time = `<div class="message_time">${addZero(d.getDate()) + "/" + addZero(d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div>`;
+        this.time = `<div style="display: grid"><div class="message_time">${addZero(d.getDate()) + "/" + addZero(d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div></div>`;
         this.message = message;
         this.index = index;
         this.sender = JSON.parse(message.sender);
         this.xml = new XMLHttpRequest();
-        this.btn = $(".input_area img")[1];
+        this.btn = $(".input_area img")[2];
     }
 
     parse() {
@@ -68,6 +68,11 @@ class Message {
         if (this.message.content === " ")
             return;
 
+        const content = document.createElement("p");
+        content.innerText = this.message.content;
+        this.message.content = content.innerHTML;
+        $(content).remove();
+
         this.index = $("[data-message]").length;
         this.btn.src = "assets/icons/audio.png";
         this.sender.id = atob(sessionStorage["aWQ="]);
@@ -90,7 +95,7 @@ class Message {
     sendFile(e, blob = false) {
         e.preventDefault();
 
-        const file = $(".input_area textarea")[0],
+        const file = $(".input_area input[type='file']")[0],
             formData = new FormData(),
             d = new Date();
 
@@ -156,22 +161,41 @@ class Message {
     }
 
     format() {
-        const hashtags = this.message.content.match(/(^|\B)#([a-zA-Z0-9_]{1,})(\b|\r)/g);
-        if (hashtags === null)
-            return;
+        (() => { // #hashtag
+            const hashtags = this.message.content.match(/(^|\B)#([a-zA-Z0-9_]{1,})(\b|\r)/g) || [];
+            hashtags.forEach(hashtag => {
+                const doubt = hashtag.replace("#", "");
+                if (!forum_doubts[doubt - 1])
+                    return;
+                this.message.content = this.message.content.replace(hashtag, `<span style="color: #337ab7; cursor: pointer" data-hashtag="${doubt}">${hashtag}</span>`);
+            });
+        })();
 
-        hashtags.forEach(hashtag => {
-            const doubt = hashtag.replace("#", "");
-            if (!forum_doubts[doubt - 1])
-                return;
-            this.message.content = this.message.content.replace(hashtag, `<span style="color: #337ab7; cursor: pointer" data-hashtag="${doubt}">${hashtag}</span>`);
-        });
+        (() => {
+            const bolds = this.message.content.match(/\*([^)]+)\*/g) || [];
+            bolds.forEach(bold => this.message.content = this.message.content.replace(bold, `<strong>${bold.replace(new RegExp(/\*/, "g"), "")}</strong>`));
 
-        const bold = this.message.content.match(/\*([^)]+)\*/g);
+            const italics = this.message.content.match(/\_([^)]+)\_/g) || [];
+            italics.forEach(italic => this.message.content = this.message.content.replace(italic, `<em>${italic.replace(new RegExp(/\_/, "g"), "")}</em>`));
 
-        if (bold === null)
-            return;
+            const strikethroughs = this.message.content.match(/\~([^)]+)\~/g) || [];
+            strikethroughs.forEach(strikethrough => this.message.content = this.message.content.replace(strikethrough, `<del>${strikethrough.replace(new RegExp(/\~/, "g"), "")}</del>`));
 
-        bold.forEach(txt => this.message.content = this.message.content.replace(txt, `<strong>${txt.replace(new RegExp("*", "g"), "")}</strong>`));
+            const monospaces = this.message.content.match(/\`([^)]+)\`/g) || [];
+            monospaces.forEach(monospace => this.message.content = this.message.content.replace(monospace, `<code>${monospace.replace(new RegExp(/\`/, "g"), "")}</code>`));
+
+            const spoilers = this.message.content.match(/\|([^)]+)\|/g) || [];
+            spoilers.forEach(spoiler => this.message.content = this.message.content.replace(spoiler, `<span class="spoiler">${spoiler.replace(new RegExp(/\|/, "g"), "")}</span>`));
+        })();
+
+        (() => { // :emojies:
+            const emoji = this.message.content.match(/\:([^)]+)\:/g) || [];
+            emoji.forEach(emote => emojies[emote] ? this.message.content = this.message.content.replace(emote, `&#x${emojies[emote]};`) : null);
+        })();
+
+        (() => { // https://wwww.url.com
+            const urls = this.message.content.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g) || [];
+            urls.forEach(url => this.message.content = this.message.content.replace(url, `<a style="color: #337ab7;" href="${url}">${url}</a>`));
+        })();
     }
 }
