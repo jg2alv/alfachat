@@ -19,7 +19,7 @@
         }
     }
 
-    echo "<!doctype html><html><head><script src='https://code.jquery.com/jquery-3.4.1.min.js' integrity='sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=' crossorigin='anonymous'></script><link rel='stylesheet' type='text/css' href='../css/normalize.css'>";
+    echo "<!doctype html><html><head><base target='_blank'><script src='https://code.jquery.com/jquery-3.4.1.min.js' integrity='sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=' crossorigin='anonymous'></script><link rel='stylesheet' type='text/css' href='../css/normalize.css'>";
 
     if ($_SESSION["type"] === "student") {
         echo "<link rel='stylesheet' type='text/css' href='../css/UI/student/chats.css'>";
