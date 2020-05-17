@@ -167,7 +167,6 @@ div[data-message] {
 }
 
 .message {
-	display: grid;
 	align-items: center;
 	justify-content: center;
 	border-radius: 15px;
@@ -182,14 +181,12 @@ div[data-message] {
 
 .mine {
 	justify-self: flex-end;
-	display: grid;
 	border-bottom-right-radius: 0;
 	margin-right: 20px;
 }
 
 .their {
 	justify-self: flex-start;
-	display: grid;
 	border-bottom-left-radius: 0;
 	margin-right: 85px;
 }
@@ -205,8 +202,7 @@ div[data-message] {
 
 .message_time {
 	font-size: 14px;
-	margin: 5px -20px 5px
-		0;
+	margin: 5px -20px 5px 0;
 	justify-self: end;
 	color: #cccccc;
 }
@@ -228,6 +224,19 @@ div[data-message] {
 .message[class="message their"] {
 	margin-left: 20px;
 }
+
+.spoiler {
+	background-color: white;
+	padding: 2px;
+	margin: 5px;
+	display: inline-block;
+	cursor: pointer;
+	border-radius: 3px;
+}
+
+.spoiler:hover {
+	background-color: transparent;
+} 
 
 .input_area {
 	display: none;
