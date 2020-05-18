@@ -1,5 +1,5 @@
 class Message {
-    constructor(message = false, index = false) {
+    constructor(message = false, index = false, group = false) {
         const d = new Date(Number(message.time) * 1000);
 
         this.time = `<div style="display: grid"><div class="message_time">${addZero(d.getDate()) + "/" + addZero(d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div></div>`;
@@ -8,6 +8,7 @@ class Message {
         this.sender = JSON.parse(message.sender);
         this.xml = new XMLHttpRequest();
         this.btn = $(".input_area img")[2];
+        this.group = group;
     }
 
     parse() {
@@ -28,7 +29,7 @@ class Message {
                 else
                     return `<div data-message=${this.index}><div class="message mine" style="margin-left: 0;"><div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div></div>`;
             } else {
-                if (atob(id).indexOf("group") > -1) {
+                if (this.group || atob(id).indexOf("group") > -1) {
                     if (img.includes(this.message.file.extension))
                         return `<div data-message=${this.index}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${this.sender.name}</span><img data-src="${atob(this.message.file.location)}">${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
                     else if (video.includes(this.message.file.extension))
@@ -54,8 +55,8 @@ class Message {
             if (this.sender.id === atob(sessionStorage["aWQ="])) {
                 return `<div data-message=${this.index}><div class="message mine">${this.message.content + this.time}</div></div>`;
             } else {
-                if (atob(id).indexOf("group") > -1) {
-                    return `<div data-message=${this.index}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${this.sender.name}</span>${this.message.content + this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
+                if (this.group || atob(id).indexOf("group") > -1) {
+                    return `<div data-message=${this.index}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><span style="color: blueviolet; font-size: 18px; display: inline-block; margin-bottom: 5px; font-weight: bold">${this.sender.name}</span><div>${this.message.content}</div>${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
                 } else {
                     return `<div data-message=${this.index}><div class="message their">${this.message.content + this.time}</div></div>`;
                 }
@@ -89,7 +90,7 @@ class Message {
 
         this.xml.open("POST", "../xmlhttprequest/message_sender.php", true);
         this.xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        this.xml.send(`m=${this.message.content}&id=${id}`); // XML content is user input
+        this.xml.send(`m=${encodeURIComponent(this.message.content)}&id=${id}`); // XML content is user input
     }
 
     sendFile(e, blob = false) {
