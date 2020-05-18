@@ -24,8 +24,8 @@ function sendDoubts() {
 
         doubts.set("public", $("#send_to_forum").attr("data-checked") || 1);
         doubts.set("receiver", id);
-        doubts.set("subject", $(".chats header div div").eq(0).html().replace("Suporte de ", ""));
-        doubts.set("name", name);
+        doubts.set("subject", btoa($(".chats header div div").eq(0).html().replace("Suporte de ", "")));
+        doubts.set("name", btoa(name));
 
         $("#doubt_send").css("display", "none");
         $(".side_menu").css("display", "none");
