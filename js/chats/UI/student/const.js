@@ -43,6 +43,7 @@ const subjects = {
 // Array of all doubts available on the DB
 let forum_doubts = new Array();
 
+// AlfaChat's emojies :D
 const emojies = {
     ":grinning:": "1F600",
     ":smiley:": "1F603",
@@ -915,4 +916,7 @@ const emojies = {
     ":kr:": "1F1F01F1F7",
     ":ru:": "1F1F71F1FA",
     ":us:": "1F1FA1F1F8"
-}
+};
+
+// Takes time in seconds and returns mm:ss
+const convertTime = s => new String(Math.floor(s / 60)).padStart(2, "0") + ":" + new String(s % 60).padStart(2, "0");
