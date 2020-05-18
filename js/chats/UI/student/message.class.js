@@ -12,12 +12,14 @@ class Message {
     }
 
     parse() {
-        if (JSON.parse(this.message.file)) {
+        if (this.message.file != 0) {
             const img = ["png", "jpg", "jpeg", "gif", "jfif"],
                 video = ["mp4", "webm"],
                 audio = ["mp3", "wav", "ogg"];
 
-            this.message.file = JSON.parse(this.message.file);
+            try {
+                this.message.file = JSON.parse(this.message.file);
+            } catch(e) {}
 
             if (this.sender.id === atob(sessionStorage["aWQ="])) {
                 if (img.includes(this.message.file.extension))
