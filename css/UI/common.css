@@ -277,7 +277,7 @@ div[data-message] {
 .countdown {
 	font-size: 20px;
 	color: white;
-	flex: 1;
+	padding: 0 10px;
 	text-align: center;
 }
 
@@ -285,8 +285,9 @@ div[data-message] {
 	width: 25px;
 	height: 25px;
 	border-radius: 50%;
-	position: relative;
+	position: absolute;
 	cursor: pointer;
+	right: 17px;
 }
 
 .audio_btns {
