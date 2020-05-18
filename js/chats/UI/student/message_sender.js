@@ -29,13 +29,12 @@ function messageSender() {
                     time = 0;
 
                 navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-                    $(".input_area div").removeAttr("hidden");
-                    $(btn).attr("hidden", "");
-
                     const countdown = $(".input_area span");
                     countdown.removeAttr("hidden");
-                    countdown.css("line-height", `${form.scrollHeight}px`);
+                    countdown.css("line-height", `${$(form).height()}px`);
 
+                    $(".input_area div").removeAttr("hidden");
+                    $(btn).attr("hidden", "");
                     const countdownTime = setInterval(() => {
                         time++;
 
@@ -99,10 +98,4 @@ function messageSender() {
 
         input.value = before + emoji + after;
     });
-}
-
-function convertTime(s) {
-    const min = Math.floor(s / 60),
-        sec = s % 60;
-    return `${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`
 }
