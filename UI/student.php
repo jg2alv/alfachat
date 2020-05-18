@@ -278,7 +278,7 @@
             </div>
         </header>
         <div class="message_area"></div>
-        <form class="input_area" enctype="multipart/form-data">
+        <form class="input_area" enctype="multipart/form-data" accept-charset="UTF-8">
             <input id="file_input" type="file" style="display: none" name="file_input" multiple>
             <img src="assets/icons/file.png" alt="Carregar arquivo">
             <ul id="suggester" class="suggester"></ul>
