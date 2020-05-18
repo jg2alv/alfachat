@@ -18,7 +18,7 @@
         $sql = "SELECT * FROM `messages` WHERE doubt = $id";
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
-        array_push($response, array(fetchMessages($conn, $sql), array($doubt["name"], $doubt["tags"], $doubt["subject"], $id)));
+        array_push($response, array(fetchMessages($conn, $sql), array($doubt["name"], $doubt["tags"], $doubt["subject"], $id, $doubt["solved"])));
     }
 
     echo json_encode($response);
