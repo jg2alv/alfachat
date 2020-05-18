@@ -7,40 +7,34 @@
     require "../includes/db.inc.php";
     require "../includes/check_dir.inc.php";
     require "../includes/add_to_chatlist.inc.php";
+    require "../includes/send_file.inc.php";
 
-    $id = $_SESSION["id"];
+    $sender = $_SESSION["id"];
     $receiver = base64_decode($_POST["id"]);
-    foreach($_FILES as $file) {
-        $sent = time();
-        $file_name = $file["name"];
-        $file_size = $file["size"];
-        $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
-        $file_location = base64_encode("assets/files/$sent/$id/$receiver/$file_name");
-        $path = "../chats/assets/files";
+    $file = $_FILES["files"];
 
-        if (!empty($_POST["audio"]) && !empty($file["type"])) 
-            $file_extension = explode("/", $file["type"])[1];
+    for ($i = 0; $i < sizeof($_FILES["files"]["name"]); $i++) {
+        $file_name = $file["name"][$i];
+        $file_size = $file["size"][$i];
+        $time = time();
+        list($id, $path) = sendFile($file_name, $file_size, $receiver, $conn);
 
-        checkDirectory($path);
-        $path .= "/$sent";
-        checkDirectory($path);
-        $path .= "/$id";
-        checkDirectory($path);
-        $path .= "/$receiver";
-        checkDirectory($path);
-        $path .= "/$file_name";
+        if (strpos($receiver, ":") !== false) {
+            $doubt = explode(":", $receiver)[1];
+            $sql = "SELECT * FROM `doubts` WHERE id = $doubt";
+            $sql = mysqli_query($conn, $sql);
+            $sql = mysqli_fetch_assoc($sql);
+            $receiver = $sql["assignee"];
+            $sql = "INSERT INTO `messages` (sender, receiver, file, doubt, time) VALUES ($sender, $receiver, $id, $doubt, $time)";
+            mysqli_query($conn, $sql);
+        } else {
+            $sql = "INSERT INTO `messages` (sender, receiver, file, time) VALUES ($sender, '$receiver', $id, $time)";
+            $sql = mysqli_query($conn, $sql);
+        }
 
-        $sql = "INSERT INTO `files` (name, size, location, extension, time) VALUES ('$file_name', $file_size, '$file_location', '$file_extension', $sent);";
-        $sql = mysqli_query($conn, $sql);
-
-        $sql = mysqli_insert_id($conn);
-        
-        $sql = "INSERT INTO `messages` (sender, receiver, file, time) VALUES ($id, '$receiver', $sql, $sent)";
-        $sql = mysqli_query($conn, $sql);
-
-        move_uploaded_file($file["tmp_name"], $path);
+        move_uploaded_file($file["tmp_name"][$i], $path);
         usleep(5000);
     }
 
-    addToChatList($receiver);
+    strpos(base64_decode($_POST["id"]), ":") === false ? addToChatList($receiver) : null;
 ?>
