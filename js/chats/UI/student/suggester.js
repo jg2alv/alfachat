@@ -29,6 +29,7 @@ function Suggester(e) {
 
     const navigation = e => {
         e.type === "click" || e.keyCode === 13 || e.keyCode === 38 || e.keyCode === 37 || e.keyCode === 40 || e.keyCode === 39 || e.keyCode === 27 ? e.preventDefault() : null;
+        const sel = $("#suggester li[aria-selected=true]");
 
         if (e.type === "click" || e.keyCode === 13) { // Enter or Click
             $(".input_area").off("keydown");
@@ -55,51 +56,72 @@ function Suggester(e) {
             })();
             $(this).val(new String(result[0] + result[1] + result[2]));
         } else if (e.keyCode === 38) { // Up
-            if ($("#suggester li[aria-selected=true]")[0] !== $("#suggester li:first")[0]) {
-                $("#suggester").css("display") === "grid" ? $("#suggester li[aria-selected=true]").attr("aria-selected", false).prev().prev().prev().attr("aria-selected", true) : $("#suggester li[aria-selected=true]").attr("aria-selected", false).prev().attr("aria-selected", true);
+            if ($("#suggester").css("display") === "grid") {
+                if ($(sel).index() >= 3) {
+                    $(sel).removeAttr("aria-selected").prev().prev().prev().attr("aria-selected", true);
+                    if (Math.ceil(((1 + $(sel).index()) / 3)) * $(sel).outerHeight(false) > $("#suggester").height())
+                        $("#suggester").scrollTop($("#suggester").scrollTop() - $(sel).outerHeight(false) * 2);
+                } else {
+                    $(sel).removeAttr("aria-selected");
+                    $("#suggester li:last").attr("aria-selected", true);
+                    $("#suggester").scrollTop($("#suggester")[0].scrollHeight - $("#suggester").height());                    
+                }
             } else {
-                $("#suggester li[aria-selected=true]").attr("aria-selected", false);
-                $("#suggester li:last").attr("aria-selected", true);
+                if (sel[0] !== $("#suggester li:first")[0])
+                    $(sel).removeAttr("aria-selected").prev().attr("aria-selected", true);
+                else {
+                    $(sel).removeAttr("aria-selected");
+                    $("#suggester li:last").attr("aria-selected", true);
+                }
             }
         } else if (e.keyCode === 37) { // Left
-            if ($("#suggester li[aria-selected=true]")[0] !== $("#suggester li:first")[0]) {
-                $("#suggester li[aria-selected=true]").attr("aria-selected", false).prev().attr("aria-selected", true);
+            if (sel[0] !== $("#suggester li:first")[0]) {
+                $(sel).attr("aria-selected", false).prev().attr("aria-selected", true);
             } else {
-                $("#suggester li[aria-selected=true]").attr("aria-selected", false);
+                $(sel).attr("aria-selected", false);
                 $("#suggester li:last").attr("aria-selected", true);
-                $("#suggester").scrollTop($("#suggester").height());
             }
         } else if (e.keyCode === 40) { // Down
-            if ($("#suggester li[aria-selected=true]")[0] !== $("#suggester li:last")[0]) {
-                $("#suggester").css("display") === "grid" ? $("#suggester li[aria-selected=true]").attr("aria-selected", false).next().next().next().attr("aria-selected", true) : $("#suggester li[aria-selected=true]").attr("aria-selected", false).next().attr("aria-selected", true);
+            if ($("#suggester").css("display") === "grid") {
+                if ($("#suggester li").length - $(sel).index() - 1 >= 3) {
+                    $(sel).removeAttr("aria-selected").next().next().next().attr("aria-selected", true);
+                    if (Math.ceil(((1 + $(sel).index()) / 3)) * $(sel).outerHeight(false) > $("#suggester").height())
+                        $("#suggester").scrollTop($("#suggester").scrollTop() + $(sel).outerHeight(false) * 2);
+                } else {
+                    $(sel).removeAttr("aria-selected");
+                    $("#suggester li:first").attr("aria-selected", true);
+                    $("#suggester").scrollTop(0);                    
+                }
             } else {
-                $("#suggester li[aria-selected=true]").attr("aria-selected", false);
-                $("#suggester li:first").attr("aria-selected", true);
+                if (sel[0] !== $("#suggester li:last")[0])
+                    $(sel).removeAttr("aria-selected").next().attr("aria-selected", true);
+                else {
+                    $(sel).removeAttr("aria-selected");
+                    $("#suggester li:first").attr("aria-selected", true);
+                }
             }
         } else if (e.keyCode === 39) { // Right
-            if ($("#suggester li[aria-selected=true]")[0] !== $("#suggester li:last")[0]) {
-                $("#suggester li[aria-selected=true]").attr("aria-selected", false).next().attr("aria-selected", true);
+            if (sel[0] !== $("#suggester li:last")[0]) {
+                $(sel).removeAttr("aria-selected").next().attr("aria-selected", true);
             } else {
-                $("#suggester li[aria-selected=true]").attr("aria-selected", false);
-                $("#suggester li:first").attr("aria-selected", true);
-                $("#suggester").scrollTop(0);
+                $(sel).removeAttr("aria-selected");
+                $("#suggester li:first").attr("aria-selected", true);   
             }
-
         } else if (e.keyCode === 27) { // Esc
             $("#suggester").css("display", "none");
             $(".input_area").off("keydown");
         }
     };
 
-    if (e.originalEvent.data === "#" || e.originalEvent.data === ":") {
+    if (e.originalEvent.data === "#" || (this.value.slice(-2, -1) === ":" && this.value.slice(-1).match(/[A-z]/))) {
         const size = position(),
             height = $(".input_area").height();
 
         if (e.originalEvent.data === "#") {
             $("#suggester").html("").removeClass("emoji").css({ "display": "block", "bottom": `${height}px`, "left": `calc(40vw + ${height}px + ${$(this).css("padding-left")} + ${size}px)` });
             forum_doubts.slice(Math.max(forum_doubts.length - 5, 0)).forEach(doubt => $("#suggester").append(`<li aria-selected="false" data-value="${doubt[1][3]}"><div style="font-size: 12px; color: #ccc">#${doubt[1][3]}</div><div style="display: flex; justify-content: space-between; box-sizing: border-box; align-items: center"><div style="padding: 5px 10px; white-space: nowrap; overflow-x: hidden">${doubt[1][0]}</div><div style="padding: 5px 10px; color: #ccc; font-size: 14px">${doubt[1][2]}</div></div></li>`));
-        } else if (e.originalEvent.data === ":")
-            $("#suggester").html($(".suggester.emoji").html()).addClass("emoji").css({ "display": "grid", "bottom": `${height}px`, "left": `calc(40vw + ${height}px + ${$(this).css("padding-left")} + ${size}px)` });
+        } else
+            $("#suggester").html($(".suggester.emoji:not(#suggester)").html()).addClass("emoji").css({ "display": "grid", "bottom": `${height}px`, "left": `calc(40vw + ${height}px + ${$(this).css("padding-left")} + ${size}px)` });
 
         $("#suggester li").eq(0).attr("aria-selected", true);
         $(".input_area").on("keydown", navigation);
@@ -121,8 +143,10 @@ function Suggester(e) {
             $(".input_area").off("keydown");
             $("#suggester li").off("click");
 
-            if (!emoji || !JSON.stringify(emojies).includes(emoji))
+            if (!emoji || !JSON.stringify(emojies).includes(emoji)) {
+                $("#suggester").css("display", "none");
                 return;
+            }
             
             for (emote in emojies) {
                 if (!emote.includes(emoji))
@@ -151,17 +175,16 @@ function Suggester(e) {
             $(".input_area").off("keydown");
             $("#suggester li").off("click");
 
-            if (!hashtag)
+            if (!hashtag) {
+                $("#suggester").css("display", "none");
                 return;
+            }
 
             for (let doubt of forum_doubts) {
                 if (doubt[1][3].includes(hashtag) || doubt[1][0].includes(hashtag) || doubt[1][2].includes(hashtag))
                     $("#suggester").append(`<li aria-selected="false" data-value="${doubt[1][3]}"><div style="font-size: 12px; color: #ccc">#${doubt[1][3]}</div><div style="display: flex; justify-content: space-between; box-sizing: border-box; align-items: center"><div style="padding: 5px 10px; white-space: nowrap; overflow-x: hidden">${doubt[1][0]}</div><div style="padding: 5px 10px; color: #ccc; font-size: 14px">${doubt[1][2]}</div></div></li>`);
             }
         }
-
-        if (!$("#suggester li").length)
-                return;
 
         $("#suggester li").eq(0).attr("aria-selected", true);
         $("#suggester li:last").css("border", "none");
