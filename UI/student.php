@@ -190,32 +190,7 @@
             <img src="assets/icons/update.png" alt="Back" style="height: 4.5vh; margin: 0 20px 0 10px !important; display: none">
             <input type="text" name="query" placeholder="Busca">
         </header>
-        <main>
-            <div class="subject_result_list" hidden></div>
-            <div class="subject_list"></div>
-            <script>
-                $("#forum header input").on("keyup", e => {
-                    const input = $("#forum header input")[0];
-                    $(".subject_result_list .menu_icon").off("click");
-                    $(".subject_result_list").html("");
-
-                    if (!e.target.value || e.target.value === " ") {
-                        $(".subject_list").css("display", "block");
-                        $(".subject_result_list").attr("hidden", "");
-                        return;
-                    }
-
-                    for (subject in subjects) {
-                        if (subject.includes(e.target.value) && typeof subjects[subject] !== "function") {
-                            $(".subject_result_list").append(subjects.draw(subject));
-                            $(".subject_list").css("display", "none")
-                            $(".subject_result_list").removeAttr("hidden");
-                        }
-                    }
-                    $(".subject_result_list .menu_icon").on("click", openSubject);
-                });
-            </script>
-        </main>
+        <main></main>
     </div>
     <div class="chat_selector">
         <header>
