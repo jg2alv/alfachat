@@ -1,7 +1,7 @@
 $(document).ready(() => $("#forum_menu").on("click", showForum));
 
 function showForum() {
-    $("#forum_menu").off("click");
+    $("#forum_menu").off("click").on("click", hideForum);
 
     $("#forum").css("display", "flex");
     $(".chat_selector").css("display", "none");
@@ -52,7 +52,8 @@ function openSubject(e) {
         $("#teacher_list .menu_icon").on("click", e => hideSideMenu().then(() => openSubject(e)));
     });
 
-    $("#forum header img:nth-of-type(2), #forum_menu").off("click").on("click", showForum);
+    $("#forum header img").eq(1).off("click").on("click", showForum);
+    $("#forum_menu").off("click").on("click", hideForum);
 
     fetch_doubts($(e.currentTarget).attr("subject")).then(() => {
         $("#forum main").html("").css("grid-template-columns", "repeat(3, 1fr)");
