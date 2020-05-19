@@ -18,7 +18,6 @@ function openChat(e, customName = false, customStatus = false) {
 	$('.chat').attr('style', 'background: #35215a'); // Removing "selected" background from every other div
 	e.currentTarget.style.backgroundColor = '#291a46'; // Setting background to a darker one, indicating "selected"
 
-	const chat_result_list = $('.chat_result_list')[0];
 	const chat_list = $('.chat_list')[0];
 	if (chat_list.attributes['hidden']) {
 		const chats = atob(document.querySelector('.chat_list').attributes['data-chats'].value).split(',');
@@ -29,6 +28,7 @@ function openChat(e, customName = false, customStatus = false) {
 			document.querySelector(`.chat_list div[data-id='${e.currentTarget.attributes['data-id'].value}']`).style.background = '#291a46';
 		}
 	}
+
 	$('.choose_chat').css("display", "none"); // Removing "choose chat" balloon
 	$(".chats").css("grid-template-rows", "1fr 9fr");
 	$('.input_area').css('display', 'flex');
