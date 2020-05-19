@@ -296,5 +296,13 @@
             }
         });
     </script>
+
+    <script>
+        statusTimer();
+	    statusBackend('i=online&o=set');
+	    messageSender();
+	    chatListUpdater();
+	    teacherListUpdater();
+    </script>
 </body>
 </html>
