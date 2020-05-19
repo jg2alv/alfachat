@@ -11,7 +11,11 @@ let id;
 let canScroll = true;
 
 // Boolean indicating whether or not the recursive update() function should execute.
-let canUpdate = new Object();
+let canUpdate = {
+    "chatListUpdater": true,
+    "teacherListUpdater": true,
+    "chatsUpdater": false
+};
 
 // Set containing asked doubts.
 let doubts = new FormData();
