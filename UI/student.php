@@ -40,12 +40,7 @@
                                 $(document).remove(teachers_list);
                                 update(t0, "teacherListUpdater");
                             }
-
-                            return;
                         }
-
-                        canUpdate.teacherListUpdater = true;
-                        teacherListUpdater();
                     </script>
                 </div>
             </main>
@@ -168,12 +163,7 @@
                 <input type="text" placeholder="Nome da d&uacute;vida" id="doubt_name" style="width: 100%; margin: 15px 0">
             </div>
             <script>
-                $("#send_to_forum").on("change", e => {
-                    if (e.target.checked)
-                        $(e.target).attr("data-checked", 1);
-                    else
-                        $(e.target).attr("data-checked", 0);
-                });
+                $("#send_to_forum").on("change", e => e.target.checked ? $(e.target).attr("data-checked", 1) : $(e.target).attr("data-checked", 0));
             </script>
         </div>
         <div style="flex: 1; display: flex; flex-direction: column; justify-content: end">
@@ -230,12 +220,7 @@
                         update(t0, "chatListUpdater");
                     }
                 }
-
-                return;
             }
-
-            canUpdate.chatListUpdater = true;
-            chatListUpdater();
         </script>
     </div>
 
