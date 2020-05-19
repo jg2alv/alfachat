@@ -3,10 +3,7 @@ $(document).ready(() => $(".chat_selector header img:nth-of-type(1), #forum head
 function showSideMenu() {
 	setTimeout(() => $(".chat_selector header img, #forum header img, #forum main .subject_list .menu_icon img, #forum .input_area img:first").css("visibility", "hidden"), 50);
 
-	document.addEventListener("keydown", k => {
-		if (k.keyCode === 27 && ($(".modal:visible").length || $(".side_menu:visible").length))
-			hideSideMenu();
-	});
+	$(document).on("keydown", k => k.keyCode === 27 && ($(".modal:visible").length || $(".side_menu:visible").length) ? hideSideMenu() : null);
 
 	$(".side_menu_bg").css("flex", "4 !important");
 	$(".side_menu_visible").css("flex", "4 !important");
