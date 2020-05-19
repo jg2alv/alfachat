@@ -1,5 +1,5 @@
 function chatsUpdater(limit) {
-	if (atob(id).indexOf("teacher") > -1)
+	if (id === undefined || atob(id).indexOf("teacher") > -1)
 		return;
 
 	const xml = new XMLHttpRequest(),
@@ -11,14 +11,7 @@ function chatsUpdater(limit) {
 	xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	xml.send(`id=${id}&limit=${limit}`);
 	xml.onload = () => {
-		let response; // Try/ Catch has an specific scope. Declaring 'response' inside it doesn't work (since I'm using 'response' outside it as well)
-		try {
-			response = JSON.parse(xml.responseText);
-		} catch (e) {
-			update(t0, "chatsUpdater", limit);
-			return;
-		}
-		
+		let response = xml.responseText ? JSON.parse(xml.responseText) : [];
 		response.forEach((message, index) => chats.innerHTML += new Message(message, index).parse());
 
 		switch (true) {
@@ -32,23 +25,17 @@ function chatsUpdater(limit) {
 					return;
 				}
 
-				$(message_area).html(chats.innerHTML);
-				$(document).remove(chats);
+				$(message_area).html(chats.innerHTML).off("scroll").on('scroll', () => canScroll = false);
+				$(chats).remove();
 
-				$(message_area).off("scroll");
-				$(message_area).on('scroll', () => canScroll = false);
+				!$(".message_area audio").length ? $(message_area).css('visibility', 'visible') : null;
 
-				if (!$(".message_area audio").length)
-					$(message_area).css('visibility', 'visible');
-
-				$("audio").reverse().off("loadedmetadata");
-				$("audio").reverse().on("loadedmetadata", e => {
+				$("audio").reverse().off("loadedmetadata").on("loadedmetadata", e => {
 					$(e.target).siblings("span").html(`00:00/${convertTime(Math.floor(e.target.duration))}`);
 					$(message_area).css('visibility', 'visible');
 				});
 
-				$(".audio_btns").off("click");
-				$(".audio_btns").on("click", e => {
+				$(".audio_btns").off("click").on("click", e => {
 					const audio = $(e.currentTarget).siblings("audio")[0],
 						input = $(e.currentTarget).siblings("input")[0];
 
@@ -56,7 +43,7 @@ function chatsUpdater(limit) {
 						$("audio").each((index, audio) => {
 							audio.pause();
 							$(audio).siblings("img")[0].src = "assets/icons/play.png";
-						})
+						});
 						audio.currentTime = Number(input.value)
 						audio.play();
 						e.currentTarget.src = "assets/icons/pause.png";
@@ -66,8 +53,7 @@ function chatsUpdater(limit) {
 					}
 				});
 
-				$("audio").off("timeupdate");
-				$("audio").on("timeupdate", e => {
+				$("audio").off("timeupdate").on("timeupdate", e => {
 					const input = $(e.target).siblings("input[type='range']")[0],
 						duration = Math.floor(e.target.duration);
 
@@ -83,11 +69,9 @@ function chatsUpdater(limit) {
 					}
 				});
 
-				$("input[type='range']").off("input");
-				$("input[type='range']").on("input", e => $(e.currentTarget).siblings('audio')[0].currentTime = Number(e.currentTarget.value));
+				$("input[type='range']").off("input").on("input", e => $(e.currentTarget).siblings('audio')[0].currentTime = Number(e.currentTarget.value));
 
 				const observerOptions = { root: $(".message_area")[0], rootMargin: "100%" }; // Global options for both Intersection Observers
-
 				const mediaObserver = new IntersectionObserver(entries => { // Observer to lazy-load images/ videos
 					entries.forEach(entry => {
 						if (entry.target instanceof HTMLVideoElement) {
@@ -123,7 +107,6 @@ function chatsUpdater(limit) {
 						return;
 					});
 				}, observerOptions); // Getting global options
-
 				$("[data-src]").each((index, item) => { // For every image with data-src attr (images to be lazy loaded)
 					if (item instanceof HTMLSourceElement)
 						mediaObserver.observe(item.parentElement);
@@ -131,7 +114,7 @@ function chatsUpdater(limit) {
 						mediaObserver.observe(item)
 				});
 
-				messageObserver.observe($("[data-message=0]").get(0)); // Observe the first message
+				$("[data-message=0]").length ? messageObserver.observe($("[data-message=0]").get(0)) : null; // Observe the first message
 
 
 			case message_area[0].scrollHeight - message_area[0].clientHeight <= message_area[0].scrollTop + 1:
