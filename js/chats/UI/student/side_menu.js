@@ -1,7 +1,7 @@
 $(document).ready(() => $(".chat_selector header img:nth-of-type(1), #forum header img:nth-of-type(1)").on("click", showSideMenu));
 
 function showSideMenu() {
-	setTimeout(() => $(".chat_selector header img, #forum header img").css("visibility", "hidden"), 50);
+	setTimeout(() => $(".chat_selector header img, #forum header img, #forum main .subject_list .menu_icon img, #forum .input_area img:first").css("visibility", "hidden"), 50);
 
 	document.addEventListener("keydown", k => {
 		if (k.keyCode === 27 && ($(".modal:visible").length || $(".side_menu:visible").length))
@@ -11,8 +11,6 @@ function showSideMenu() {
 	$(".side_menu_bg").css("flex", "4 !important");
 	$(".side_menu_visible").css("flex", "4 !important");
 	$(".side_menu_visible").css("display", "flex");
-	$("#forum main .subject_list .menu_icon img").css("visibility", "hidden");
-
 	$(".side_menu").css("display", "flex").hide().fadeIn(300, () => {
 		$(".side_menu_bg").on("click", hideSideMenu);
 		$(".chats").on("keypress", hideSideMenu);
@@ -30,10 +28,7 @@ function hideSideMenu() {
 	$(".modal").css("display", "none");
 	$(".side_menu_visible").css("flex", "4 !important");
 
-	setTimeout(() => {
-		$(".chat_selector header img, #forum header img").css("visibility", "visible");
-		$("#forum main .subject_list .menu_icon img").css("visibility", "visible");
-	}, 150);
+	setTimeout(() => $(".chat_selector header img, #forum header img, #forum main .subject_list .menu_icon img, #forum .input_area img:first").css("visibility", "visible"), 150);
 
 	return new Promise(resolve => {
 		$(".side_menu").fadeOut(300, () => {
