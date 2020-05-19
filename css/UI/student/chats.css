@@ -42,6 +42,7 @@ body {
 	display: none;
 	background-color: #35215a;
 	flex-direction: column;
+	grid-template-rows: 1fr 9fr;
 }
 
 #forum header {
