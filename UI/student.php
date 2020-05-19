@@ -2,7 +2,7 @@
     <div class="side_menu">
         <div class="side_menu_visible">
             <header>
-                <img id="user_img" src="<?php echo $_SESSION["photo"] ? $_SESSION["photo"] : "assets/avatars/users/default.png"; ?>"><br>
+                <img id="user_img" src="<?php echo $_SESSION["photo"]; ?>"><br>
                 <span id="user_name" style="font-weight: bold"><?php echo $_SESSION["name"]; ?></span><br>
                 <span id="user_ra"><?php echo $_SESSION["ra"]; ?></span>
             </header>
@@ -101,7 +101,7 @@
             </div>
             <div class="settings_menu_user_area">
                 <div class="pic">
-                    <img src="<?php echo $_SESSION["photo"] ? $_SESSION["photo"] : "assets/avatars/users/default.png"; ?>">
+                    <img src="<?php echo $_SESSION["photo"]; ?>">
                 </div>
                 <div class="info">
                     <div style="font-weight: bold;"><?php echo $_SESSION["name"]; ?></div>
@@ -125,7 +125,7 @@
                     </div>
                 </div>
                 <div style="background-color: #291a46; flex: 3; flex-direction: column; justify-content: center; align-items: center; display: flex">
-                    <img id="settings_menu_advanced_profile_pic" src="<?php echo $_SESSION["photo"] ? $_SESSION["photo"] : "assets/avatars/users/default.png" ?>" alt="">
+                    <img id="settings_menu_advanced_profile_pic" src="<?php echo $_SESSION["photo"]; ?>" alt="">
                     <div>
                         <input id="profile_pic_input" type="file" style="display: none" accept="image/*">
                         <label for="profile_pic_input" style="text-transform: uppercase; font-weight: bold; cursor: pointer; text-align: center; padding: 10px 30px; border-radius: 20px; background-color: #35215a">Mudar foto de perfil</label>
