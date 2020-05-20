@@ -19,7 +19,7 @@ class Message {
 
             try {
                 this.message.file = JSON.parse(this.message.file);
-            } catch(e) {}
+            } catch (e) { }
 
             if (this.sender.id === atob(sessionStorage["aWQ="])) {
                 if (img.includes(this.message.file.extension))
@@ -168,27 +168,19 @@ class Message {
             const hashtags = this.message.content.match(/(^|\B)#([a-zA-Z0-9_]{1,})(\b|\r)/g) || [];
             hashtags.forEach(hashtag => {
                 const doubt = hashtag.replace("#", "");
-                if (!forum_doubts[doubt - 1])
-                    return;
-                this.message.content = this.message.content.replace(hashtag, `<span style="color: #337ab7; cursor: pointer" data-hashtag="${doubt}">${hashtag}</span>`);
+                this.message.content = !forum_doubts[doubt - 1] ? this.message.content : this.message.content.replace(hashtag, `<span style="color: #337ab7; cursor: pointer" data-hashtag="${doubt}">${hashtag}</span>`);
             });
         })();
 
         (() => {
-            const bolds = this.message.content.match(/\*([^)]+)\*/g) || [];
-            bolds.forEach(bold => this.message.content = this.message.content.replace(bold, `<strong>${bold.replace(new RegExp(/\*/, "g"), "")}</strong>`));
+            const replace = [{ "pattern": /(\*{2})(.+)(\*{2})/g, "tag": "strong", "search": /\*/g }, { "pattern": /(\_{2})(.+)(\_{2})/g, "tag": "em", "search": /\_/g }, { "pattern": /(\~{2})(.+)(\~{2})/g, "tag": "del", "search": /\~/g }, { "pattern": /(\`{2})(.+)(\`{2})/g, "tag": "code", "search": /\`/g }];
+            replace.forEach(format => {
+                const regex = this.message.content.match(format.pattern) || [];
+                regex.forEach(match => this.message.content = this.message.content.replace(match, `<${format.tag}>${match.replace(format.search, "")}</${format.tag}>`))
+            });
 
-            const italics = this.message.content.match(/\_([^)]+)\_/g) || [];
-            italics.forEach(italic => this.message.content = this.message.content.replace(italic, `<em>${italic.replace(new RegExp(/\_/, "g"), "")}</em>`));
-
-            const strikethroughs = this.message.content.match(/\~([^)]+)\~/g) || [];
-            strikethroughs.forEach(strikethrough => this.message.content = this.message.content.replace(strikethrough, `<del>${strikethrough.replace(new RegExp(/\~/, "g"), "")}</del>`));
-
-            const monospaces = this.message.content.match(/\`([^)]+)\`/g) || [];
-            monospaces.forEach(monospace => this.message.content = this.message.content.replace(monospace, `<code>${monospace.replace(new RegExp(/\`/, "g"), "")}</code>`));
-
-            const spoilers = this.message.content.match(/\|([^)]+)\|/g) || [];
-            spoilers.forEach(spoiler => this.message.content = this.message.content.replace(spoiler, `<span class="spoiler">${spoiler.replace(new RegExp(/\|/, "g"), "")}</span>`));
+            const spoilers = this.message.content.match(/(\|{2})(.+)(\|{2})/g) || [];
+            spoilers.forEach(spoiler => this.message.content = this.message.content.replace(spoiler, `<span class="spoiler">${spoiler.replace(/\|/g, "")}</span>`));
         })();
 
         (() => { // :emojies:
@@ -198,7 +190,18 @@ class Message {
 
         (() => { // https://wwww.url.com
             const urls = this.message.content.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g) || [];
-            urls.forEach(url => this.message.content = this.message.content.replace(url, `<a style="color: #337ab7;" href="${url}">${url}</a>`));
+            urls.forEach(url => {
+                this.message.content = this.message.content[this.message.content.indexOf(url) - 1] !== "(" && this.message.content[this.message.content.indexOf(url) + url.length] !== ")" && this.message.content[this.message.content.indexOf(url) - 1] !== "\"" && this.message.content[this.message.content.indexOf(url) + url.length] !== "\"" ? this.message.content.replace(url, `<a style="color: #337ab7;" href="${url}">${url}</a>`) : this.message.content
+            });
+
+            const markdown_urls = this.message.content.match(/\[([^\[]+)\](\(.*\))/gm) || [];
+            markdown_urls.forEach(matches => {
+                matches = typeof matches == "object" ? matches : [matches];
+                for (let i = 0; i < matches.length; i++) {
+                    const markdown = /\[([^\[]+)\]\((.*)\)/.exec(matches[i]);
+                    this.message.content = this.message.content.replace(markdown[0], `<a style="color: #337ab7;" href="${markdown[2]}">${markdown[1]}</a>`);
+                };
+            });
         })();
     }
 }

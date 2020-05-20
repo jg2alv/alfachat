@@ -5,7 +5,7 @@ function Suggester(e) {
     const position = () => {
         const sizeSpan = document.createElement("span");
 
-        $(sizeSpan).css({ "visibility": "hidden", "font-size": "18px", "position": "absolute" }).html(this.value.slice(0, this.selectionStart).replace(new RegExp("\n", "g"), "<br>"));
+        $(sizeSpan).css({ "visibility": "hidden", "font-size": "18px", "position": "absolute" }).html(this.value.slice(0, this.selectionStart).replace(/\n\g/, "<br>"));
         document.body.append(sizeSpan);
 
         let size = $(sizeSpan).width();
@@ -36,7 +36,7 @@ function Suggester(e) {
             $("#suggester li").off("click");
 
             $("#suggester").css("display", "none");
-            $(".input_area textarea").focus();
+            $(".input_area:visible textarea").focus();
 
             const result = (() => {
                 let sel = this.selectionStart,
@@ -115,13 +115,14 @@ function Suggester(e) {
 
     if (e.originalEvent.data === "#" || (this.value.slice(-2, -1) === ":" && this.value.slice(-1).match(/[A-z]/))) {
         const size = position(),
-            height = $(".input_area").height();
+            height = $(".input_area").height(),
+            left = $("#forum .input_area:visible").length ? `calc(${height}px + ${$(this).css("padding-left")} + ${size}px)` : `calc(40vw + ${height}px + ${$(this).css("padding-left")} + ${size}px)`;
 
         if (e.originalEvent.data === "#") {
-            $("#suggester").html("").removeClass("emoji").css({ "display": "block", "bottom": `${height}px`, "left": `calc(40vw + ${height}px + ${$(this).css("padding-left")} + ${size}px)` });
+            $("#suggester").html("").removeClass("emoji").css({ "display": "block", "bottom": `${height}px`, "left": left });
             forum_doubts.slice(Math.max(forum_doubts.length - 5, 0)).forEach(doubt => $("#suggester").append(`<li aria-selected="false" data-value="${doubt[1][3]}"><div style="font-size: 12px; color: #ccc">#${doubt[1][3]}</div><div style="display: flex; justify-content: space-between; box-sizing: border-box; align-items: center"><div style="padding: 5px 10px; white-space: nowrap; overflow-x: hidden">${doubt[1][0]}</div><div style="padding: 5px 10px; color: #ccc; font-size: 14px">${doubt[1][2]}</div></div></li>`));
         } else
-            $("#suggester").html($(".suggester.emoji:not(#suggester)").html()).addClass("emoji").css({ "display": "grid", "bottom": `${height}px`, "left": `calc(40vw + ${height}px + ${$(this).css("padding-left")} + ${size}px)` });
+            $("#suggester").html($(".suggester.emoji:not(#suggester)").html()).addClass("emoji").css({ "display": "grid", "bottom": `${height}px`, "left": left });
 
         $("#suggester li").eq(0).attr("aria-selected", true);
         $(".input_area").on("keydown", navigation);
