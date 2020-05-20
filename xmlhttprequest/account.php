@@ -12,7 +12,7 @@
         if ($_POST["teacher"]) {
             $email = filter_input(INPUT_POST, "ra", FILTER_SANITIZE_EMAIL);
             $sql = "SELECT * FROM `users` WHERE ra = '$email'";
-            $_SESSION["type"] = "teacher";
+            $_SESSION["subject"] = getSubject($conn, $sql, $email);
         } else {
             $ra = filter_input(INPUT_POST, "ra", FILTER_SANITIZE_NUMBER_INT);
 
@@ -22,7 +22,6 @@
             $city = $_POST["city"];
             $class = $_POST["class"];
             $sql = "SELECT * FROM `users` WHERE ra = '$ra' AND class = '$class' AND city = '$city'";
-            $_SESSION["type"] = "student";
         }
             
         $sql = mysqli_query($conn, $sql);
@@ -37,5 +36,19 @@
 
         echo json_encode($user);
         die();
+    }
+
+    function getSubject($conn, $sql, $email) {
+        $sql = mysqli_query($conn, $sql);
+        $sql = mysqli_fetch_assoc($sql);
+        $id = $sql["id"];
+        $sql = "SELECT * FROM `subjects` WHERE priority LIKE '$id%'";
+        $sql = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($sql))
+            return mysqli_fetch_assoc($sql)["id"];
+        
+        $sql = "SELECT * FROM `subjects` WHERE priority LIKE '%$id%'";
+        $sql = mysqli_query($conn, $sql);
+        return mysqli_fetch_assoc($sql)["id"];
     }
 ?>
