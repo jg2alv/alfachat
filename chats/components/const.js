@@ -1,0 +1,1 @@
+const teacher_doubts = new Array();
