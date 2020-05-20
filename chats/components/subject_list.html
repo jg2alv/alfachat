@@ -1,0 +1,31 @@
+<div id="subjects_menu"class="menu_icon" style="flex-direction: column; justify-content: center; padding: 0">
+    <div style="display: flex; padding-left: 20px; min-height: 100%; min-width: 100%; box-sizing: border-box"><div class="pic"><img style="max-width: 50%"  src="assets/icons/play.png" alt="Professores"></div><div class="info" style="flex: 4">Disciplinas</div></div>
+    <div id="teacher_list" style="padding-top: 15px; height: auto; display: none; margin-bottom: 10px"></div>
+    <script>
+        function teacherListUpdater() {
+            const xml = new XMLHttpRequest(),
+                t0 = performance.now();
+
+            xml.open("POST", "../xmlhttprequest/teachers_list.php", true);
+            xml.send(null);
+
+            xml.onload = () => {
+                const teachers_list = document.createElement("div");
+                teachers_list.innerHTML = xml.responseText;
+
+                if ($("#teacher_list").html() !== teachers_list.innerHTML) {
+                    $("#teacher_list").html(teachers_list.innerHTML);
+                    $("[subject]").on("click", e => {
+                        hideSideMenu();
+                        $(e.currentTarget).attr("data-id") === "dGVhY2hlcjow" ? openChat(e, e.currentTarget.children[1].children[0].children[0], "offline") : openChat(e, e.currentTarget.children[1].children[0].children[0], "online");
+                        $('[subject]').attr('style', 'background: #291a46'); // Removing "selected" background from every other div
+                        e.currentTarget.style.backgroundColor = '#35215a'; // Setting background to a darker one, indicating "selected"
+                    });
+                }
+                
+                $(document).remove(teachers_list);
+                update(t0, "teacherListUpdater");
+            }
+        }
+    </script>
+</div>
