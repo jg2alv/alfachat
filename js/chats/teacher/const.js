@@ -1,1 +1,1 @@
-const teacher_doubts = new Array();
+let doubts = new Array();

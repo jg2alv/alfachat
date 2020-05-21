@@ -19,7 +19,7 @@
             $msg["receiver"] = json_encode(formatMessages($conn, $sql));
             array_push($response, $msg);
         }
-        return json_encode($response);
+        return $response;
     }
 
     function formatMessages($conn, $sql) {
