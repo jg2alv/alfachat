@@ -10,6 +10,7 @@ $(document).ready(() => {
         $('.input_area').css('display', 'flex');
         $('.chats header').css('display', 'flex');
         $('.input_area textarea').focus();
-        teacher_doubts = JSON.parse(xml.responseText);
+        doubts = JSON.parse(xml.responseText);
+        showDoubt();
     };
 });
