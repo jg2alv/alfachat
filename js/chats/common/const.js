@@ -17,12 +17,12 @@ let canUpdate = {
     "chatsUpdater": false
 };
 
-// Set containing asked doubts.
-let doubts = new FormData();
-
 // addZero(1) = "10"
 // addZero(10) = "10"
 const addZero = i => i < 10 ? String(`${i}0`) : String(i);
+
+// Array of all doubts available on the DB
+let forum_doubts = new Array();
 
 // Subject list
 const subjects = {
@@ -921,3 +921,12 @@ const emojies = {
 
 // Takes time in seconds and returns mm:ss
 const convertTime = s => new String(Math.floor(s / 60)).padStart(2, "0") + ":" + new String(s % 60).padStart(2, "0");
+
+// Function to close chat and show "selectione um chat" balloon
+const closeChat = () => {
+    $('.input_area').css('display', 'none');
+    $('.chats').css("grid-template-rows", "").children("header").css('display', 'none');
+    $(".message_area").html("").css({ display: "none", visibility: "none" });
+    $('.choose_chat').css("display", "flex");
+    canUpdate.chatsUpdater = false;
+};
