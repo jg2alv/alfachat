@@ -75,7 +75,7 @@
                 <div id="forum_menu" class="menu_icon"><div class="pic"><img src="assets/icons/forum.png" alt="F&oacute;rum"></div><div class="info" style="flex: 4">F&oacute;rum</div></div>
                 <?php
                     if ($_SESSION["class"] > 0)
-                        require "components/subject_list.html";
+                        require "html/student/subject_list.html";
                 ?>
             </main>
             <footer style="padding: 0; margin-top: 15px; padding-top: 10px">
@@ -191,7 +191,7 @@
     </div>
     <?php
         if ($_SESSION["class"] > 0)
-            require "components/doubt_send.html";
+            require "html/student/doubt_send.html";
     ?>
     <div id="forum">
         <header>
@@ -252,10 +252,7 @@
                 <div></div>
             </div>
             <img src="assets/icons/advanced.png" alt="Avan&ccedil;ado">
-            <div id="settings_menu_header_drop_down_2" class="settings_menu_header_drop_down">
-                <span>Encerrar sess&atilde;o</span>
-                <span class="edit_profile">Editar perfil</span>
-            </div>
+            <div id="chats_header_drop_down" class="chats_header_drop_down"></div>
         </header>
         <div class="message_area"></div>
         <form class="input_area" enctype="multipart/form-data" accept-charset="UTF-8">
