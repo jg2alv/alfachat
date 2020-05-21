@@ -29,12 +29,25 @@
     <link rel='stylesheet' type='text/css' href='../css/chats.css'>
 
     <?php
-        foreach (array_diff(scandir('../js/chats'), array('.', '..')) as $file) {
-            echo "<script src='../js/chats/$file'></script>";   // Load JS files
+        if ($_SESSION["class"] > 0) {
+            $files = array_diff(scandir('../js/chats/student/'), array('.', '..'));
+
+            foreach ($files as $file) {
+                echo "<script src='../js/chats/student/$file'></script>";
+            }
+        } else {
+            $files = array_diff(scandir('../js/chats/teacher'), array('.', '..'));
+
+            foreach ($files as $file) {
+                echo "<script src='../js/chats/teacher/$file'></script>";
+            }
         }
 
-        if ($_SESSION["class"] > 0)
-            echo "<script src='components/const.js'></script>";
+        $files = array_diff(scandir('../js/chats/common/'), array('.', '..'));
+
+        foreach ($files as $file) {
+            echo "<script src='../js/chats/common/$file'></script>";
+        }
     ?>
 
     
@@ -232,12 +245,7 @@
     </div>
 
     <div class="chats">
-        <?php
-            if ($_SESSION["class"] > 0)
-                echo "<div class='choose_chat'>Escolha uma conversa para entrar</div>";
-            else
-                echo "<script src='get_doubt.js'></script>";
-        ?>
+        <div class='choose_chat'>Escolha uma conversa para entrar</div>
         <header>
             <div style="display: flex; justify-content: flex-start; align-items: flex-start; flex-direction: column">
                 <div></div>
@@ -291,11 +299,6 @@
     <script>
         fetch("http://api.github.com/repos/alfachat/alfachat/tags").then(response =>  response.json().then(data => (data))).then(response => $("#version").html(response[0]["name"]).attr("href", `https://github.com/alfachat/alfachat/releases/${response[0]["name"]}`));
     </script>
-
-    <?php
-        if ($_SESSION["class"] > 0)
-            echo "<script src='components/subjects_menu.js'></script>";
-    ?>
 
     <script>
         statusTimer();
