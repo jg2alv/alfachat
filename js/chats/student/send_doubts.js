@@ -32,7 +32,7 @@ function sendDoubts() {
 
         const xml = new XMLHttpRequest();
         
-        xml.open("POST", "../xmlhttprequest/doubts_sender.php", true);
+        xml.open("POST", "../server/doubts_sender.php", true);
         xml.send(doubts);
         doubts = new FormData();
         xml.onload = () => {

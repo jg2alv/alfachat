@@ -11,7 +11,7 @@ $(document).ready(() => {
             return;
         }
         const xml = new XMLHttpRequest();
-        xml.open('POST', '../xmlhttprequest/chat_search.php', true);
+        xml.open('POST', '../server/chat_search.php', true);
         xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         xml.send(`q=${header_input.value}`);
         xml.onload = () => {

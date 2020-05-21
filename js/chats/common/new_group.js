@@ -26,7 +26,7 @@ $(document).ready(() => {
             })
         } else {
             const xml = new XMLHttpRequest();
-            xml.open("POST", "../xmlhttprequest/new_group.php", true);
+            xml.open("POST", "../server/new_group.php", true);
             xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xml.send("a=1");
             $("#new_group_menu_advanced header div").eq(1).html("");
@@ -91,7 +91,7 @@ $(document).ready(() => {
             return; // Stopping the function
         }
         const xml = new XMLHttpRequest();
-        xml.open("POST", "../xmlhttprequest/chat_search.php", true);
+        xml.open("POST", "../server/chat_search.php", true);
         xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xml.send(`q=${member_search.value}`); // XML content is user input
         xml.onload = () => {
@@ -133,7 +133,7 @@ $(document).ready(() => {
 
         toast.show();
 
-        xml.open("POST", "../xmlhttprequest/new_group.php", true);
+        xml.open("POST", "../server/new_group.php", true);
 
         if (file) {
             const formData = new FormData();

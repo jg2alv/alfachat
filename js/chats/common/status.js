@@ -28,7 +28,7 @@ function statusTimer() {
 
 function statusBackend(arg) {
     const xml = new XMLHttpRequest();
-    xml.open("POST", "../xmlhttprequest/status.php", true);
+    xml.open("POST", "../server/status.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xml.send(arg); // Sending request with given args
     return new Promise(resolve => xml.onload = () => resolve(xml.responseText));

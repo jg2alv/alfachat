@@ -90,7 +90,7 @@ class Message {
             return;
         }
 
-        this.xml.open("POST", "../xmlhttprequest/message_sender.php", true);
+        this.xml.open("POST", "../server/message_sender.php", true);
         this.xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         this.xml.send(`m=${encodeURIComponent(this.message.content)}&id=${id}`); // XML content is user input
     }
@@ -111,7 +111,7 @@ class Message {
             }
             formData.set("file_user_input", blob, `AUD_${d.getFullYear() + (addZero(d.getMonth() + 1)) + addZero(d.getDate()) + addZero(d.getMilliseconds())}.ogg`);
             formData.set("audio", true);
-            this.xml.open("POST", "../xmlhttprequest/file_sender.php", true);
+            this.xml.open("POST", "../server/file_sender.php", true);
             this.xml.send(formData);
         } else if (file.files.length) {
             let toast;
@@ -137,7 +137,7 @@ class Message {
 
                 formData.append("files[]", file.files[i]);
                 formData.set("id", id);
-                this.xml.open("POST", "../xmlhttprequest/file_sender.php", true);
+                this.xml.open("POST", "../server/file_sender.php", true);
                 this.xml.send(formData);
 
                 if (i === file.files.length - 1) {

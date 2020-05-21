@@ -1,6 +1,6 @@
 (() => {
     const xml = new XMLHttpRequest();
-    xml.open("POST", "../xmlhttprequest/get_doubt.php", true);
+    xml.open("POST", "../server/get_doubt.php", true);
     xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xml.send(`cred=${JSON.stringify([atob(sessionStorage["aWQ="]), atob(sessionStorage["cGFzc3dvcmQ="])])}`);
 

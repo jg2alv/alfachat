@@ -201,7 +201,7 @@
                 const xml = new XMLHttpRequest(),
                     t0 = performance.now();
 
-                xml.open("POST", "../xmlhttprequest/chat_list.php", true);
+                xml.open("POST", "../server/chat_list.php", true);
                 xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xml.send("chats=1");
 
@@ -209,7 +209,7 @@
                     const xml = new XMLHttpRequest();
 
                     $("chat_list").attr("data-chats", xml.responseText);
-                    xml.open("POST", "../xmlhttprequest/chat_list.php", true);
+                    xml.open("POST", "../server/chat_list.php", true);
                     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xml.send(null);
 

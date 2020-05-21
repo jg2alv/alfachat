@@ -22,7 +22,7 @@ $("form").on("submit", e => {
 		password = $("input[name='password']")[0],
 		teacher = $("span[data-teacher]").attr("data-teacher");
 
-	xml.open("POST", "xmlhttprequest/account.php", true);
+	xml.open("POST", "server/account.php", true);
 	xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 	xml.send(`ra=${ra.value}&password=${password.value}&class=${$("select")[0].value}&city=${$("select")[1].value}&teacher=${teacher}`);

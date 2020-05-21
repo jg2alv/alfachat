@@ -6,7 +6,7 @@
             const xml = new XMLHttpRequest(),
                 t0 = performance.now();
 
-            xml.open("POST", "../xmlhttprequest/teachers_list.php", true);
+            xml.open("POST", "../server/teachers_list.php", true);
             xml.send(null);
 
             xml.onload = () => {

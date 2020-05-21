@@ -52,7 +52,7 @@ $(document).ready(() => {
 		formData.set("f", "photo");
 
 		const xml = new XMLHttpRequest();
-        xml.open("POST", "../xmlhttprequest/settings_menu.php", true);
+        xml.open("POST", "../server/settings_menu.php", true);
 		xml.send(formData);
 	})
 });
