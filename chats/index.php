@@ -210,7 +210,7 @@
         <div class="chat_result_list" hidden></div>
         <div class="chat_list"><div class="loading">Carregando...</div></div>
         <script>
-            function chatListUpdater() {
+            function chatListUpdater(forceUpdate = false) {
                 const xml = new XMLHttpRequest(),
                     t0 = performance.now();
 
@@ -218,28 +218,31 @@
                 xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xml.send("chats=1");
 
-                xml.onload = () => {
-                    const xml = new XMLHttpRequest();
-
-                    $("chat_list").attr("data-chats", xml.responseText);
-                    xml.open("POST", "../server/chat_list.php", true);
-                    xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    xml.send(null);
-
+                return new Promise(resolve => {
                     xml.onload = () => {
-                        const chat_list = document.createElement("div");
-                        chat_list.innerHTML = xml.responseText;
+                        const xml = new XMLHttpRequest();
 
-                        if (chat_list.children.length !== $(".chat_list")[0].children.length) {
-                            $(".chat_list").html(xml.responseText);
-                            $(".chat:visible").on("click", openChat);
-                        }
+                        $("chat_list").attr("data-chats", xml.responseText);
+                        xml.open("POST", "../server/chat_list.php", true);
+                        xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                        xml.send(null);
 
-                        $(document).remove(chat_list);
-                        
-                        update(t0, "chatListUpdater");
+
+                        xml.onload = () => {
+                            const chat_list = document.createElement("div");
+                            chat_list.innerHTML = xml.responseText;
+
+                            if (chat_list.children.length !== $(".chat_list")[0].children.length || forceUpdate) {
+                                $(".chat_list").html(xml.responseText);
+                                $(".chat:visible").on("click", openChat);
+                            }
+
+                            $(document).remove(chat_list);
+                            !forceUpdate ? update(t0, "chatListUpdater") : null;
+                            resolve();
+                        };
                     }
-                }
+                });
             }
         </script>
     </div>
@@ -298,7 +301,6 @@
     </script>
 
     <script>
-        statusTimer();
 	    statusBackend('i=online&o=set');
 	    messageSender();
         chatListUpdater();
