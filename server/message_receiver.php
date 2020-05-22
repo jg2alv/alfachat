@@ -17,13 +17,13 @@
             $sql = "(SELECT * FROM `messages` WHERE receiver = '$chat' ORDER BY time DESC LIMIT $limit) ORDER BY time;";
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
-            echo fetchMessages($conn, $sql); // Returning it to JS
+            echo json_encode(fetchMessages($conn, $sql)); // Returning it to JS
         } else if (strpos($chat, "doubt") !== false) {
             $id = explode(":", $chat)[1];
             $sql = "SELECT * FROM `messages` WHERE doubt = $id";
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
-            echo fetchMessages($conn, $sql);
+            echo json_encode(fetchMessages($conn, $sql));
         }
     } else {
         $user = $_SESSION["id"];
@@ -31,7 +31,8 @@
         $sql = "((SELECT * FROM `messages` WHERE sender = '$user' AND receiver = '$chat' AND doubt = 0) UNION (SELECT * FROM `messages` WHERE sender = '$chat' AND receiver = '$user' AND doubt = 0) ORDER BY time DESC LIMIT $limit) ORDER BY time";
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
-        echo fetchMessages($conn, $sql);
+        echo json_encode(fetchMessages($conn, $sql));
+        
         // Select all messages he sent me and I didn't see yet.
         $sql = "SELECT * FROM `messages` WHERE sender = $chat AND seen = 0";
         $sql = mysqli_query($conn, $sql);
