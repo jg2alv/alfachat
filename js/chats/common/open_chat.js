@@ -1,15 +1,15 @@
 $(document).ready(() => $(".chat:visible").on("click", openChat));
 
 function openChat(e, customName = false, customStatus = false) {
+	statusTimer();
 	canUpdate.chatsUpdater = false;
+
+	if (id === $(e.currentTarget).attr("data-id")) return;
+
 	id = $(e.currentTarget).attr("data-id"); // base64 id value. Example: 1; group:11 (in base64)
-
-	if (id === e.currentTarget.children[1].children[0].getAttribute('data-id') && $('.chats:visible').length)
-		return;
-
 	statusBackend(`i=${id}&o=get`).then(res => {
-		!customName ? $(".chats header div div").eq(0).html(e.currentTarget.children[1].children[0].innerHTML) : $(".chats header div div").eq(0).html("Suporte de " + customName.innerHTML);
-		!customStatus ? $(".chats header div div").eq(1).html(res) : $(".chats header div div").eq(1).html(customStatus);
+		customName === false ? $(".chats header div div").eq(0).html(e.currentTarget.children[1].children[0].innerHTML) : $(".chats header div div").eq(0).html("Suporte de " + customName.innerHTML);
+		customStatus === false ? $(".chats header div div").eq(1).html(res) : $(".chats header div div").eq(1).html(customStatus);
 	});
 
 	$('[subject]').attr('style', 'background: #291a46');
