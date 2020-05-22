@@ -928,5 +928,6 @@ const closeChat = () => {
     $('.chats').css("grid-template-rows", "").children("header").css('display', 'none');
     $(".message_area").html("").css({ display: "none", visibility: "none" });
     $('.choose_chat').css("display", "flex");
+    $('.chat').attr('style', 'background: #35215a');
     canUpdate.chatsUpdater = false;
 };
