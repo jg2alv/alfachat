@@ -10,20 +10,15 @@
 
     function get($conn) {
         session_start();
-        $i = base64_decode($_POST["i"]); // #encryption lol
+        $id = strpos(base64_decode($_POST["i"]), ":") !== false ? explode(":", base64_decode($_POST["i"]))[1] : base64_decode($_POST["i"]);
 
-        if (strpos($i, "group") !== false) { // If that's a group (status is member count)
-            $id = explode(":", $i)[1];
+        if (strpos(base64_decode($_POST["i"]), "group") !== false) { // If that's a group (status is member count)
             $sql = "SELECT * FROM `groups` WHERE id = $id"; // Getting info on group
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_assoc($sql);
             $members = $sql["members"];
             $members = explode(",", $members);
-            if (sizeof($members) > 1) {
-                $status = sizeof($members) . " membros";
-            } else {
-                $status = "1 membro";
-            }
+            $status = sizeof($members) > 1 ? sizeof($members) . " membros" : "1 membro";
             $id = $_SESSION["id"];
             $count = 0;
             foreach($members as $member) {
@@ -33,11 +28,15 @@
                     $count++;
                 }
             }
-            if ($count) {
+            if ($count)
                 $status .= ", " . $count . " online";
-            }
+        } else if (strpos(base64_decode($_POST["i"]), "doubt") !== false) {
+                $sql = "SELECT * FROM `doubts` WHERE id = $id";
+                $sql = mysqli_query($conn, $sql);
+                $sql = mysqli_fetch_assoc($sql);
+                $status = $sql["tags"];
         } else {
-            $sql = "SELECT * FROM `users` WHERE id = $i"; // Getting user info
+            $sql = "SELECT * FROM `users` WHERE id = $id"; // Getting user info
 
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_assoc($sql);
