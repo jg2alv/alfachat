@@ -59,8 +59,6 @@ function openSubject(e) {
         $("#forum main").html("").css("grid-template-columns", "repeat(3, 1fr)");
 
         forum_doubts.forEach((doubt, index) => {
-            doubt[0] = JSON.parse(doubt[0]);
-
             doubtArea = document.createElement("div");
             $(doubtArea).attr("class", "doubt").attr("data-id", index);
             $(doubtArea).html(`<div style="display: flex; flex-direction: column; height: 100%"><div style="border-bottom: 1px solid rgba(255, 255, 255, 0.3); padding-bottom: 10px; margin-bottom: 15px; flex: 1; font-size: 24px; text-transform: capitalize; font-weight: bolder">${doubt[1][0]}</div><div style="font-size: 18px; overflow: hidden; flex: 4; overflow-wrap: anywhere; flex-basis: 0">${doubt[0][0].content}</div><div style="flex: 3; color: #cccccc; font-size: 14px; padding-top: 15px">Autor: ${JSON.parse(doubt[0][0].sender).name}<br>Professor respons&aacute;vel: ${JSON.parse(doubt[0][0].receiver).name + ftags(doubt[1][1])}</div>`)
