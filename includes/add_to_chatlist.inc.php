@@ -3,8 +3,7 @@
         require "db.inc.php";
         $id = $_SESSION["id"];
 
-        if (strpos($receiver, "group") !== false)
-            return;
+        if (strpos($receiver, ":") !== false) return;
 
         $sql = "SELECT * FROM `users` WHERE id = '$receiver'"; // Info on person I'm talking to.
         $sql = mysqli_query($conn, $sql);
