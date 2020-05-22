@@ -43,16 +43,16 @@
                 if (removeFromChatList($conn, $sql, $chat))
                     continue;
                 $sql = mysqli_query($conn, $sql);
-                $sql = mysqli_fetch_assoc($sql);
-                $sql = "SELECT * FROM `subjects` WHERE name = '" . $sql["subject"] . "'";
+                $name = mysqli_fetch_assoc($sql)["name"];
+
+                $sql = "SELECT sender, content FROM `messages` WHERE doubt = $id ORDER BY time DESC LIMIT 1";
                 $sql = mysqli_query($conn, $sql);
-                if (!mysqli_num_rows($sql))
-                    continue;
                 $sql = mysqli_fetch_assoc($sql);
 
-                $name = "Suporte de " . $sql["name"];
-                $photo = "assets/avatars/subjects/" . $sql["name"] . ".png' style='border-radius: 0";
-                $bio = "";
+                $bio = $sql["sender"] === $_SESSION["id"] ? "Voc&ecirc;: " : mysqli_fetch_assoc(mysqli_query($conn, "SELECT name FROM `users` WHERE id =" . $sql["sender"]))["name"] . ": ";
+                $bio .= $sql["content"] ? base64_decode($sql["content"]) : "<Arquivo>";
+
+                $photo = "assets/icons/doubt.png' style='border-radius: 0";
                 $type = "doubt:$id";
             }
         } else {
