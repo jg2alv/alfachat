@@ -4,6 +4,7 @@
 
     require_once "../includes/remove_from_chatlist.inc.php";
     require "../includes/db.inc.php";
+    require "../includes/get_last_message.inc.php";
 
     $id = $_SESSION["id"]; // Getting user id
     $sql = "SELECT chats FROM `users` WHERE id = $id"; // Selecting logged user
@@ -26,9 +27,9 @@
                 if ($id < 13) { // If it's a class group (group:1 to group:12)
                     $name = ($id > 9) ? ($id-9) . "° Ano - Ensino M&eacute;dio" : $id . "° Ano - Ensino Fundamental";
                     $photo = "assets/avatars/groups/class/$id.png' style='border-radius: 0";
-                    $bio = "Turma do " . str_replace("-", "do", $name);
+                    $bio = getLastMessage($conn, "receiver = $id");
                 } else { // If that's not a class group
-                    $sql = "SELECT * FROM `groups` WHERE id = $id";
+                    $sql = "SELECT name, photo FROM `groups` WHERE id = $id";
                     if (removeFromChatList($conn, $sql, $chat))
                         continue;
                     $sql = mysqli_query($sql);
@@ -36,7 +37,8 @@
 
                     $name = $sql["name"];
                     $photo = $sql["photo"];
-                    $bio = $sql["bio"];
+                    
+                    $bio = getLastMessage($conn, "receiver = 'group:$id'");
                 }
             } else if (strpos($chat, "doubt") !== false) {
                 $sql = "SELECT * FROM `doubts` WHERE id = $id AND solved = 0";
@@ -45,18 +47,14 @@
                 $sql = mysqli_query($conn, $sql);
                 $name = mysqli_fetch_assoc($sql)["name"];
 
-                $sql = "SELECT sender, content FROM `messages` WHERE doubt = $id ORDER BY time DESC LIMIT 1";
-                $sql = mysqli_query($conn, $sql);
-                $sql = mysqli_fetch_assoc($sql);
-
-                $bio = $sql["sender"] === $_SESSION["id"] ? "Voc&ecirc;: " : mysqli_fetch_assoc(mysqli_query($conn, "SELECT name FROM `users` WHERE id =" . $sql["sender"]))["name"] . ": ";
-                $bio .= $sql["content"] ? base64_decode($sql["content"]) : "<Arquivo>";
+                //$sql = "SELECT sender, content FROM `messages` WHERE doubt = $id ORDER BY time DESC LIMIT 1";
+                $bio = getLastMessage($conn, "doubt = $id");
 
                 $photo = "assets/icons/doubt.png' style='border-radius: 0";
                 $type = "doubt:$id";
             }
         } else {
-            $sql = "SELECT * FROM `users` WHERE id = $chat";
+            $sql = "SELECT name, photo FROM `users` WHERE id = $chat";
             if (removeFromChatList($conn, $sql, $chat))
                 continue;
             $sql = mysqli_query($conn, $sql);
@@ -64,7 +62,8 @@
 
             $name = $sql["name"];
             $photo = $sql["photo"];
-            $bio = $sql["bio"];
+            $me = $_SESSION["id"];
+            $bio = getLastMessage($conn, "receiver = $id AND sender = $me");
             $type = $chat;
         }
 
