@@ -931,3 +931,9 @@ const closeChat = () => {
     $('.chat').attr('style', 'background: #35215a');
     canUpdate.chatsUpdater = false;
 };
+
+const hideMenu = function (e) {
+    if (e.relatedTarget === null || e.relatedTarget.parentNode === this || e.relatedTarget === this) return;
+    $(this).hide();
+    $(this).off("mouseout");
+};
