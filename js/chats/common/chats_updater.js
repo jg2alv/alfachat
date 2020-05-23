@@ -20,13 +20,17 @@ function chatsUpdater(limit) {
 
 
 			case message_area[0].children.length !== chats.children.length:
-				if (message_area[0].children.length > chats.children.length) {
-					update(t0, "chatsUpdater", limit);
-					return;
-				}
+				// if (message_area[0].children.length > chats.children.length) {
+				// 	update(t0, "chatsUpdater", limit);
+				// 	return;
+				// }
+
+				chats.innerHTML === "" ? $(message_area).html("") : null;
 
 				$(message_area).html(chats.innerHTML).off("scroll").on('scroll', () => canScroll = false);
 				$(chats).remove();
+
+				$(".message_area").children("div[data-message], div[style*='display: grid;']").children("div:nth-of-type(1)[class='message'], div:nth-of-type(1)[class='message mine'], div:nth-of-type(1)[class='their'], div:nth-of-type(1)[class='message their']").off("contextmenu").on("contextmenu", ContextMenu);
 
 				!$(".message_area audio").length ? $(message_area).css('visibility', 'visible') : null;
 
