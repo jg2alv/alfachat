@@ -10,7 +10,10 @@ function messageSender() {
 
     form.onsubmit = e => new Message({ sender: JSON.stringify({ id: atob(sessionStorage["aWQ="]) }), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000), file: 0 }).sendMessage(e);
 
-    input.oninput = () => {
+    input.oninput = input.onkeypress = k => {
+        if (k.charCode === 13 && k.ctrlKey)
+            new Message({ sender: JSON.stringify({ id: atob(sessionStorage["aWQ="]) }), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000), file: 0 }).sendMessage(k);
+
         if (!input.value || input.value === " ") {
             btn[2].src = "assets/icons/audio.png";
             return;
@@ -77,22 +80,17 @@ function messageSender() {
     };
 
     btn[1].onclick = () => {
-        $(".suggester.emoji:not(#suggester)").css({ "display": "grid", "bottom": `${$(".input_area").height()}px` }).on("mouseout", function(e) {
-            if (e.relatedTarget === null || e.relatedTarget.parentNode === this || e.relatedTarget === this)
-                return;
-            $(this).hide();
-            $(this).off("mouseout");
-        });
+        $(".suggester.emoji:not(#suggester)").css({ "display": "grid", "bottom": `${$(".input_area").height()}px` }).on("mouseout", hideMenu);
     }
 
-    $(".suggester.emoji:not(#suggester) li").on("click", function() {
+    $(".suggester.emoji:not(#suggester) li").on("click", function () {
         const before = input.value.slice(0, input.selectionStart);
         let emoji = $(this).attr("data-value");
         const after = input.value.slice(input.selectionStart);
 
         if (before && before.slice(-1) !== " ")
             emoji = ` ${emoji}`
-        
+
         if (after && after[0] !== " ")
             emoji = `${emoji} `
 
