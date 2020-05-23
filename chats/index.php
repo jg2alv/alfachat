@@ -56,10 +56,10 @@
     <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Didact+Gothic'>
     <link rel='icon' type='image/png' href='../img/logo_short.png'>
     <link rel='stylesheet' type='text/css' href='../css/default.css'>
-    <link rel='stylesheet' type='text/css' href='../css/common.css'>
-    <script src='../js/connection.js'>
-    </script><script src='../js/toast.class.js'>
-    </script><title>AlfaChat | Conversas</title>
+    <script src='../js/connection.js'></script>
+    <script src='../js/toast.class.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+    <title>AlfaChat | Conversas</title>
 </head>
 
 <body>
@@ -126,7 +126,7 @@
                 <span class="modal_header_title" style="flex: 4">Configura&ccedil;&otilde;es:</span>
                 <div class="settings_header_btns">
                     <img src="assets/icons/advanced.png" alt="3 pontinhos">
-                    <div id="settings_menu_header_drop_down" class="settings_menu_header_drop_down">
+                    <div id="settings_menu_header_drop_down" class="drop_down" style="right: 50px">
                         <span>Encerrar sess&atilde;o</span>
                         <span class="edit_profile">Editar perfil</span>
                     </div>
@@ -255,7 +255,7 @@
                 <div></div>
             </div>
             <img src="assets/icons/advanced.png" alt="Avan&ccedil;ado">
-            <div id="chats_header_drop_down" class="chats_header_drop_down"></div>
+            <div id="chats_header_drop_down" class="drop_down"></div>
         </header>
         <div class="message_area"></div>
         <form class="input_area" enctype="multipart/form-data" accept-charset="UTF-8">
@@ -274,6 +274,9 @@
         </form>
     </div>
     </div>
+
+    <div class="context_menu drop_down"></div>
+
     <script>
         $(".modal_btns div").on("click", hideSideMenu);
 
