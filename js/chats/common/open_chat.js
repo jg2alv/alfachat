@@ -8,7 +8,7 @@ function openChat(e, customName = false, customStatus = false) {
 
 	id = $(e.currentTarget).attr("data-id"); // base64 id value. Example: 1; group:11 (in base64)
 	statusBackend(`i=${id}&o=get`).then(res => {
-		customName === false ? $(".chats header div div").eq(0).html(e.currentTarget.children[1].children[0].innerHTML) : $(".chats header div div").eq(0).html("Suporte de " + customName.innerHTML);
+		customName === false ? $(".chats header div div").eq(0).html(e.currentTarget.children[1].children[0].children[0].innerHTML) : $(".chats header div div").eq(0).html("Suporte de " + customName.innerHTML);
 		customStatus === false ? $(".chats header div div").eq(1).html(res) : $(".chats header div div").eq(1).html(customStatus);
 	});
 
@@ -20,8 +20,7 @@ function openChat(e, customName = false, customStatus = false) {
 
 	const chat_list = $('.chat_list')[0];
 	if (chat_list.attributes['hidden']) {
-		const chats = atob(document.querySelector('.chat_list').attributes['data-chats'].value).split(',');
-		if (chats.includes(atob(id))) {
+		if ($(`.chat[data-id='${id}']`).length) {
 			$('.chat_result_list').attr('hidden', ''); // Set hidden attribute
 			chat_list.removeAttribute('hidden'); // Removing original list's hidden attribute
 			document.querySelector(".chat_selector header input[type='text']").value = '';
