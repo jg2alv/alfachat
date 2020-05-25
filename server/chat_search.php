@@ -17,13 +17,19 @@
     
     $sql = mysqli_query($conn, $sql); // Search
     if (mysqli_num_rows($sql)) {
+        $chats = array();
         foreach($sql as $chat) {
             $name = $chat["name"];
             $photo = $chat["photo"];
             $receiver = $type = $chat["id"];
-            $bio = getLastMessage($conn, "sender = $id AND receiver = $receiver");
-            echo "<div class='chat' data-id='" . base64_encode($type) . "'><div class='pic'><img src='$photo'></div><div class='info'><div>$name</div><div>$bio</div></div></div>";
+            $chat = $chat["id"];
+            list($bio, $date, $unseen, $time) = getLastMessage($conn, "sender = $id AND receiver = $receiver");
+            $unseen = $unseen ? "<div class='unseen_count'>$unseen</div>" : "";
+            $chats[$time] = "<div class='chat' data-id='" . base64_encode($type) . "'><div class='pic'><img src='$photo'></div><div class='info'><div style='display: flex; justify-content: space-between'><div>$name</div><div class='unseen_count' style='background: none; min-width: 30px; width: auto;'>$date</div></div><div style='display: flex; justify-content: space-between'><div>$bio</div>$unseen</div></div></div>";
         }
+
+        krsort($chats);
+        echo implode("", $chats);
     }
     die();
 ?>
