@@ -549,12 +549,29 @@ body {
 	width: 100%;
 	height: 10vh;
 	display: flex;
-	transition: 100ms all;
+	transition: 100ms background-color;
 	cursor: pointer;
 }
 
 .chat:hover {
 	background: #291a46 !important;
+}
+
+.unseen_count {
+	margin-right: 10px;
+	height: 30px;
+	width: 30px;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	line-height: 30px;
+	background-color: #291a46;
+	font-weight: bold;
+	transition: 100ms background-color;
+}
+
+.chat:hover .unseen_count {
+	background-color: #35215a;
 }
 
 .no_result {
@@ -787,6 +804,7 @@ div[data-message] {
 .message img,
 .message video {
 	margin: 10px 0;
+	border-radius: 15px;
 }
 
 .message a {
