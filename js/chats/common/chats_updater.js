@@ -12,7 +12,7 @@ function chatsUpdater(limit) {
 	xml.send(`id=${id}&limit=${limit}`);
 	xml.onload = () => {
 		let response = xml.responseText ? JSON.parse(xml.responseText) : [];
-		response.forEach((message, index) => chats.innerHTML += new Message(message, index).parse());
+		response.forEach(message => chats.innerHTML += new Message(message).parse());
 
 		switch (true) {
 			case $(message_area).css('display') === 'none':

@@ -1,10 +1,9 @@
 class Message {
-    constructor(message = false, index = false, group = false) {
+    constructor(message = false, group = false) {
         const d = new Date(Number(message.time) * 1000);
 
         this.time = `<div style="display: grid"><div class="message_time">${addZero(d.getDate()) + "/" + addZero(d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div></div>`;
         this.message = message;
-        this.index = index;
         this.sender = JSON.parse(message.sender);
         this.xml = new XMLHttpRequest();
         this.btn = $(".input_area img")[2];
@@ -23,44 +22,44 @@ class Message {
 
             if (this.sender.id === atob(sessionStorage["aWQ="])) {
                 if (img.includes(this.message.file.extension.toLowerCase()))
-                    return `<div ${this.index !== false ? "data-message='" + this.index + "'" : "style='display: grid;'"}><div class="message mine" style="margin-left: 0"><img data-src="${atob(this.message.file.location)}">${this.time}</div></div>`;
+                    return `<div style="display: grid"><script>loadMetadata(${JSON.stringify(this.message)})</script><div class="message mine" style="margin-left: 0"><img data-src="${atob(this.message.file.location)}">${this.time}</div></div>`;
                 else if (video.includes(this.message.file.extension.toLowerCase()))
-                    return `<div ${this.index !== false ? "data-message='" + this.index + "'" : "style='display: grid;'"}><div class="message mine" style="margin-left: 0;"><video controls="" preload=""><source data-src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video>${this.time}</div></div>`;
+                    return `<div style="display: grid"><script>loadMetadata(${JSON.stringify(this.message)})</script><div class="message mine" style="margin-left: 0;"><video controls="" preload=""><source data-src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video>${this.time}</div></div>`;
                 else if (audio.includes(this.message.file.extension.toLowerCase()))
-                    return `<div ${this.index !== false ? "data-message='" + this.index + "'" : "style='display: grid;'"}><div class="message mine" style="margin-left: 0;"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source data-src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div>${this.time}</div></div>`;
+                    return `<div style="display: grid"><script>loadMetadata(${JSON.stringify(this.message)})</script><div class="message mine" style="margin-left: 0;"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source data-src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div>${this.time}</div></div>`;
                 else
-                    return `<div ${this.index !== false ? "data-message='" + this.index + "'" : "style='display: grid;'"}><div class="message mine" style="margin-left: 0;"><div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div></div>`;
+                    return `<div style="display: grid"><script>loadMetadata(${JSON.stringify(this.message)})</script><div class="message mine" style="margin-left: 0;"><div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div></div>`;
             } else {
                 if (this.group || atob(id).indexOf("group") > -1) {
                     if (img.includes(this.message.file.extension.toLowerCase()))
-                        return `<div ${this.index !== false ? "data-message='" + this.index + "'" : "style='display: grid;'"}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><img data-src="${atob(this.message.file.location)}">${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
+                        return `<div style="display: grid"><script>loadMetadata(${JSON.stringify(this.message)})</script><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><img data-src="${atob(this.message.file.location)}">${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
                     else if (video.includes(this.message.file.extension.toLowerCase()))
-                        return `<div ${this.index !== false ? "data-message='" + this.index + "'" : "style='display: grid;'"}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><video controls="" preload=""><source data-src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video>${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
+                        return `<div style="display: grid"><script>loadMetadata(${JSON.stringify(this.message)})</script><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><video controls="" preload=""><source data-src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video>${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
                     else if (audio.includes(this.message.file.extension.toLowerCase()))
-                        return `<div ${this.index !== false ? "data-message='" + this.index + "'" : "style='display: grid;'"}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source data-src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div>${this.time}</div><img class="profile_img" src="${this.message.photo}"></div></div>`;
+                        return `<div style="display: grid"><script>loadMetadata(${JSON.stringify(this.message)})</script><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source data-src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div>${this.time}</div><img class="profile_img" src="${this.message.photo}"></div></div>`;
                     else
-                        return `<div ${this.index !== false ? "data-message='" + this.index + "'" : "style='display: grid;'"}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
+                        return `<div style="display: grid"><script>loadMetadata(${JSON.stringify(this.message)})</script><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
                 } else {
                     if (img.includes(this.message.file.extension.toLowerCase()))
-                        return `<div ${this.index !== false ? "data-message='" + this.index + "'" : "style='display: grid;'"}><div class="message their"><img data-src="${atob(this.message.file.location)}">${this.time}</div></div>`;
+                        return `<div style="display: grid"><script>loadMetadata(${JSON.stringify(this.message)})</script><div class="message their"><img data-src="${atob(this.message.file.location)}">${this.time}</div></div>`;
                     else if (video.includes(this.message.file.extension.toLowerCase()))
-                        return `<div ${this.index !== false ? "data-message='" + this.index + "'" : "style='display: grid;'"}><div class="message their"><video controls="" preload=""><source data-src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video>${this.time}</div></div>`;
+                        return `<div style="display: grid"><script>loadMetadata(${JSON.stringify(this.message)})</script><div class="message their"><video controls="" preload=""><source data-src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video>${this.time}</div></div>`;
                     else if (audio.includes(this.message.file.extension.toLowerCase()))
-                        return `<div ${this.index !== false ? "data-message='" + this.index + "'" : "style='display: grid;'"}><div class="message their"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source data-src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div>${this.time}</div></div>`;
+                        return `<div style="display: grid"><script>loadMetadata(${JSON.stringify(this.message)})</script><div class="message their"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source data-src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div>${this.time}</div></div>`;
                     else
-                        return `<div ${this.index !== false ? "data-message='" + this.index + "'" : "style='display: grid;'"}><div class="message their"><div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div> ${this.time}</div></div>`;
+                        return `<div style="display: grid"><script>loadMetadata(${JSON.stringify(this.message)})</script><div class="message their"><div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div> ${this.time}</div></div>`;
                 }
             }
         } else {
             this.format();
 
             if (this.sender.id === atob(sessionStorage["aWQ="])) {
-                return `<div ${this.index !== false ? "data-message='" + this.index + "'" : "style='display: grid;'"}><div class="message mine">${this.message.content + this.time}</div></div>`;
+                return `<div style="display: grid"><script>loadMetadata(${JSON.stringify(this.message)})</script><div class="message mine">${this.message.content + this.time}</div></div>`;
             } else {
                 if (this.group || atob(id).indexOf("group") > -1) {
-                    return `<div ${this.index !== false ? "data-message='" + this.index + "'" : "style='display: grid;'"}><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><div>${this.message.content}</div>${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
+                    return `<div style="display: grid"><script>loadMetadata(${JSON.stringify(this.message)})</script><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><div>${this.message.content}</div>${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
                 } else {
-                    return `<div ${this.index !== false ? "data-message='" + this.index + "'" : "style='display: grid;'"}><div class="message their">${this.message.content + this.time}</div></div>`;
+                    return `<div style="display: grid"><script>loadMetadata(${JSON.stringify(this.message)})</script><div class="message their">${this.message.content + this.time}</div></div>`;
                 }
             }
         }
@@ -76,7 +75,6 @@ class Message {
         this.message.content = content.innerHTML;
         $(content).remove();
 
-        this.index = $("[data-message]").length;
         this.btn.src = "assets/icons/audio.png";
         this.sender.id = atob(sessionStorage["aWQ="]);
         canScroll = true;
@@ -123,7 +121,6 @@ class Message {
             }
 
             for (let i = 0; i < file.files.length; i++) {
-                this.index = $("[data-message]").length;
                 this.message.file = JSON.stringify({
                     "name": file.files[i].name,
                     "size": file.files[i].size,

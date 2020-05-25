@@ -78,7 +78,7 @@ function openSubject(e) {
             $("#forum header img").eq(1).off("click").on("click", () => openSubject(e));
             $("#forum main").css("display", "block").html("<div class='message_area' style='display: block; visibility: visible; background-color: unset'></div>");
 
-            doubt[0].forEach((msg, index) => $("#forum main .message_area").append(new Message(msg, index, true).parse()));
+            doubt[0].forEach(msg => $("#forum main .message_area").append(new Message(msg, true).parse()));
             const mediaObserver = new IntersectionObserver(entries => { // Observer to lazy-load images/ videos
                 entries.forEach(entry => {
                     if (entry.target instanceof HTMLVideoElement) {
