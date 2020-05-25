@@ -24,6 +24,8 @@
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
             echo json_encode(fetchMessages($conn, $sql));
+
+            seeMessages($id);
         }
     } else {
         $user = $_SESSION["id"];
@@ -33,6 +35,12 @@
         $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
         echo json_encode(fetchMessages($conn, $sql));
         
+        seeMessages($chat);
+    }
+
+    function seeMessages($chat) {
+        global $conn;
+
         // Select all messages he sent me and I didn't see yet.
         $sql = "SELECT * FROM `messages` WHERE sender = $chat AND seen = 0";
         $sql = mysqli_query($conn, $sql);
