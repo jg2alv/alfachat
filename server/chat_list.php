@@ -67,7 +67,8 @@
         }
 
         $unseen = $unseen ? "<div class='unseen_count'>$unseen</div>" : "";
-        $chats[$time] = "<div class='chat' data-id='" . base64_encode($type) . "'><div class='pic'><img src='$photo'></div><div class='info'><div style='display: flex; justify-content: space-between'><div>$name</div><div class='unseen_count' style='background: none; min-width: 30px; width: auto;'>$date</div></div><div style='display: flex; justify-content: space-between'><div>$bio</div>$unseen</div></div></div>";
+        $type = base64_encode($type);
+        $chats[$time] = "<div class='chat'><script id='script_$time'>$('.chat #script_$time').parent().data('id', '$type');$('#script_$time').remove()</script><div class='pic'><img src='$photo'></div><div class='info'><div style='display: flex; justify-content: space-between'><div>$name</div><div class='unseen_count' style='background: none; min-width: 30px; width: auto;'>$date</div></div><div style='display: flex; justify-content: space-between'><div>$bio</div>$unseen</div></div></div>";
     }
 
     krsort($chats);
