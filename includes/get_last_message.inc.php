@@ -35,13 +35,13 @@
                 $sql1 = mysqli_fetch_assoc($sql1);
                 $sql1["extension"] = strtolower($sql1["extension"]);
                 if (in_array($sql1["extension"], $img))
-                    $bio .= "<img src='assets/icons/camera.png' style='width: 15px; vertical-align: bottom; margin-right: 5px'>" . $sql1["name"];
+                    $bio .= "<img src='assets/icons/camera.png' style='width: 15px; vertical-align: bottom; margin-right: 5px'>Foto";
                 else if (in_array($sql1["extension"], $video))
-                    $bio .= "<img src='assets/icons/play.png' style='width: 20px; vertical-align: text-top; margin: 0 2.5px 0 0'>" . $sql1["name"];
+                    $bio .= "<img src='assets/icons/play.png' style='width: 20px; vertical-align: text-top; margin: 0 2.5px 0 0'>V&iacute;deo";
                 else if (in_array($sql1["extension"], $audio))
-                    $bio .= "<img src='assets/icons/audio.png' style='width: 25px; vertical-align: middle; margin: 0 -2.5px'>" . $sql1["name"];
+                    $bio .= "<img src='assets/icons/audio.png' style='width: 25px; vertical-align: middle; margin: 0 -2.5px'>&Aacute;udio";
                 else
-                    $bio = "<img src='assets/icons/file.png' style='width: 25px; vertical-align: middle; margin: 0 2.5px'>" . $sql1["name"];    
+                    $bio = "<img src='assets/icons/file.png' style='width: 25px; vertical-align: middle; margin: 0 2.5px 4px 2.5px'>" . $sql1["name"];    
             
             } else $bio .= " " . base64_decode($sql["content"]);
 
