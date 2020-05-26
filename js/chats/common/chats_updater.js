@@ -78,7 +78,7 @@ function chatsUpdater(limit) {
 				const observerOptions = { root: $(".message_area")[0], rootMargin: "100%" }; // Global options for both Intersection Observers
 				const mediaObserver = new IntersectionObserver(entries => { // Observer to lazy-load images/ videos
 					entries.forEach(entry => {
-						if (entry.target instanceof HTMLVideoElement) {
+						if (entry.target instanceof HTMLVideoElement || entry.target instanceof HTMLAudioElement) {
 							if (!entry.isIntersecting) {
 								$(entry.target.firstChild).attr("data-src", $(entry.target.firstChild).attr("src"));
 								$(entry.target.firstChild).removeAttr("src");
