@@ -937,5 +937,3 @@ const hideMenu = function (e) {
     $(this).hide();
     $(this).off("mouseout");
 };
-
-const loadMetadata = (message) => $(".message_area div script").parent().data("id", message.id).children("script").remove();
