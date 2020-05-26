@@ -890,7 +890,7 @@ div[data-message] {
 }
 
 .audio_btns {
-	max-width: 7%;
+	max-width: 7% !important;
 	cursor: pointer;
 }
 
