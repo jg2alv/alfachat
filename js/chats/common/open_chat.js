@@ -15,7 +15,7 @@ function openChat(e, customName = false, customStatus = false) {
 	$('[subject]').attr('style', 'background: #291a46');
 	$('.chats header div div').eq(0).data("id", id);
 
-	$('.chat').css('background-color: #35215a'); // Removing "selected" background from every other div
+	$('.chat').css("background-color", "#35215a"); // Removing "selected" background from every other div
 	$(e.currentTarget).css("background-color", '#291a46'); // Setting background to a darker one, indicating "selected"
 
 	if ($('.chat_list').attr("hidden")) {
