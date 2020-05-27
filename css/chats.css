@@ -6,6 +6,11 @@ body {
 	font-family: "Didact Gothic", sans-serif;
 }
 
+input, textarea,
+input:focus, textarea:focus {
+	outline: 0 !important;
+}
+
 .side_menu {
 	position: absolute;
 	width: 100vw;
@@ -690,6 +695,25 @@ body {
 	overflow-y: auto;
 	overflow-x: hidden;
 	align-content: flex-end;
+}
+
+.message_reply {
+	width: 100%;
+	height: 8vh;
+	display: none;
+	color: white;
+	border-radius: 5px;
+	padding: 5px 0;
+	background-color: rgba(204, 204, 204, 0.3);
+	color: #cccccc;
+}
+
+.message_reply div {
+	flex: 1;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	text-overflow: ellipsis;
 }
 
 .suggester {
