@@ -1,5 +1,5 @@
 <?php
-    function sendFile($file_name, $file_size, $receiver, $conn) {
+    function uploadFile($file_name, $file_size, $receiver, $conn) {
         $sender = $_SESSION["id"];
         $time = time();
         $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
