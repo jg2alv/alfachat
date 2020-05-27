@@ -23,9 +23,10 @@
 
     if (strpos($receiver, "doubt") !== false) {
         list($assignee, $doubt) = parseReceiver($conn, $receiver);
-        $sql = "INSERT INTO `messages` (sender, receiver, content, doubt, time) VALUES ($sender, $assignee, '$content', $doubt, $time)";
+        $reply = $_POST["r"];
+        $sql = "INSERT INTO `messages` (sender, receiver, content, reply, doubt, time) VALUES ($sender, $assignee, '$content', $reply, $doubt, $time)";
     } else
-        $sql = "INSERT INTO `messages` (sender, receiver, content, time) VALUES ($sender, '$receiver', '$content', $time)";
+        $sql = "INSERT INTO `messages` (sender, receiver, content, reply, time) VALUES ($sender, '$receiver', '$content', $reply, $time)";
 
     mysqli_query($conn, $sql);
     addToChatList($receiver);

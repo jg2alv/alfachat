@@ -6,7 +6,7 @@
     session_start();
     require "../includes/db.inc.php";
     require "../includes/check_dir.inc.php";
-    require "../includes/send_file.inc.php";
+    require "../includes/upload_file.inc.php";
 
     $assignee_bak = base64_decode($_POST["receiver"]);
     $public = $_POST["public"];
@@ -31,8 +31,10 @@
         mysqli_query($conn, $sql);
 
         foreach($content as $msg) {
-            $msg = base64_encode(filter_var($msg, FILTER_SANITIZE_SPECIAL_CHARS));
-            $sql = $assignee ? "INSERT INTO `messages` (sender, receiver, content, doubt, time) VALUES ($sender, $assignee, '$msg', $id, $time)" : "INSERT INTO `messages` (sender, content, doubt, time) VALUES ($sender, '$msg', $id, $time)";
+            $msg = json_decode($msg);
+            $msg = base64_encode(filter_var($msg[0], FILTER_SANITIZE_SPECIAL_CHARS));
+            $reply = $msg[1];
+            $sql = $assignee ? "INSERT INTO `messages` (sender, receiver, content, reply, doubt, time) VALUES ($sender, $assignee, '$msg', $reply, $id, $time)" : "INSERT INTO `messages` (sender, content, reply, doubt, time) VALUES ($sender, '$msg', $reply, $id, $time)";
             mysqli_query($conn, $sql);
         }
     }
@@ -45,7 +47,8 @@
         for ($i = 0; $i < sizeof($_FILES["files"]["name"]); $i++) {
             $file_name = $file["name"][$i];
             $file_size = $file["size"][$i];
-            list($id, $path) = sendFile($file_name, $file_size, $receiver, $conn);
+            $reply = $_POST["reply"][$i];
+            list($id, $path) = uploadFile($file_name, $file_size, $receiver, $conn);
 
             if (strpos($receiver, "teacher") !== false && empty($hasMessage)) {
                 $sql = !empty($assignee) ? "INSERT INTO `doubts` (subject, name, sender, assignee, public, tags, time) VALUES ('$subject', '$name', $sender, $assignee, $public, '$tags', $time)" : "INSERT INTO `doubts` (subject, name, sender, public, tags, time) VALUES ('$subject', '$name', $sender, $public, '$tags', $time)";
@@ -55,14 +58,14 @@
                 $sql = "UPDATE `doubts` SET tags = '$tags' WHERE id = $doubt";
                 mysqli_query($conn, $sql);
 
-                $sql = "INSERT INTO `messages` (sender, receiver, file, doubt, time) VALUES ($sender, $assignee, $id, $doubt, $time)";
+                $sql = "INSERT INTO `messages` (sender, receiver, reply, file, doubt, time) VALUES ($sender, $assignee, $reply, $id, $doubt, $time)";
                 mysqli_query($conn, $sql);
             } else {
                 $sql = "SELECT * FROM `doubts` WHERE id = $doubtID";
                 $sql = mysqli_query($conn, $sql);
                 $sql = mysqli_fetch_assoc($sql);
                 $receiver = $sql["assignee"];
-                $sql = "INSERT INTO `messages` (sender, receiver, file, doubt, time) VALUES ($sender, $receiver, $id, $doubtID, $time)";
+                $sql = "INSERT INTO `messages` (sender, receiver, reply, file, doubt, time) VALUES ($sender, $receiver, $reply, $id, $doubtID, $time)";
                 mysqli_query($conn, $sql);
             }
 
