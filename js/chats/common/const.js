@@ -928,12 +928,31 @@ const closeChat = () => {
     $('.chats').css("grid-template-rows", "").children("header").css('display', 'none');
     $(".message_area").html("").css({ display: "none", visibility: "none" });
     $('.choose_chat').css("display", "flex");
-    $('.chat').attr('style', 'background: #35215a');
+    $('.chat').css('background: #35215a');
     canUpdate.chatsUpdater = false;
 };
 
+// Function to hide any hover-depending menu
 const hideMenu = function (e) {
     if (e.relatedTarget === null || e.relatedTarget.parentNode === this || e.relatedTarget === this) return;
     $(this).hide();
     $(this).off("mouseout");
 };
+
+// Function to manage any update-depending functions
+const update = (t0, callback, limit = false) => {
+	const diff = performance.now() - t0;
+
+	if (!canUpdate[callback])
+		return;
+
+	if (diff < UPDATE_TIME)
+		setTimeout(() => limit ? window[callback](limit) : window[callback](), UPDATE_TIME - diff);
+	else
+		limit ? window[callback](limit) : window[callback]();
+
+	return;
+}
+
+// Message reply ID
+let reply = 0;
