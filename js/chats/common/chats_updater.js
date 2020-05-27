@@ -30,7 +30,7 @@ function chatsUpdater(limit) {
 				$(message_area).html(chats.innerHTML).off("scroll").on('scroll', () => canScroll = false);
 				$(chats).remove();
 
-				$(".message_area").children("div[data-message], div[style*='display: grid;']").children("div:nth-of-type(1)[class='message'], div:nth-of-type(1)[class='message mine'], div:nth-of-type(1)[class='their'], div:nth-of-type(1)[class='message their']").off("contextmenu").on("contextmenu", ContextMenu);
+				$(".message_area").children("div[style*='display: grid;']").off("contextmenu").on("contextmenu", ContextMenu);
 
 				!$(".message_area audio").length ? $(message_area).css('visibility', 'visible') : null;
 
@@ -134,16 +134,15 @@ function chatsUpdater(limit) {
 	return;
 }
 
-function update(t0, callback, limit = false) {
-	const diff = performance.now() - t0;
+// function chatsUpdater(limit) {
+// 	if (id === undefined || atob(id).indexOf("teacher") > -1) return;
 
-	if (!canUpdate[callback])
-		return;
+// 	const xml = new XMLHttpRequest(),
+// 		message_area = $('.message_area'),
+// 		t0 = performance.now(),
+// 		chats = document.createElement("div");
 
-	if (diff < UPDATE_TIME)
-		setTimeout(() => limit ? window[callback](limit) : window[callback](), UPDATE_TIME - diff);
-	else
-		limit ? window[callback](limit) : window[callback]();
-
-	return;
-}
+// 	xml.open('POST', '../server/message_receiver.php', true);
+// 	xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+// 	xml.send(`id=${id}&limit=${limit}`);
+// }
