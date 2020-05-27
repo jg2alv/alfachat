@@ -22,44 +22,44 @@ class Message {
 
             if (this.sender.id === atob(sessionStorage["aWQ="])) {
                 if (img.includes(this.message.file.extension.toLowerCase()))
-                    return `<div style="display: grid;"><script>$(".message_area div").parent().data("id", ${this.message.id});$(".message_area div script").remove();</script><div class="message mine" style="margin-left: 0"><img data-src="${atob(this.message.file.location)}">${this.time}</div></div>`;
+                    return `<div style="display: grid;"><script id="s_${this.message.id}">$("#s_${this.message.id}").parent().data("id", ${this.message.id});$("#s_${this.message.id}").remove()</script><div class="message mine" style="margin-left: 0"><img data-src="${atob(this.message.file.location)}">${this.time}</div></div>`;
                 else if (video.includes(this.message.file.extension.toLowerCase()))
-                    return `<div style="display: grid;"><script>$(".message_area div").parent().data("id", ${this.message.id});$(".message_area div script").remove();</script><div class="message mine" style="margin-left: 0;"><video controls="" preload=""><source data-src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video>${this.time}</div></div>`;
+                    return `<div style="display: grid;"><script id="s_${this.message.id}">$("#s_${this.message.id}").parent().data("id", ${this.message.id});$("#s_${this.message.id}").remove()</script><div class="message mine" style="margin-left: 0;"><video controls="" preload=""><source data-src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video>${this.time}</div></div>`;
                 else if (audio.includes(this.message.file.extension.toLowerCase()))
-                    return `<div style="display: grid;"><script>$(".message_area div").parent().data("id", ${this.message.id});$(".message_area div script").remove();</script><div class="message mine" style="margin-left: 0;"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source data-src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div>${this.time}</div></div>`;
+                    return `<div style="display: grid;"><script id="s_${this.message.id}">$("#s_${this.message.id}").parent().data("id", ${this.message.id});$("#s_${this.message.id}").remove()</script><div class="message mine" style="margin-left: 0;"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source data-src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div>${this.time}</div></div>`;
                 else
-                    return `<div style="display: grid;"><script>$(".message_area div").parent().data("id", ${this.message.id});$(".message_area div script").remove();</script><div class="message mine" style="margin-left: 0;"><div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div></div>`;
+                    return `<div style="display: grid;"><script id="s_${this.message.id}">$("#s_${this.message.id}").parent().data("id", ${this.message.id});$("#s_${this.message.id}").remove()</script><div class="message mine" style="margin-left: 0;"><div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div></div>`;
             } else {
                 if (this.group || atob(id).indexOf("group") > -1) {
                     if (img.includes(this.message.file.extension.toLowerCase()))
-                        return `<div style="display: grid;"><script>$(".message_area div").parent().data("id", ${this.message.id});$(".message_area div script").remove();</script><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><img data-src="${atob(this.message.file.location)}">${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
+                        return `<div style="display: grid;"><script id="s_${this.message.id}">$("#s_${this.message.id}").parent().data("id", ${this.message.id});$("#s_${this.message.id}").remove()</script><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><img data-src="${atob(this.message.file.location)}">${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
                     else if (video.includes(this.message.file.extension.toLowerCase()))
-                        return `<div style="display: grid;"><script>$(".message_area div").parent().data("id", ${this.message.id});$(".message_area div script").remove();</script><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><video controls="" preload=""><source data-src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video>${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
+                        return `<div style="display: grid;"><script id="s_${this.message.id}">$("#s_${this.message.id}").parent().data("id", ${this.message.id});$("#s_${this.message.id}").remove()</script><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><video controls="" preload=""><source data-src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video>${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
                     else if (audio.includes(this.message.file.extension.toLowerCase()))
-                        return `<div style="display: grid;"><script>$(".message_area div").parent().data("id", ${this.message.id});$(".message_area div script").remove();</script><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source data-src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div>${this.time}</div><img class="profile_img" src="${this.message.photo}"></div></div>`;
+                        return `<div style="display: grid;"><script id="s_${this.message.id}">$("#s_${this.message.id}").parent().data("id", ${this.message.id});$("#s_${this.message.id}").remove()</script><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source data-src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div>${this.time}</div><img class="profile_img" src="${this.message.photo}"></div></div>`;
                     else
-                        return `<div style="display: grid;"><script>$(".message_area div").parent().data("id", ${this.message.id});$(".message_area div script").remove();</script><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
+                        return `<div style="display: grid;"><script id="s_${this.message.id}">$("#s_${this.message.id}").parent().data("id", ${this.message.id});$("#s_${this.message.id}").remove()</script><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
                 } else {
                     if (img.includes(this.message.file.extension.toLowerCase()))
-                        return `<div style="display: grid;"><script>$(".message_area div").parent().data("id", ${this.message.id});$(".message_area div script").remove();</script><div class="message their"><img data-src="${atob(this.message.file.location)}">${this.time}</div></div>`;
+                        return `<div style="display: grid;"><script id="s_${this.message.id}">$("#s_${this.message.id}").parent().data("id", ${this.message.id});$("#s_${this.message.id}").remove()</script><div class="message their"><img data-src="${atob(this.message.file.location)}">${this.time}</div></div>`;
                     else if (video.includes(this.message.file.extension.toLowerCase()))
-                        return `<div style="display: grid;"><script>$(".message_area div").parent().data("id", ${this.message.id});$(".message_area div script").remove();</script><div class="message their"><video controls="" preload=""><source data-src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video>${this.time}</div></div>`;
+                        return `<div style="display: grid;"><script id="s_${this.message.id}">$("#s_${this.message.id}").parent().data("id", ${this.message.id});$("#s_${this.message.id}").remove()</script><div class="message their"><video controls="" preload=""><source data-src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video>${this.time}</div></div>`;
                     else if (audio.includes(this.message.file.extension.toLowerCase()))
-                        return `<div style="display: grid;"><script>$(".message_area div").parent().data("id", ${this.message.id});$(".message_area div script").remove();</script><div class="message their"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source data-src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div>${this.time}</div></div>`;
+                        return `<div style="display: grid;"><script id="s_${this.message.id}">$("#s_${this.message.id}").parent().data("id", ${this.message.id});$("#s_${this.message.id}").remove()</script><div class="message their"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source data-src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div>${this.time}</div></div>`;
                     else
-                        return `<div style="display: grid;"><script>$(".message_area div").parent().data("id", ${this.message.id});$(".message_area div script").remove();</script><div class="message their"><div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div> ${this.time}</div></div>`;
+                        return `<div style="display: grid;"><script id="s_${this.message.id}">$("#s_${this.message.id}").parent().data("id", ${this.message.id});$("#s_${this.message.id}").remove()</script><div class="message their"><div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div> ${this.time}</div></div>`;
                 }
             }
         } else {
             this.format();
 
             if (this.sender.id === atob(sessionStorage["aWQ="])) {
-                return `<div style="display: grid;"><script>$(".message_area div").parent().data("id", ${this.message.id});$(".message_area div script").remove();</script><div class="message mine">${this.message.content + this.time}</div></div>`;
+                return `<div style="display: grid;"><script id="s_${this.message.id}">$("#s_${this.message.id}").parent().data("id", ${this.message.id});$("#s_${this.message.id}").remove()</script><div class="message mine">${this.message.content + this.time}</div></div>`;
             } else {
                 if (this.group || atob(id).indexOf("group") > -1) {
-                    return `<div style="display: grid;"><script>$(".message_area div").parent().data("id", ${this.message.id});$(".message_area div script").remove();</script><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><div>${this.message.content}</div>${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
+                    return `<div style="display: grid;"><script id="s_${this.message.id}">$("#s_${this.message.id}").parent().data("id", ${this.message.id});$("#s_${this.message.id}").remove()</script><div class="their"><div class="message" style="border-bottom-left-radius: 0;"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.sender.name}</div><div>${this.message.content}</div>${this.time}</div><img class="profile_img" src="${this.sender.photo}"></div></div>`;
                 } else {
-                    return `<div style="display: grid;"><script>$(".message_area div").parent().data("id", ${this.message.id});$(".message_area div script").remove();</script><div class="message their">${this.message.content + this.time}</div></div>`;
+                    return `<div style="display: grid;"><script id="s_${this.message.id}">$("#s_${this.message.id}").parent().data("id", ${this.message.id});$("#s_${this.message.id}").remove()</script><div class="message their">${this.message.content + this.time}</div></div>`;
                 }
             }
         }
@@ -67,8 +67,8 @@ class Message {
 
     sendMessage(e) {
         e.preventDefault();
-        if (this.message.content === " ")
-            return;
+        if (this.message.content === " ") return;
+        $(".message_reply").css("display", "");
 
         const content = document.createElement("p");
         content.innerText = this.message.content;
@@ -84,18 +84,19 @@ class Message {
         $(".message_area")[0].scrollTop = $(".message_area")[0].scrollHeight - $(".message_area")[0].clientHeight;
 
         if (atob(id).indexOf("teacher") > -1) {
-            doubts.append("messages[]", this.message.content);
+            doubts.append("messages[]", JSON.stringify([this.message.content, reply]));
             return;
         }
 
         this.xml.open("POST", "../server/message_sender.php", true);
         this.xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        this.xml.send(`m=${encodeURIComponent(this.message.content)}&id=${id}`); // XML content is user input
+        this.xml.send(`m=${encodeURIComponent(this.message.content)}&id=${id}&r=${reply}`); // XML content is user input
         chatListUpdater(true);
     }
 
     sendFile(e, blob = false) {
         e.preventDefault();
+        $(".message_reply").css("display", "");
 
         const file = $(".input_area input[type='file']")[0],
             formData = new FormData(),
@@ -106,10 +107,13 @@ class Message {
         if (blob) {
             if (atob(id).indexOf("teacher") > -1) {
                 doubts.append("files[]", blob, `AUD_${d.getFullYear() + (addZero(d.getMonth() + 1)) + addZero(d.getDate()) + addZero(d.getMilliseconds())}.ogg`);
+                doubts.append("reply[]", reply);
                 return;
             }
+
             formData.set("file_user_input", blob, `AUD_${d.getFullYear() + (addZero(d.getMonth() + 1)) + addZero(d.getDate()) + addZero(d.getMilliseconds())}.ogg`);
             formData.set("audio", true);
+            formData.set("reply", reply)
             this.xml.open("POST", "../server/file_sender.php", true);
             this.xml.send(formData);
             chatListUpdater(true);
@@ -133,11 +137,13 @@ class Message {
 
                 if (atob(id).indexOf("teacher") > -1) {
                     doubts.append("files[]", file.files[i]);
+                    doubts.append("reply[]", reply);
                     continue;
                 }
 
                 formData.append("files[]", file.files[i]);
                 formData.set("id", id);
+                formData.set("reply", reply)
                 this.xml.open("POST", "../server/file_sender.php", true);
                 this.xml.send(formData);
 
