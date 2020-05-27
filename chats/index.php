@@ -130,7 +130,7 @@
                         <span>Encerrar sess&atilde;o</span>
                         <span class="edit_profile">Editar perfil</span>
                     </div>
-                    <img src="assets/icons/x_icon.png" alt="X icon" style="width: 18%; margin-bottom: 3.5px">
+                    <img src="assets/icons/x.png" alt="X icon" style="width: 18%; margin-bottom: 3.5px">
                 </div>
             </div>
             <div class="settings_menu_user_area">
@@ -155,7 +155,7 @@
                         <span style="margin: 12px 0 0 10px;">Informa&ccedil;&otilde;es:</span>
                     </div>
                     <div class="settings_header_btns" style="flex: 1; text-align: end;">
-                        <img id="settings_menu_close" src="assets/icons/x_icon.png" alt="X icon">
+                        <img id="settings_menu_close" src="assets/icons/x.png" alt="X icon">
                     </div>
                 </div>
                 <div style="background-color: #291a46; flex: 3; flex-direction: column; justify-content: center; align-items: center; display: flex">
@@ -258,6 +258,11 @@
             <div id="chats_header_drop_down" class="drop_down"></div>
         </header>
         <div class="message_area"></div>
+        <div class="message_reply">
+            <div style="height: 100%; max-width: 5px; background-color: #cccccc; border-radius: 5px; margin-left: 10px;"></div>
+            <div style="width: 100%; flex-direction: column; align-items: baseline; padding-left: 60px"><div style="font-weight: bold; font-size: 18px"></div><div style="color: #ccc"></div></div>
+            <div style="max-width: 60px; cursor: pointer; align-items: baseline; justify-content: flex-end"><img src="assets/icons/x.png" style="display: inline-block; width: 25%; padding: 10px 10px 0 0"></div>
+        </div>
         <form class="input_area" enctype="multipart/form-data" accept-charset="UTF-8">
             <input id="file_input" type="file" style="display: none" name="file_input" multiple>
             <img src="assets/icons/file.png" alt="Carregar arquivo">
