@@ -1,7 +1,7 @@
 function sendDoubts() {
     $("#doubt_name")[0].value = "";
 
-    if (!doubts.length) {
+    if (!Array.from(doubts).length) {
         const toast = new Toast("Faça uma pergunta antes de enviar!");
         toast.show();
         toast.destroy(2500);
@@ -17,8 +17,7 @@ function sendDoubts() {
         const name = $("#doubt_name")[0].value;
 
         if (!name || name === " ") {
-            $("#doubt_name").css({"border": "1px solid red", "color": "red"});
-            $("#doubt_name").on("keypress", function() {$(this).css({"border": "", "color": ""})});
+            $("#doubt_name").css({"border": "1px solid red", "color": "red"}).off("keypress").on("keypress", function() {$(this).css({"border": "", "color": ""})});
             return;
         }
 
