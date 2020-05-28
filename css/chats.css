@@ -702,8 +702,6 @@ input:focus, textarea:focus {
 	height: 8vh;
 	display: none;
 	color: white;
-	border-radius: 5px;
-	padding: 5px 0;
 	background-color: rgba(204, 204, 204, 0.3);
 	color: #cccccc;
 }
@@ -714,6 +712,26 @@ input:focus, textarea:focus {
 	align-items: center;
 	display: flex;
 	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.reply {
+	color: #bbb;
+	font-size: 16px;
+	border-left: 3px solid #bbb;
+	padding: 15px 10px;
+	border-radius: 5px;
+	background-color: rgba(0, 0, 0, 0.2);
+	box-sizing: border-box;
+	margin: 7px 7px 0 7px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	cursor: pointer;
+}
+
+.reply div:nth-of-type(1) {
+	color: #eee;
 }
 
 .suggester {
@@ -782,10 +800,9 @@ div[data-message] {
 .message {
 	align-items: center;
 	justify-content: center;
-	border-radius: 15px;
+	border-radius: 10px;
 	background-color: #35215a;
 	color: white;
-	padding: 10px 35px 10px 25px;
 	margin: 5px 0 5px 85px;
 	font-size: 18px;
 	overflow-wrap: anywhere;
