@@ -31,6 +31,7 @@ function chatsUpdater(limit) {
 				$(chats).remove();
 
 				$(".message_area").children("div[style*='display: grid;']").off("contextmenu").on("contextmenu", ContextMenu);
+				$(".reply").off("click").on("click", e => scrollToMessage($(`.message_area div[data-id='${$(e.currentTarget).attr("data-reply")}']`)[0]));
 
 				!$(".message_area audio").length ? $(message_area).css('visibility', 'visible') : null;
 

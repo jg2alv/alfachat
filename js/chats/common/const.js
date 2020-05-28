@@ -956,3 +956,8 @@ const update = (t0, callback, limit = false) => {
 
 // Message reply ID
 let reply = 0;
+
+const scrollToMessage = (msg) => {
+    Math.abs($(msg).offset().top) !== $(msg).offset().top || $(msg).offset().top < $(msg).outerHeight() ? msg.scrollIntoView() : null;
+    $(msg).fadeOut(100).fadeIn(100, function() { $(this).css("background-color", "rgba(255, 255, 255, 0.2)") }).fadeOut(100).fadeIn(100, function() { $(this).css("background-color", "rgba(255, 255, 255, 0.2)"); setTimeout(() => $(this).css("background-color", ""), 100); });
+}

@@ -40,7 +40,7 @@ function ContextMenu(e) {
 
             const message = (() => {
                 if ($("a .pic", e.currentTarget).length)
-                    return "<img src='assets/icons/file.png' style='width: 25px; margin: 0 2.5px -2px 2.5px'>Arquivo";
+                    return "<img src='assets/icons/file.png' style='width: 25px; margin: 0 2.5px -2px -5px'>Arquivo";
                 else if ($(".audio_btns", e.currentTarget).length)
                     return "<img src='assets/icons/audio.png' style='width: 25px; margin: 0 -2.5px'>&Aacute;udio";
                 else if ($("img", e.currentTarget).length)
@@ -55,11 +55,8 @@ function ContextMenu(e) {
 
             $(".message_reply div div").eq(0).html(sender);
             $(".message_reply div div").eq(1).html(message);
-            $(".message_reply").css("display", "flex").children("div").off("click").eq(1).on("click", () => {
-                Math.abs($(e.currentTarget).offset().top) !== $(e.currentTarget).offset().top || $(e.currentTarget).offset().top < $(e.currentTarget).outerHeight() ? e.currentTarget.scrollIntoView() : null;
-                $(e.currentTarget).fadeOut(100).fadeIn(100, function() { $(this).css("background-color", "rgba(255, 255, 255, 0.2)") }).fadeOut(100).fadeIn(100, function() { $(this).css("background-color", "rgba(255, 255, 255, 0.2)"); setTimeout(() => $(this).css("background-color", ""), 100); });
-            });
-            reply = $(e.currentTarget).data("id");
+            $(".message_reply").css("display", "flex").children("div").off("click").eq(1).on("click", scrollToMessage.bind(window, e.currentTarget));
+            reply = atob($(e.currentTarget).attr("data-id"));
 
             $(".message_reply img:last").off("click").on("click", () => {
                 reply = 0;

@@ -110,6 +110,7 @@ function openSubject(e) {
             });
 
             $(".message_area").children("div[style*='display: grid;']").off("contextmenu").on("contextmenu", ContextMenu);
+            $(".reply").off("click").on("click", ev => scrollToMessage($(`.message_area div[data-id='${$(ev.currentTarget).attr("data-reply")}']`)[0]));
 
             $("#forum .input_area").remove();
             $("#forum").css("display", "grid").append("<form class='input_area' style='display: flex; width: 100%; background-color: #35215a; box-shadow: 0 130px 130px 100px #000'><input id='file_input' type='file' style='display: none' name='file_input' multiple><img src='assets/icons/file.png' alt='Carregar arquivo'><ul id='suggester' class='suggester'></ul><textarea placeholder='Escreva sua mensagem'></textarea><div class='audio_control' hidden></div><div class='audio_control' hidden></div><span class='countdown' hidden>00:00</span><ul class='suggester emoji'></ul><img src='assets/icons/emoji.png' alt='Enviar emoji'><img src='assets/icons/audio.png' alt='Gravar audio'></form>");
