@@ -27,7 +27,7 @@ function ContextMenu(e) {
         } else if (this.innerHTML === "Deletar") {
 
         } else if (this.innerHTML === "Responder") {
-            const sender = (() => {
+            reply.sender = (() => {
                 if (e.currentTarget.firstChild.className === "message mine")
                     return decodeURIComponent(escape(atob(sessionStorage["bmFtZQ=="])));
                 else if (id === undefined || atob(id).indexOf("doubt") > -1 || atob(id).indexOf("teacher") > -1)
@@ -38,7 +38,7 @@ function ContextMenu(e) {
                     return e.currentTarget.firstChild.firstChild.firstChild.innerHTML;
             })()
 
-            const message = (() => {
+            reply.content = (() => {
                 if ($("a .pic", e.currentTarget).length)
                     return "<img src='assets/icons/file.png' style='width: 25px; margin: 0 2.5px -2px -5px'>Arquivo";
                 else if ($(".audio_btns", e.currentTarget).length)
@@ -53,13 +53,13 @@ function ContextMenu(e) {
                     return e.currentTarget.firstChild.firstChild.textContent;
             })()
 
-            $(".message_reply div div").eq(0).html(sender);
-            $(".message_reply div div").eq(1).html(message);
+            $(".message_reply div div").eq(0).html(reply.sender);
+            $(".message_reply div div").eq(1).html(reply.content);
             $(".message_reply").css("display", "flex").children("div").off("click").eq(1).on("click", scrollToMessage.bind(window, e.currentTarget));
-            reply = atob($(e.currentTarget).attr("data-id"));
+            reply.id = atob($(e.currentTarget).attr("data-id"));
 
             $(".message_reply img:last").off("click").on("click", () => {
-                reply = 0;
+                reply.id = 0;
 
                 $(".message_reply").css("display", "");
                 $(".message_reply div div").eq(0).html("");
