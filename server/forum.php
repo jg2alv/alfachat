@@ -1,6 +1,7 @@
 <?php
     require "../includes/db.inc.php";
     require "../includes/fetch_messages.inc.php";
+    session_start();
 
     if (empty($_POST["subject"]))
         $sql = "SELECT * FROM `doubts` WHERE public = 1 AND assignee IS NOT NULL ORDER BY time DESC";
