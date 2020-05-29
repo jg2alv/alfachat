@@ -955,7 +955,11 @@ const update = (t0, callback, limit = false) => {
 }
 
 // Message reply ID
-let reply = 0;
+let reply = {
+    "sender": new String(),
+    "content": new String(),
+    "id": new Number()
+}
 
 const scrollToMessage = (msg) => {
     Math.abs($(msg).offset().top) !== $(msg).offset().top || $(msg).offset().top < $(msg).outerHeight() ? msg.scrollIntoView() : null;
