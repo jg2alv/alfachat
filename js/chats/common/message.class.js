@@ -2,9 +2,13 @@ class Message {
     constructor(message = false, group = false) {
         const d = new Date(Number(message.time) * 1000);
 
-        this.time = `<div style="display: grid; margin: 10px 10px 10px 0;"><div class="message_time">${addZero(d.getDate()) + "/" + addZero(d.getMonth() + 1) + "/" + d.getFullYear() + " " + addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</div></div>`;    
+        this.time = `<div style="display: grid; margin: 10px 10px 10px 20px;"><div class="message_time">${Number(message.edited) ? "<span style='margin: 0 5px'>editado</span>" : ""}${d.getHours() > 12 ? addZero(d.getHours() - 12) + ":" + addZero(d.getMinutes()) + " PM" : addZero(d.getHours()) + ":" + addZero(d.getMinutes()) + " AM"}</div></div>`;    
         this.message = message;
         this.xml = new XMLHttpRequest();
+        this.xml.onload = () => {
+            chatListUpdater(true);
+            chatsUpdater(0, true);
+        }
         this.btn = $(".input_area img")[2];
         this.group = group;
         this.message.sender = JSON.parse(this.message.sender);
@@ -22,44 +26,44 @@ class Message {
 
             if (this.message.sender.id === atob(sessionStorage["aWQ="])) {
                 if (img.includes(this.message.file.extension.toLowerCase()))
-                    return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message mine" style="margin-left: 0;"><script id="s_${this.message.id}">if(${this.message.reply != 0}){$("#s_${this.message.id}").parent().prepend("<div class='reply' data-reply='${btoa(this.message.reply.id)}'><div>${this.message.reply.sender}</div><div>${this.message.reply.content}</div></div>")}$("#s_${this.message.id}").remove();</script><div style="margin: 10px 35px 10px 20px"><img data-src="${atob(this.message.file.location)}"></div>${this.time}</div></div>`;
+                    return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message mine" style="margin-left: 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><img data-src="${atob(this.message.file.location)}"></div>${this.time}</div></div>`;
                 else if (video.includes(this.message.file.extension.toLowerCase()))
-                    return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message mine" style="margin-left: 0;"><script id="s_${this.message.id}">if(${this.message.reply != 0}){$("#s_${this.message.id}").parent().prepend("<div class='reply' data-reply='${btoa(this.message.reply.id)}'><div>${this.message.reply.sender}</div><div>${this.message.reply.content}</div></div>")}$("#s_${this.message.id}").remove();</script><div style="margin: 10px 35px 10px 20px"><video controls="" preload=""><source data-src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video></div>${this.time}</div></div>`;
+                    return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message mine" style="margin-left: 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><video controls="" preload=""><source src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video></div>${this.time}</div></div>`;
                 else if (audio.includes(this.message.file.extension.toLowerCase()))
-                    return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message mine" style="margin-left: 0;"><script id="s_${this.message.id}">if(${this.message.reply != 0}){$("#s_${this.message.id}").parent().prepend("<div class='reply' data-reply='${btoa(this.message.reply.id)}'><div>${this.message.reply.sender}</div><div>${this.message.reply.content}</div></div>")}$("#s_${this.message.id}").remove();</script><div style="margin: 10px 35px 10px 20px"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source data-src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div></div>${this.time}</div></div>`;
+                    return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message mine" style="margin-left: 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div></div>${this.time}</div></div>`;
                 else
-                    return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message mine" style="margin-left: 0;"><script id="s_${this.message.id}">if(${this.message.reply != 0}){$("#s_${this.message.id}").parent().prepend("<div class='reply' data-reply='${btoa(this.message.reply.id)}'><div>${this.message.reply.sender}</div><div>${this.message.reply.content}</div></div>")}$("#s_${this.message.id}").remove();</script><div style="margin: 10px 35px 10px 20px"><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div></div>`;
+                    return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message mine" style="margin-left: 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div></div>`;
             } else {
                 if (this.group || atob(id).indexOf("group") > -1) {
                     if (img.includes(this.message.file.extension.toLowerCase()))
-                        return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;"><script id="s_${this.message.id}">if(${this.message.reply != 0}){$("#s_${this.message.id}").parent().prepend("<div class='reply' data-reply='${btoa(this.message.reply.id)}'><div>${this.message.reply.sender}</div><div>${this.message.reply.content}</div></div>")}$("#s_${this.message.id}").remove();</script><div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div><img data-src="${atob(this.message.file.location)}"></div>${this.time}</div><img class="profile_img" src="${this.message.sender.photo}"></div></div>`;
+                        return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div><img data-src="${atob(this.message.file.location)}"></div>${this.time}</div><img class="profile_img" src="${this.message.sender.photo}"></div></div>`;
                     else if (video.includes(this.message.file.extension.toLowerCase()))
-                        return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;"><script id="s_${this.message.id}">if(${this.message.reply != 0}){$("#s_${this.message.id}").parent().prepend("<div class='reply' data-reply='${btoa(this.message.reply.id)}'><div>${this.message.reply.sender}</div><div>${this.message.reply.content}</div></div>")}$("#s_${this.message.id}").remove();</script><div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div><video controls="" preload=""><source data-src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video></div>${this.time}</div><img class="profile_img" src="${this.message.sender.photo}"></div></div>`;
+                        return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div><video controls="" preload=""><source src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video></div>${this.time}</div><img class="profile_img" src="${this.message.sender.photo}"></div></div>`;
                     else if (audio.includes(this.message.file.extension.toLowerCase()))
-                        return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;"><script id="s_${this.message.id}">if(${this.message.reply != 0}){$("#s_${this.message.id}").parent().prepend("<div class='reply' data-reply='${btoa(this.message.reply.id)}'><div>${this.message.reply.sender}</div><div>${this.message.reply.content}</div></div>")}$("#s_${this.message.id}").remove();</script><div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source data-src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div></div>${this.time}</div><img class="profile_img" src="${this.message.photo}"></div></div>`;
+                        return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div></div>${this.time}</div><img class="profile_img" src="${this.message.photo}"></div></div>`;
                     else
-                        return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;"><script id="s_${this.message.id}">if(${this.message.reply != 0}){$("#s_${this.message.id}").parent().prepend("<div class='reply' data-reply='${btoa(this.message.reply.id)}'><div>${this.message.reply.sender}</div><div>${this.message.reply.content}</div></div>")}$("#s_${this.message.id}").remove();</script><div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div><img class="profile_img" src="${this.message.sender.photo}"></div></div>`;
+                        return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div><img class="profile_img" src="${this.message.sender.photo}"></div></div>`;
                 } else {
                     if (img.includes(this.message.file.extension.toLowerCase()))
-                        return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message their"><script id="s_${this.message.id}">if(${this.message.reply != 0}){$("#s_${this.message.id}").parent().prepend("<div class='reply' data-reply='${btoa(this.message.reply.id)}'><div>${this.message.reply.sender}</div><div>${this.message.reply.content}</div></div>")}$("#s_${this.message.id}").remove();</script><div style="margin: 10px 35px 10px 20px"><img data-src="${atob(this.message.file.location)}"></div>${this.time}</div></div>`;
+                        return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message their">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><img data-src="${atob(this.message.file.location)}"></div>${this.time}</div></div>`;
                     else if (video.includes(this.message.file.extension.toLowerCase()))
-                        return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message their"><script id="s_${this.message.id}">if(${this.message.reply != 0}){$("#s_${this.message.id}").parent().prepend("<div class='reply' data-reply='${btoa(this.message.reply.id)}'><div>${this.message.reply.sender}</div><div>${this.message.reply.content}</div></div>")}$("#s_${this.message.id}").remove();</script><div style="margin: 10px 35px 10px 20px"><video controls="" preload=""><source data-src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video></div>${this.time}</div></div>`;
+                        return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message their">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><video controls="" preload=""><source src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video></div>${this.time}</div></div>`;
                     else if (audio.includes(this.message.file.extension.toLowerCase()))
-                        return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message their"><script id="s_${this.message.id}">if(${this.message.reply != 0}){$("#s_${this.message.id}").parent().prepend("<div class='reply' data-reply='${btoa(this.message.reply.id)}'><div>${this.message.reply.sender}</div><div>${this.message.reply.content}</div></div>")}$("#s_${this.message.id}").remove();</script><div style="margin: 10px 35px 10px 20px"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source data-src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div></div>${this.time}</div></div>`;
+                        return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message their">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div></div>${this.time}</div></div>`;
                     else
-                        return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message their"><script id="s_${this.message.id}">if(${this.message.reply != 0}){$("#s_${this.message.id}").parent().prepend("<div class='reply' data-reply='${btoa(this.message.reply.id)}'><div>${this.message.reply.sender}</div><div>${this.message.reply.content}</div></div>")}$("#s_${this.message.id}").remove();</script><div style="margin: 10px 35px 10px 20px"><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div></div>${this.time}</div></div>`;
+                        return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message their">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div></div>${this.time}</div></div>`;
                 }
             }
         } else {
             this.format();
 
             if (this.message.sender.id === atob(sessionStorage["aWQ="])) {
-                return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message mine"><script id="s_${this.message.id}">if(${this.message.reply != 0}){$("#s_${this.message.id}").parent().prepend("<div class='reply' data-reply='${btoa(this.message.reply.id)}'><div>${this.message.reply.sender}</div><div>${this.message.reply.content}</div></div>")}$("#s_${this.message.id}").remove();</script><div style="margin: 10px 35px 10px 20px">${this.message.content}</div>${this.time}</div></div>`;
+                return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message mine">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px">${this.message.content}</div>${this.time}</div></div>`;
             } else {
                 if (this.group || atob(id).indexOf("group") > -1) {
-                    return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;"><script id="s_${this.message.id}">if(${this.message.reply != 0}){$("#s_${this.message.id}").parent().prepend("<div class='reply' data-reply='${btoa(this.message.reply.id)}'><div>${this.message.reply.sender}</div><div>${this.message.reply.content}</div></div>")}$("#s_${this.message.id}").remove();</script><div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div>${this.message.content}</div>${this.time}</div><img class="profile_img" src="${this.message.sender.photo}"></div></div>`;
+                    return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div>${this.message.content}</div>${this.time}</div><img class="profile_img" src="${this.message.sender.photo}"></div></div>`;
                 } else
-                    return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message their"><script id="s_${this.message.id}">if(${this.message.reply != 0}){$("#s_${this.message.id}").parent().prepend("<div class='reply' data-reply='${btoa(this.message.reply.id)}'><div>${this.message.reply.sender}</div><div>${this.message.reply.content}</div></div>")}$("#s_${this.message.id}").remove();</script><div style="margin: 10px 35px 10px 20px">${this.message.content}</div>${this.time}</div></div>`;
+                    return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message their">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px">${this.message.content}</div>${this.time}</div></div>`;
             }
         }
     }
@@ -67,35 +71,49 @@ class Message {
     sendMessage(e) {
         e.preventDefault();
         if (this.message.content === " ") return;
-        $(".message_reply").css("display", "");
+        $(".message_modal").css("display", "");
 
         const content = document.createElement("p");
         content.innerText = this.message.content;
         this.message.content = content.innerHTML;
         $(content).remove();
 
+        if (atob(id).indexOf("teacher") > -1) {
+            this.message.id = doubts.getAll("messages[]") !== null ? doubts.getAll("messages[]").length : 0;
+            doubts.append("messages[]", JSON.stringify([this.message.content, reply]));
+        }
+
         this.btn.src = "assets/icons/audio.png";
-        this.message.sender.id = atob(sessionStorage["aWQ="]);
         canScroll = true;
         $(".input_area textarea")[0].value = "";
-        $(".message_area").css("visibility", "visible").css("display", "block");
-        $(".message_area").append(this.parse());
-        $(".message_area")[0].scrollTop = $(".message_area")[0].scrollHeight - $(".message_area")[0].clientHeight;
+        $(".message_area").css("display", "block");
 
-        if (atob(id).indexOf("teacher") > -1) {
-            doubts.append("messages[]", JSON.stringify([this.message.content, reply]));
+        if (edit) {
+            const msg = $(`.message_area div[data-id="${btoa(edit.id)}"]`);
+            msg.html(msg.html().replace(edit.content, this.message.content));
+            $(".message_time", msg).prepend("<span style='margin: 0 5px'>editado</span>");
+            this.xml.open("POST", "../server/message_sender.php", true);
+            this.xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            this.xml.send(`edit=${edit.id}&m=${encodeURIComponent(this.message.content)}`);
+            edit = 0;
             return;
         }
 
+        $(".message_area").scrollTop($(".message_area")[0].scrollHeight - $(".message_area")[0].clientHeight);
+        this.message.sender.id = atob(sessionStorage["aWQ="]);
+        this.message.reply = reply;
+        $(".message_area").append(this.parse()).children(":last").off("contextmenu").on("contextmenu", ContextMenu);
+        
+        if (atob(id).indexOf("teacher") > -1) return;
+
         this.xml.open("POST", "../server/message_sender.php", true);
         this.xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        this.xml.send(`m=${encodeURIComponent(this.message.content)}&id=${id}&r=${reply}`); // XML content is user input
-        chatListUpdater(true);
+        this.xml.send(`m=${encodeURIComponent(this.message.content)}&id=${id}&r=${reply.id || 0}`); // XML content is user input
     }
 
     sendFile(e, blob = false) {
         e.preventDefault();
-        $(".message_reply").css("display", "");
+        $(".message_modal").css("display", "");
 
         const file = $(".input_area input[type='file']")[0],
             formData = new FormData(),
@@ -132,7 +150,6 @@ class Message {
                 });
 
                 $(".message_area").append(this.parse());
-                $(".message_area [data-src*='blob']").each((index, item) => $(item).attr("src", $(item).attr("data-src")).removeAttr("data-src"));
 
                 if (atob(id).indexOf("teacher") > -1) {
                     doubts.append("files[]", file.files[i]);
