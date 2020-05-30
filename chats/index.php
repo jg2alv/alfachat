@@ -258,9 +258,9 @@
             <div id="chats_header_drop_down" class="drop_down"></div>
         </header>
         <div class="message_area"></div>
-        <div class="message_reply">
+        <div class="message_modal">
             <div style="height: 100%; max-width: 5px; background-color: #cccccc;"></div>
-            <div style="width: 100%; flex-direction: column; align-items: baseline; padding-left: 70px"><div style="font-weight: bold; font-size: 18px"></div><div style="color: #ccc"></div></div>
+            <div style="width: 100%; flex-direction: column; align-items: baseline; padding-left: 70px; cursor: pointer;"><div style="font-weight: bold; font-size: 18px"></div><div style="color: #ccc"></div></div>
             <div style="max-width: 60px; cursor: pointer; align-items: center; justify-content: center"><img src="assets/icons/x.png" style="display: inline-block; width: 25%; padding: 8px; border: 1px solid #cccccc; border-radius: 50%"></div>
         </div>
         <form class="input_area" enctype="multipart/form-data" accept-charset="UTF-8">
