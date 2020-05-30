@@ -5,6 +5,7 @@
     require_once "../includes/remove_from_chatlist.inc.php";
     require "../includes/db.inc.php";
     require "../includes/get_last_message.inc.php";
+    require "../includes/file_info.inc.php";
 
     $id = $_SESSION["id"]; // Getting user id
     $chats = array();

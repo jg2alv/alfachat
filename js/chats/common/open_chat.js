@@ -15,7 +15,7 @@ function openChat(e, customName = false, customStatus = false) {
 	$('[subject]').attr('style', 'background: #291a46');
 	$('.chats header div div').eq(0).attr("data-id", id);
 
-	$('.chat').css("background-color", "#35215a"); // Removing "selected" background from every other div
+	$('.chat').css("background-color", ""); // Removing "selected" background from every other div
 	$(e.currentTarget).css("background-color", '#291a46'); // Setting background to a darker one, indicating "selected"
 
 	if ($('.chat_list').attr("hidden")) {
@@ -29,10 +29,11 @@ function openChat(e, customName = false, customStatus = false) {
 	$('.input_area').css('display', 'flex');
 	$('.chats header').css('display', 'flex');
 	$('.input_area textarea').focus();
+	$(".message_area").html("");
+	chatsUpdater(100);
 
 	if (atob(id).indexOf("teacher") === -1) {
 		canScroll = canUpdate.chatsUpdater = true;
-		chatsUpdater(100);
 		$('.chats header img').attr("src", "assets/icons/advanced.png").removeAttr("title");
 		$('.chats header img').off("click");
 		// $('.chats header img').on('click', () => {
@@ -53,6 +54,5 @@ function openChat(e, customName = false, customStatus = false) {
 	} else {
 		$('.chats header img').attr("src", "assets/icons/check.png").attr("title", "Começar atendimento");
 		$('.chats header img').on("click", sendDoubts);
-		$(".message_area").html("");
 	}
 }
