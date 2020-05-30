@@ -19,7 +19,7 @@ let canUpdate = {
 
 // addZero(1) = "10"
 // addZero(10) = "10"
-const addZero = i => i < 10 ? String(`${i}0`) : String(i);
+const addZero = i => i < 10 ? String(`0${i}`) : String(i);
 
 // Array of all doubts available on the DB
 let forum_doubts = new Array();
@@ -955,13 +955,17 @@ const update = (t0, callback, limit = false) => {
 }
 
 // Message reply ID
-let reply = {
-    "sender": new String(),
-    "content": new String(),
-    "id": new Number()
-}
+let reply = 0,
+    edit = 0;
 
 const scrollToMessage = (msg) => {
     Math.abs($(msg).offset().top) !== $(msg).offset().top || $(msg).offset().top < $(msg).outerHeight() ? msg.scrollIntoView() : null;
-    $(msg).fadeOut(100).fadeIn(100, function() { $(this).css("background-color", "rgba(255, 255, 255, 0.2)") }).fadeOut(100).fadeIn(100, function() { $(this).css("background-color", "rgba(255, 255, 255, 0.2)"); setTimeout(() => $(this).css("background-color", ""), 100); });
+    new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                $(msg).fadeOut(100).fadeIn(100, function() { $(this).css("background-color", "rgba(255, 255, 255, 0.2)") }).fadeOut(100).fadeIn(100, function() { $(this).css("background-color", "rgba(255, 255, 255, 0.2)"); setTimeout(() => $(this).css("background-color", ""), 100); });
+                observer.unobserve(entry.target);
+            }
+        });
+    }).observe(msg);
 }
