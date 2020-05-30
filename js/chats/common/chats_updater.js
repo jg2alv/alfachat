@@ -1,9 +1,9 @@
-function chatsUpdater(limit) {
-	if (id === undefined || atob(id).indexOf("teacher") > -1)
-		return;
+function chatsUpdater(limit, force = false) {
+	if (id === undefined || atob(id).indexOf("teacher") > -1) return;
+	if (limit === 0) limit = $(".message_area").children().length || 50;
 
 	const xml = new XMLHttpRequest(),
-		message_area = $('.message_area'),
+		message_area = $('.message_area')[0],
 		t0 = performance.now(),
 		chats = document.createElement("div");
 
@@ -11,54 +11,13 @@ function chatsUpdater(limit) {
 	xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	xml.send(`id=${id}&limit=${limit}`);
 	xml.onload = () => {
-		let response = xml.responseText ? JSON.parse(xml.responseText) : [];
-		response.forEach(message => chats.innerHTML += new Message(message).parse());
+		const response = xml.responseText ? JSON.parse(xml.responseText) : [],
+			observerOptions = { root: $(".message_area:visible")[0], rootMargin: "200%" },
+			observer = new IntersectionObserver(entries => entries.forEach(entry => !entry.isIntersecting ? $(entry.target).attr("data-src", $(entry.target).attr("src")).removeAttr("src") : $(entry.target).attr("src", $(entry.target).attr("data-src")).removeAttr("data-src")), observerOptions),
+			prepareMedia = element => {
+				$("[data-src]", element).each(function () { observer.observe(this); });
 
-		switch (true) {
-			case $(message_area).css('display') === 'none':
-				$(message_area).css('display', 'block');
-
-
-			case message_area[0].children.length !== chats.children.length:
-				// if (message_area[0].children.length > chats.children.length) {
-				// 	update(t0, "chatsUpdater", limit);
-				// 	return;
-				// }
-
-				chats.innerHTML === "" ? $(message_area).html("") : null;
-
-				$(message_area).html(chats.innerHTML).off("scroll").on('scroll', () => canScroll = false);
-				$(chats).remove();
-
-				$(".message_area").children("div[style*='display: grid;']").off("contextmenu").on("contextmenu", ContextMenu);
-				$(".reply").off("click").on("click", e => scrollToMessage($(`.message_area div[data-id='${$(e.currentTarget).attr("data-reply")}']`)[0]));
-
-				!$(".message_area audio").length ? $(message_area).css('visibility', 'visible') : null;
-
-				$("audio").reverse().off("loadedmetadata").on("loadedmetadata", e => {
-					$(e.target).siblings("span").html(`00:00/${convertTime(Math.floor(e.target.duration))}`);
-					$(message_area).css('visibility', 'visible');
-				});
-
-				$(".audio_btns").off("click").on("click", e => {
-					const audio = $(e.currentTarget).siblings("audio")[0],
-						input = $(e.currentTarget).siblings("input")[0];
-
-					if (audio.paused) {
-						$("audio").each((index, audio) => {
-							audio.pause();
-							$(audio).siblings("img")[0].src = "assets/icons/play.png";
-						});
-						audio.currentTime = Number(input.value)
-						audio.play();
-						e.currentTarget.src = "assets/icons/pause.png";
-					} else {
-						audio.pause();
-						e.currentTarget.src = "assets/icons/play.png";
-					}
-				});
-
-				$("audio").off("timeupdate").on("timeupdate", e => {
+				$("audio", element).off("loadmetadata").on("loadmetadata", e => $(e.target).siblings("span").html(`00:00/${convertTime(Math.floor(e.target.duration))}`)).off("timeupdate").on("timeupdate", e => {
 					const input = $(e.target).siblings("input[type='range']")[0],
 						duration = Math.floor(e.target.duration);
 
@@ -72,78 +31,69 @@ function chatsUpdater(limit) {
 						$(input).siblings("img").attr("src", "assets/icons/play.png");
 						e.target.currentTime = 0;
 					}
+				}).each(function() {
+					this.volume = 0;
+					this.play();
+					setTimeout(() => {
+						this.pause();
+						this.volume = 1.0;
+						this.currentTime = 0;
+					}, 500);
 				});
 
-				$("input[type='range']").off("input").on("input", e => $(e.currentTarget).siblings('audio')[0].currentTime = Number(e.currentTarget.value));
+				$(".audio_btns", element).off("click").on("click", e => {
+					const audio = $(e.currentTarget).siblings("audio")[0],
+						input = $(e.currentTarget).siblings("input")[0];
 
-				const observerOptions = { root: $(".message_area")[0], rootMargin: "100%" }; // Global options for both Intersection Observers
-				const mediaObserver = new IntersectionObserver(entries => { // Observer to lazy-load images/ videos
-					entries.forEach(entry => {
-						if (entry.target instanceof HTMLVideoElement || entry.target instanceof HTMLAudioElement) {
-							if (!entry.isIntersecting) {
-								$(entry.target.firstChild).attr("data-src", $(entry.target.firstChild).attr("src"));
-								$(entry.target.firstChild).removeAttr("src");
-							} else {
-								$(entry.target.firstChild).attr("src", $(entry.target.firstChild).attr("data-src"));
-								$(entry.target.firstChild).removeAttr("data-src");
-								entry.target.load();
-							}
-							return;
-						} else {
-							if (!entry.isIntersecting) {
-								$(entry.target).attr("data-src", $(entry.target).attr("src"));
-								$(entry.target).removeAttr("src");
-							} else {
-								$(entry.target).attr("src", $(entry.target).attr("data-src"));
-								$(entry.target).removeAttr("data-src");
-							}
-						}
-					})
-				}, observerOptions); // Getting global options
+					if (audio.paused) {
+						$("audio").each(function() {
+							this.pause();
+							$(this).siblings("img")[0].src = "assets/icons/play.png";
+						});
+						audio.currentTime = Number(input.value)
+						audio.play();
+						e.currentTarget.src = "assets/icons/pause.png";
+					} else {
+						audio.pause();
+						e.currentTarget.src = "assets/icons/play.png";
+					}
+				});
 
-				const messageObserver = new IntersectionObserver((entries, observer) => { // Observer to lazy-load messages
-					entries.forEach(entry => {
-						if (!entry.isIntersecting)
-							return;
+				$("input[type='range']", element).off("input").on("input", e => $(e.currentTarget).siblings('audio')[0].currentTime = Number(e.currentTarget.value));
+				$(".reply", element).off("click").on("click", e => scrollToMessage($(`.message_area div[data-id='${$(e.currentTarget).attr("data-reply")}']`)[0]));
+				$(element).children().off("contextmenu").on("contextmenu", ContextMenu);
+			};
 
-						observer.unobserve(entry.target);
+		response.forEach(message => chats.innerHTML += new Message(message).parse());
+		$(".message_area").css("display", "block");
 
-						//chatsUpdater(limit + 100);
+		if (message_area.children.length === 0 || force) {
+			const messageObserver = new IntersectionObserver((entries, observer) => {
+				entries.forEach(entry => {
+					if (!entry.isIntersecting)
 						return;
-					});
-				}, observerOptions); // Getting global options
-				$("[data-src]").each((index, item) => { // For every image with data-src attr (images to be lazy loaded)
-					if (item instanceof HTMLSourceElement)
-						mediaObserver.observe(item.parentElement);
-					else
-						mediaObserver.observe(item)
+
+					observer.unobserve(entry.target);
+					chatsUpdater(limit + 50);
 				});
+			}, observerOptions);
+			messageObserver.observe(chats.firstChild);
 
-				$("[data-message=0]").length ? messageObserver.observe($("[data-message=0]").get(0)) : null; // Observe the first message
-
-
-			case message_area[0].scrollHeight - message_area[0].clientHeight <= message_area[0].scrollTop + 1:
-				canScroll = true;
-
-
-			case canScroll:
-				message_area[0].scrollTop = message_area[0].scrollHeight - message_area[0].clientHeight;
+			$(message_area).off("scroll").on("scroll", () => canScroll = false).html(chats.innerHTML);
+			prepareMedia(message_area);
+			message_area.scrollTop = message_area.scrollHeight - message_area.clientHeight;
+		} else if (message_area.children.length < chats.children.length) {
+			const new_messages = $($(chats).children()).not($(message_area).children()).get();
+			prepareMedia(new_messages);
+			$(message_area).append(new_messages);
 		}
 
+		if (message_area.scrollHeight - message_area.clientHeight <= message_area.scrollTop + 1)
+			canScroll = true;
+
+		if (canScroll)
+			message_area.scrollTop = message_area.scrollHeight - message_area.clientHeight;
+
 		update(t0, "chatsUpdater", limit);
-	};
-	return;
+	}
 }
-
-// function chatsUpdater(limit) {
-// 	if (id === undefined || atob(id).indexOf("teacher") > -1) return;
-
-// 	const xml = new XMLHttpRequest(),
-// 		message_area = $('.message_area'),
-// 		t0 = performance.now(),
-// 		chats = document.createElement("div");
-
-// 	xml.open('POST', '../server/message_receiver.php', true);
-// 	xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-// 	xml.send(`id=${id}&limit=${limit}`);
-// }
