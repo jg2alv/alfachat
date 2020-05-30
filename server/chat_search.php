@@ -4,6 +4,7 @@
     session_start();
     require "../includes/db.inc.php";
     require "../includes/get_last_message.inc.php";
+    require "../includes/file_info.inc.php";
 
     $class = $_SESSION["class"];
     $id = $_SESSION["id"];

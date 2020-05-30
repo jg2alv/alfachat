@@ -10,6 +10,7 @@
 
     require "../includes/db.inc.php";
     require "../includes/fetch_messages.inc.php";
+    require "../includes/file_info.inc.php";
     $subject = $_SESSION["subject"];
 
     $sql = "(SELECT * FROM `doubts` WHERE subject = '$subject' AND assignee IS NULL AND solved = 0 AND answered = 0) UNION (SELECT * FROM `doubts` WHERE assignee = $id AND solved = 0 AND answered = 0)";

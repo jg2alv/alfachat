@@ -9,6 +9,7 @@
     require "../includes/db.inc.php";
     require "../includes/remove_from_chatlist.inc.php";
     require "../includes/fetch_messages.inc.php";
+    require "../includes/file_info.inc.php";
 
     session_start();
 
