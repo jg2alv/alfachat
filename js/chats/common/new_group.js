@@ -1,8 +1,8 @@
 let group_name,
-    file;
+    group_pic;
 
 $(document).ready(() => {
-    const photo = $("#new_group_menu input[type='file']")[0];
+    const photo = $("#new_group_menu input[type='group_pic']")[0];
     $(photo).on("change", () => {
         if (photo.files.length < 1) {
             return;
@@ -11,7 +11,7 @@ $(document).ready(() => {
         $('#new_group_menu label img')[0].src = URL.createObjectURL(photo.files[0]);
         $('#new_group_menu label img')[0].style.maxWidth = "100%";
 
-        file = photo.files[0];
+        group_pic = photo.files[0];
     })
 
     $("#new_group_menu")[0].addEventListener("submit", (e) => {
@@ -80,9 +80,9 @@ $(document).ready(() => {
         }
     })
 
-    const member_search = $("#new_group_menu_advanced input")[0];
-    const member_result_list = $("#new_group_menu_advanced .members_result")[0];
-    const member_list = $("#new_group_menu_advanced .members")[0];
+    const member_search = $("#new_group_menu_advanced input")[0],
+        member_result_list = $("#new_group_menu_advanced .members_result")[0],
+        member_list = $("#new_group_menu_advanced .members")[0];
     member_search.addEventListener("keyup", k => {
         if (!member_search.value || (member_search.value.length === 1 && k.keyCode === 78) || member_search.value === " ") {
             // If the input has no value OR (it's length is 1 AND user key is backspace) OR is the value is a spacebar
@@ -135,9 +135,9 @@ $(document).ready(() => {
 
         xml.open("POST", "../server/new_group.php", true);
 
-        if (file) {
+        if (group_pic) {
             const formData = new FormData();
-            formData.set("p", file);
+            formData.set("p", group_pic);
             formData.set("m", id_list);
             formData.set("n", group_name.value);
             formData.set("a", "1");
@@ -149,11 +149,8 @@ $(document).ready(() => {
 
         xml.onload = () => {
             hideSideMenu();
-            toast.update("Grupo criado com sucesso!");
-            toast.destroy(2500);
-            setTimeout(() => {
-                $(`[data-id='${xml.responseText}']`).click();
-            }, 300);
+            toast.update("Grupo criado com sucesso!").show().destroy(2500);
+            setTimeout(() => $(`[data-id='${xml.responseText}']`).click(), 300);
         }
     })
 })
