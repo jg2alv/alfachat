@@ -30,7 +30,6 @@ function openChat(e, customName = false, customStatus = false) {
 	$('.chats header').css('display', 'flex');
 	$('.input_area textarea').focus();
 	$(".message_area").html("");
-	chatsUpdater(100);
 
 	if (atob(id).indexOf("teacher") === -1) {
 		canScroll = canUpdate.chatsUpdater = true;
@@ -55,4 +54,6 @@ function openChat(e, customName = false, customStatus = false) {
 		$('.chats header img').attr("src", "assets/icons/check.png").attr("title", "Começar atendimento");
 		$('.chats header img').on("click", sendDoubts);
 	}
+
+	chatsUpdater(100);
 }
