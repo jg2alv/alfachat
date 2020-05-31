@@ -1,5 +1,5 @@
 function chatsUpdater(limit, force = false) {
-	if (id === undefined || atob(id).indexOf("teacher") > -1) return;
+	if (id === undefined || atob(id).indexOf("teacher") > -1 || !canUpdate.chatsUpdater) return;
 	if (limit === 0) limit = $(".message_area").children().length || 50;
 
 	const xml = new XMLHttpRequest(),
@@ -15,7 +15,7 @@ function chatsUpdater(limit, force = false) {
 			observerOptions = { root: $(".message_area:visible")[0], rootMargin: "200%" },
 			observer = new IntersectionObserver(entries => entries.forEach(entry => !entry.isIntersecting ? $(entry.target).attr("data-src", $(entry.target).attr("src")).removeAttr("src") : $(entry.target).attr("src", $(entry.target).attr("data-src")).removeAttr("data-src")), observerOptions),
 			prepareMedia = element => {
-				$("[data-src]", element).each(function () { observer.observe(this); });
+				$("[data-src]", element).each(function () { observer.observe(this); }).off("click").on("click", MediaModal);
 
 				$("audio", element).off("loadmetadata").on("loadmetadata", e => $(e.target).siblings("span").html(`00:00/${convertTime(Math.floor(e.target.duration))}`)).off("timeupdate").on("timeupdate", e => {
 					const input = $(e.target).siblings("input[type='range']")[0],
@@ -31,7 +31,7 @@ function chatsUpdater(limit, force = false) {
 						$(input).siblings("img").attr("src", "assets/icons/play.png");
 						e.target.currentTime = 0;
 					}
-				}).each(function() {
+				}).each(function () {
 					this.volume = 0;
 					this.play();
 					setTimeout(() => {
@@ -46,7 +46,7 @@ function chatsUpdater(limit, force = false) {
 						input = $(e.currentTarget).siblings("input")[0];
 
 					if (audio.paused) {
-						$("audio").each(function() {
+						$("audio").each(function () {
 							this.pause();
 							$(this).siblings("img")[0].src = "assets/icons/play.png";
 						});
@@ -64,36 +64,43 @@ function chatsUpdater(limit, force = false) {
 				$(element).children().off("contextmenu").on("contextmenu", ContextMenu);
 			};
 
-		response.forEach(message => chats.innerHTML += new Message(message).parse());
-		$(".message_area").css("display", "block");
+		new Promise(resolve => {
+			response.forEach(async message => {
+				const msg = await new Message(message).parse();
+				chats.innerHTML += msg;
+				message === response[response.length - 1] ? resolve() : null;
+			});
+		}).then(() => {
+			$(".message_area").css("display", "block");
 
-		if (message_area.children.length === 0 || force) {
-			const messageObserver = new IntersectionObserver((entries, observer) => {
-				entries.forEach(entry => {
-					if (!entry.isIntersecting)
-						return;
+			if (message_area.children.length === 0 || force) {
+				const messageObserver = new IntersectionObserver((entries, observer) => {
+					entries.forEach(entry => {
+						if (!entry.isIntersecting)
+							return;
 
-					observer.unobserve(entry.target);
-					chatsUpdater(limit + 50);
-				});
-			}, observerOptions);
-			messageObserver.observe(chats.firstChild);
+						observer.unobserve(entry.target);
+						chatsUpdater(limit + 50);
+					});
+				}, observerOptions);
+				messageObserver.observe(chats.firstChild);
 
-			$(message_area).off("scroll").on("scroll", () => canScroll = false).html(chats.innerHTML);
-			prepareMedia(message_area);
-			message_area.scrollTop = message_area.scrollHeight - message_area.clientHeight;
-		} else if (message_area.children.length < chats.children.length) {
-			const new_messages = $($(chats).children()).not($(message_area).children()).get();
-			prepareMedia(new_messages);
-			$(message_area).append(new_messages);
-		}
+				$(message_area).off("scroll").on("scroll", () => canScroll = false).html(chats.innerHTML);
+				prepareMedia(message_area);
+				message_area.scrollTop = message_area.scrollHeight - message_area.clientHeight;
+			} else if (message_area.children.length < chats.children.length) {
+				const new_messages = $($(chats).children()).not($(message_area).children()).get();
+				prepareMedia(new_messages);
+				$(message_area).append(new_messages);
+			}
 
-		if (message_area.scrollHeight - message_area.clientHeight <= message_area.scrollTop + 1)
-			canScroll = true;
+			if (message_area.scrollHeight - message_area.clientHeight <= message_area.scrollTop + 1)
+				canScroll = true;
 
-		if (canScroll)
-			message_area.scrollTop = message_area.scrollHeight - message_area.clientHeight;
+			if (canScroll)
+				message_area.scrollTop = message_area.scrollHeight - message_area.clientHeight;
 
-		update(t0, "chatsUpdater", limit);
+			update(t0, "chatsUpdater", limit);
+		});
 	}
 }
