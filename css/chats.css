@@ -990,3 +990,14 @@ input[type=range]::-moz-range-thumb {
 	max-width: 92px;
 	min-width: 90px;
 }
+
+.media_modal_btns {
+	flex: 1;
+	background-color: transparent;
+	transition: background-color 200ms;
+	cursor: pointer;
+}
+
+.media_modal_btns:hover {
+	background-color: rgba(100, 100, 100, 0.3);
+}
