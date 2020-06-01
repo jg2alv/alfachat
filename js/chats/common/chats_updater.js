@@ -12,7 +12,7 @@ function chatsUpdater(limit, force = false) {
 	xml.send(`id=${id}&limit=${limit}`);
 	xml.onload = () => {
 		const response = xml.responseText ? JSON.parse(xml.responseText) : [],
-			observerOptions = { root: $(".message_area:visible")[0], rootMargin: "200%" },
+			observerOptions = { root: $(".message_area:visible")[0], rootMargin: "500%" },
 			observer = new IntersectionObserver(entries => entries.forEach(entry => !entry.isIntersecting ? $(entry.target).attr("data-src", $(entry.target).attr("src")).removeAttr("src") : $(entry.target).attr("src", $(entry.target).attr("data-src")).removeAttr("data-src")), observerOptions),
 			prepareMedia = element => {
 				$("[data-src]", element).each(function () { observer.observe(this); }).off("click").on("click", MediaModal);
