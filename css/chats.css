@@ -838,6 +838,7 @@ div[data-message] {
 	font-size: 14px;
 	justify-self: end;
 	color: #cccccc;
+	display: flex;
 }
 
 .message img,
@@ -1000,4 +1001,12 @@ input[type=range]::-moz-range-thumb {
 
 .media_modal_btns:hover {
 	background-color: rgba(100, 100, 100, 0.3);
+}
+
+.message_status {
+	width: 14px;
+	height: 14px;
+	margin: 1px 5px;
+	background: center no-repeat;
+	background-size: contain;
 }

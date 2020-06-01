@@ -1,17 +1,20 @@
 class Message {
     constructor(message = false, group = false) {
-        const d = new Date(Number(message.time) * 1000);
-
-        this.time = `<div style="display: grid; margin: 10px 10px 10px 20px;"><div class="message_time">${Number(message.edited) ? "<span style='margin: 0 5px'>editado</span>" : ""}${d.getHours() > 12 ? addZero(d.getHours() - 12) + ":" + addZero(d.getMinutes()) + " PM" : addZero(d.getHours()) + ":" + addZero(d.getMinutes()) + " AM"}</div></div>`;
         this.message = message;
         this.xml = new XMLHttpRequest();
+
         this.xml.onload = () => {
             chatListUpdater(true);
             chatsUpdater(0, true);
         }
+        
         this.btn = $(".input_area img")[2];
         this.group = group;
         this.message.sender = JSON.parse(this.message.sender);
+
+        const d = new Date(Number(message.time) * 1000);
+        this.time = `<div style="display: grid; margin: 10px 10px 10px 20px;"><div class="message_time">${Number(message.edited) ? "<span style='margin: 0 5px'>editado</span>" : ""}${d.getHours() > 12 ? addZero(d.getHours() - 12) + ":" + addZero(d.getMinutes()) + " PM" : addZero(d.getHours()) + ":" + addZero(d.getMinutes()) + " AM"}${message.sender.id === atob(sessionStorage["aWQ="]) ? Number(message.seen) ? "<div class='message_status' style='background-image: url(assets/icons/seen.png)'></div>" : "<div class='message_status' style='background-image: url(assets/icons/sent.png)'></div>" : ""}</div></div>`;
+        
     }
 
     parse() {
