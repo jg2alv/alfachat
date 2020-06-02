@@ -12,7 +12,7 @@ function messageSender() {
 
     input.oninput = input.onkeypress = k => {
         if (k.charCode === 13 && k.ctrlKey)
-            new Message({ sender: JSON.stringify({ id: atob(sessionStorage["aWQ="]) }), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000), file: 0 }).sendMessage(k);
+            new Message({ sender: JSON.stringify({ id: atob(sessionStorage["aWQ="]) }), seen: -1, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000), file: 0 }).sendMessage(k);
 
         if (!input.value || input.value === " ") {
             btn[2].src = "assets/icons/audio.png";
@@ -24,7 +24,7 @@ function messageSender() {
 
     btn[2].onclick = e => {
         if (btn[2].src.indexOf("assets/icons/send.png") > -1)
-            new Message({ sender: JSON.stringify({ id: atob(sessionStorage["aWQ="]) }), seen: 0, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000), file: 0 }).sendMessage(e);
+            new Message({ sender: JSON.stringify({ id: atob(sessionStorage["aWQ="]) }), seen: -1, photo: sessionStorage["cGhvdG8="], receiver: atob(id), content: input.value, time: (new Date() / 1000), file: 0 }).sendMessage(e);
         else if (btn[2].src.indexOf("assets/icons/audio.png") > -1) {
             if (navigator.mediaDevices) {
                 let chunks = [],
