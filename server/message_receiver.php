@@ -5,6 +5,7 @@
 
     $chat = base64_decode($_POST["id"]);
     $limit = $_POST["limit"];
+    $offset = $limit > 50 ? $limit - 50 : 0;
     
     require "../includes/db.inc.php";
     require "../includes/remove_from_chatlist.inc.php";
@@ -15,13 +16,13 @@
 
     if (strpos($chat, ":") !== false) {
         if (strpos($chat, "group") !== false) {
-            $sql = "(SELECT * FROM `messages` WHERE receiver = '$chat' ORDER BY time DESC LIMIT $limit) ORDER BY time;";
+            $sql = "(SELECT * FROM `messages` WHERE receiver = '$chat' ORDER BY time DESC LIMIT $limit OFFSET $offset) ORDER BY time;";
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
             echo json_encode(fetchMessages($conn, $sql)); // Returning it to JS
         } else if (strpos($chat, "doubt") !== false) {
             $id = explode(":", $chat)[1];
-            $sql = "SELECT * FROM `messages` WHERE doubt = $id";
+            $sql = "(SELECT * FROM `messages` WHERE doubt = $id ORDER BY time DESC LIMIT $limit OFFSET $offset) ORDER BY time";
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
             echo json_encode(fetchMessages($conn, $sql));
@@ -30,8 +31,7 @@
         }
     } else {
         $user = $_SESSION["id"];
-        // Select all messages sent by me to him AND sent by him to me. Order by time.
-        $sql = "((SELECT * FROM `messages` WHERE sender = '$user' AND receiver = '$chat' AND doubt = 0) UNION (SELECT * FROM `messages` WHERE sender = '$chat' AND receiver = '$user' AND doubt = 0) ORDER BY time DESC LIMIT $limit) ORDER BY time";
+        $sql = "((SELECT * FROM `messages` WHERE sender = '$user' AND receiver = '$chat' AND doubt = 0) UNION (SELECT * FROM `messages` WHERE sender = '$chat' AND receiver = '$user' AND doubt = 0) ORDER BY time DESC LIMIT $limit OFFSET $offset) ORDER BY time";
         $sql = mysqli_query($conn, $sql);
         $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
         echo json_encode(fetchMessages($conn, $sql));
