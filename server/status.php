@@ -55,5 +55,12 @@
         mysqli_query($conn, $sql);
     }
 
+    function logout($conn) {
+        session_start();
+        $id = $_SESSION["id"];
+        $sql = "UPDATE `users` SET status = 'offline' WHERE id = $id";
+        mysqli_query($conn, $sql);
+    }
+
     die();
 ?>

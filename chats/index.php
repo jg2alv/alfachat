@@ -312,6 +312,7 @@
 	    statusBackend('i=online&o=set');
 	    messageSender();
         chatListUpdater();
+        statusTimer();
         
 	    atob(sessionStorage["Y2xhc3M="]) > 0 ? teacherListUpdater() : null;
     </script>
