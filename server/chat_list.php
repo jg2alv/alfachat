@@ -26,6 +26,16 @@
             if (strpos($chat, "group") !== false) {
                 $type = "group:$id";
                 list($bio, $date, $unseen, $time) = getLastMessage($conn, "receiver = '$type'");
+                $sql = "SELECT members FROM `groups` WHERE id = $id";
+                $sql = explode(",", mysqli_fetch_assoc(mysqli_query($conn, $sql))["members"]);
+                $response = array();
+                foreach($sql as $member) {
+                    $sql = "SELECT name, photo, status FROM `users` WHERE id = $member";
+                    $sql = mysqli_fetch_assoc(mysqli_query($conn, $sql));
+                    array_push($response, $sql);
+                }
+                $response = json_encode($response);
+                $member = "<script id='$id'>$('script#$id').parent().data('members', $response).children('script').remove()</script>";
                 
                 if ($id < 13) { // If it's a class group (group:1 to group:12)
                     $name = ($id > 9) ? ($id-9) . "° Ano - Ensino M&eacute;dio" : $id . "° Ano - Ensino Fundamental";
@@ -69,7 +79,8 @@
 
         $unseen = $unseen ? "<div class='unseen_count'>$unseen</div>" : "";
         $type = base64_encode($type);
-        $chats[$time] = "<div class='chat' data-id='$type'><div class='pic'><img src='$photo'></div><div class='info'><div style='display: flex; justify-content: space-between'><div>$name</div><div class='unseen_count' style='background: none; min-width: 30px; width: auto;'>$date</div></div><div style='display: flex; justify-content: space-between'><div>$bio</div>$unseen</div></div></div>";
+        $member = $member ? $member : "";
+        $chats[$time] = "<div class='chat' data-id='$type'>$member<div class='pic'><img src='$photo'></div><div class='info'><div style='display: flex; justify-content: space-between'><div>$name</div><div class='unseen_count' style='background: none; min-width: 30px; width: auto;'>$date</div></div><div style='display: flex; justify-content: space-between'><div>$bio</div>$unseen</div></div></div>";
     }
 
     krsort($chats);
