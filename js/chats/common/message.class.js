@@ -7,14 +7,14 @@ class Message {
             chatListUpdater(true);
             chatsUpdater(0, true);
         }
-        
+
         this.btn = $(".input_area img")[2];
         this.group = group;
         this.message.sender = JSON.parse(this.message.sender);
 
         const d = new Date(Number(message.time) * 1000);
-        this.time = `<div style="display: grid; margin: 10px 10px 10px 20px;"><div class="message_time">${Number(message.edited) ? "<span style='margin: 0 5px'>editado</span>" : ""}${d.getHours() > 12 ? addZero(d.getHours() - 12) + ":" + addZero(d.getMinutes()) + " PM" : addZero(d.getHours()) + ":" + addZero(d.getMinutes()) + " AM"}${message.sender.id === atob(sessionStorage["aWQ="]) ? Number(message.seen) ? "<div class='message_status' style='background-image: url(assets/icons/seen.png)'></div>" : "<div class='message_status' style='background-image: url(assets/icons/sent.png)'></div>" : ""}</div></div>`;
-        
+        this.time = `<div style="display: grid; margin: 10px 10px 10px 20px;"><div class="message_time">${Number(message.edited) ? "<span style='margin: 0 5px'>editado</span>" : ""}${d.getHours() > 12 ? addZero(d.getHours() - 12) + ":" + addZero(d.getMinutes()) + " PM" : addZero(d.getHours()) + ":" + addZero(d.getMinutes()) + " AM"}${message.sender.id === atob(sessionStorage["aWQ="]) ? Number(message.seen) === 1 ? "<div class='message_status' style='background-image: url(assets/icons/seen.png)'></div>" : Number(message.seen) === 0 ? "<div class='message_status' style='background-image: url(assets/icons/sent.png)'></div>" : Number(message.seen) === -1 ? "<div class='message_status' style='background-image: url(assets/icons/sending.png)'></div>" : "" : ""}</div></div>`;
+
     }
 
     parse() {
@@ -71,7 +71,99 @@ class Message {
                 });
             });
         } else {
-            this.format();
+            (() => { // #hashtag
+                const hashtags = this.message.content.match(/(?!>)(^|\B)#([a-zA-Z0-9_]+)(\b|\r)(?!<)(?!;)/g) || [];
+                hashtags.forEach(hashtag => {
+                    const value = hashtag.slice(1),
+                        subject = {
+                            "qui": "Qu&iacute;mica",
+                            "quí": "Qu&iacute;mica",
+                            "quimica": "Qu&iacute;mica",
+                            "química": "Qu&iacute;mica",
+
+                            "fis": "F&iacute;sica",
+                            "fís": "F&iacute;sica",
+                            "fisica": "F&iacute;sica",
+                            "física": "F&iacute;sica",
+
+                            "bio": "Biologia",
+                            "biologia": "Biologia",
+
+                            "mat": "Matem&aacute;tica",
+                            "matemática": "Matem&aacute;tica",
+                            "matematica": "Matem&aacute;tica",
+
+                            "pt": "Portugu&ecirc;s",
+                            "português": "Portugu&ecirc;s",
+                            "portugues": "Portugu&ecirc;s",
+
+                            "ing": "Ingl&ecirc;s",
+                            "inglês": "Ingl&ecirc;s",
+                            "ingles": "Ingl&ecirc;s",
+
+                            "geo": "Geografia",
+                            "geografia": "Geografia",
+
+                            "hist": "Hist&oacute;ria",
+                            "história": "Hist&oacute;ria",
+                            "historia": "Hist&oacute;ria",
+
+                            "fil": "Filosofia",
+                            "filo": "Filosofia",
+                            "filosofia": "Filosofia",
+
+                            "soc": "Sociologia",
+                            "socio": "Sociologia",
+                            "sociologia": "Sociologia",
+
+                            "red": "Reda&ccedil;&atilde;o",
+                            "redação": "Reda&ccedil;&atilde;o",
+                            "redacão": "Reda&ccedil;&atilde;o",
+                            "redaçao": "Reda&ccedil;&atilde;o",
+                            "redacao": "Reda&ccedil;&atilde;o",
+
+                            "lit": "Literatura",
+                            "literatura": "Literatura"
+                        };
+
+                    if (forum_doubts[value - 1])
+                        this.message.content = this.message.content.replace(hashtag, `<span style="color: rgb(51, 122, 183); cursor: pointer" data-doubt="${value}">${hashtag}</span>`);
+                    else if (subject.hasOwnProperty(value.toLowerCase()))
+                        this.message.content = this.message.content.replace(hashtag, `<span style="color: rgb(51, 122, 183); cursor: pointer" data-subject-name="${subject[value]}">${hashtag}</span>`);
+                });
+            })();
+
+            (() => {
+                const replace = [{ "pattern": /(\*{2})(.+)(\*{2})/g, "tag": "strong", "search": /\*/g }, { "pattern": /(\_{2})(.+)(\_{2})/g, "tag": "em", "search": /\_/g }, { "pattern": /(\~{2})(.+)(\~{2})/g, "tag": "del", "search": /\~/g }, { "pattern": /(\`{2})(.+)(\`{2})/g, "tag": "code", "search": /\`/g }];
+                replace.forEach(format => {
+                    const regex = this.message.content.match(format.pattern) || [];
+                    regex.forEach(match => this.message.content = this.message.content.replace(match, `<${format.tag}>${match.replace(format.search, "")}</${format.tag}>`))
+                });
+
+                const spoilers = this.message.content.match(/(\|{2})(.+)(\|{2})/g) || [];
+                spoilers.forEach(spoiler => this.message.content = this.message.content.replace(spoiler, `<span class="spoiler">${spoiler.replace(/\|/g, "")}</span>`));
+            })();
+
+            (() => { // :emojies:
+                const emoji = this.message.content.match(/:(\w+):/g) || [];
+                emoji.forEach(emote => emojies[emote] ? this.message.content = this.message.content.replace(emote, `&#x${emojies[emote]};`) : null);
+            })();
+
+            (() => { // https://wwww.url.com
+                const urls = this.message.content.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g) || [];
+                urls.forEach(url => {
+                    this.message.content = this.message.content[this.message.content.indexOf(url) - 1] !== "(" && this.message.content[this.message.content.indexOf(url) + url.length] !== ")" && this.message.content[this.message.content.indexOf(url) - 1] !== "\"" && this.message.content[this.message.content.indexOf(url) + url.length] !== "\"" ? this.message.content.replace(url, `<a style="color: rgb(51, 122, 183);" href="${url}">${url}</a>`) : this.message.content
+                });
+
+                const markdown_urls = this.message.content.match(/\[([^\[]+)\](\(.*\))/gm) || [];
+                markdown_urls.forEach(matches => {
+                    matches = typeof matches == "object" ? matches : [matches];
+                    for (let i = 0; i < matches.length; i++) {
+                        const markdown = /\[([^\[]+)\]\((.*)\)/.exec(matches[i]);
+                        this.message.content = this.message.content.replace(markdown[0], `<a style="color: rgb(51, 122, 183);" href="${markdown[2]}">${markdown[1]}</a>`);
+                    };
+                });
+            })();
 
             if (this.message.sender.id === atob(sessionStorage["aWQ="])) {
                 return new Promise(resolve => resolve(`<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message mine">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px">${this.message.content}</div>${this.time}</div></div>`));
@@ -115,16 +207,16 @@ class Message {
             return;
         }
 
-        $(".message_area").scrollTop($(".message_area")[0].scrollHeight - $(".message_area")[0].clientHeight);
-        this.message.sender.id = atob(sessionStorage["aWQ="]);
-        this.message.reply = reply;
-        $(".message_area").append(this.parse()).children(":last").off("contextmenu").on("contextmenu", ContextMenu);
-
         if (atob(id).indexOf("teacher") > -1) return;
 
         this.xml.open("POST", "../server/message_sender.php", true);
         this.xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         this.xml.send(`m=${encodeURIComponent(this.message.content)}&id=${id}&r=${reply.id || 0}`); // XML content is user input
+
+        $(".message_area").scrollTop($(".message_area")[0].scrollHeight - $(".message_area")[0].clientHeight);
+        this.message.sender.id = atob(sessionStorage["aWQ="]);
+        this.message.reply = reply;
+        $(".message_area").append(this.parse()).children(":last").off("contextmenu").on("contextmenu", ContextMenu);
     }
 
     sendFile(e, blob = false) {
@@ -202,47 +294,5 @@ class Message {
             sizes = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
             i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    }
-
-    format() {
-        (() => { // #hashtag
-            const hashtags = this.message.content.match(/(^|\B)#([a-zA-Z0-9_]{1,})(\b|\r)/g) || [];
-            hashtags.forEach(hashtag => {
-                const doubt = hashtag.replace("#", "");
-                this.message.content = !forum_doubts[doubt - 1] ? this.message.content : this.message.content.replace(hashtag, `<span style="color: #337ab7; cursor: pointer" data-hashtag="${doubt}">${hashtag}</span>`);
-            });
-        })();
-
-        (() => {
-            const replace = [{ "pattern": /(\*{2})(.+)(\*{2})/g, "tag": "strong", "search": /\*/g }, { "pattern": /(\_{2})(.+)(\_{2})/g, "tag": "em", "search": /\_/g }, { "pattern": /(\~{2})(.+)(\~{2})/g, "tag": "del", "search": /\~/g }, { "pattern": /(\`{2})(.+)(\`{2})/g, "tag": "code", "search": /\`/g }, { "pattern": /(\^{2})(.+)(\^{2})/g, "tag": "marquee", "search": /\^/g }];
-            replace.forEach(format => {
-                const regex = this.message.content.match(format.pattern) || [];
-                regex.forEach(match => this.message.content = this.message.content.replace(match, `<${format.tag}>${match.replace(format.search, "")}</${format.tag}>`))
-            });
-
-            const spoilers = this.message.content.match(/(\|{2})(.+)(\|{2})/g) || [];
-            spoilers.forEach(spoiler => this.message.content = this.message.content.replace(spoiler, `<span class="spoiler">${spoiler.replace(/\|/g, "")}</span>`));
-        })();
-
-        (() => { // :emojies:
-            const emoji = this.message.content.match(/\:([^)]+)\:/g) || [];
-            emoji.forEach(emote => emojies[emote] ? this.message.content = this.message.content.replace(emote, `&#x${emojies[emote]};`) : null);
-        })();
-
-        (() => { // https://wwww.url.com
-            const urls = this.message.content.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g) || [];
-            urls.forEach(url => {
-                this.message.content = this.message.content[this.message.content.indexOf(url) - 1] !== "(" && this.message.content[this.message.content.indexOf(url) + url.length] !== ")" && this.message.content[this.message.content.indexOf(url) - 1] !== "\"" && this.message.content[this.message.content.indexOf(url) + url.length] !== "\"" ? this.message.content.replace(url, `<a style="color: #337ab7;" href="${url}">${url}</a>`) : this.message.content
-            });
-
-            const markdown_urls = this.message.content.match(/\[([^\[]+)\](\(.*\))/gm) || [];
-            markdown_urls.forEach(matches => {
-                matches = typeof matches == "object" ? matches : [matches];
-                for (let i = 0; i < matches.length; i++) {
-                    const markdown = /\[([^\[]+)\]\((.*)\)/.exec(matches[i]);
-                    this.message.content = this.message.content.replace(markdown[0], `<a style="color: #337ab7;" href="${markdown[2]}">${markdown[1]}</a>`);
-                };
-            });
-        })();
     }
 }
