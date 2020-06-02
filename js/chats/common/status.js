@@ -24,14 +24,16 @@ function statusTimer() {
 
     document.onmousemove = document.onkeypress = document.onclick = () => {
         clearInterval(interval);
-        //if (atob(id).indexOf("doubt") > -1) return;
         interval = setInterval(status_callback, 1000);
         timer = 0;
         statusBackend("i=online&o=set"); // Setting MY status to online
-        //statusBackend(`i=${id}&o=get`).then(res => decodeURIComponent(escape(atob(id))).indexOf("teacher") > -1 ? null : $(".chats header div div").eq(1).html() !== res ? $(".chats header div div").eq(1).html(res) : null);
+        statusBackend(`i=${id}&o=get`).then(res => $(".chats header div div").eq(1).html() !== res ? $(".chats header div div").eq(1).html(res) : null);
     };
 
-    window.onbeforeunload = () => statusBackend("o=logout");
+    window.onbeforeunload = () => {
+        statusBackend("o=logout");
+        return null;
+    };
 }
 
 function statusBackend(arg) {
@@ -39,8 +41,5 @@ function statusBackend(arg) {
     xml.open("POST", "../server/status.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xml.send(arg); // Sending request with given args
-    xml.onload = () => {
-        debugger;
-    }
     return new Promise(resolve => xml.onload = () => resolve(xml.responseText));
 }
