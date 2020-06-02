@@ -559,7 +559,11 @@ input:focus, textarea:focus {
 }
 
 .chat:hover {
-	background: #291a46 !important;
+	background: rgba(41, 26, 70, 0.5);
+}
+
+.chat[aria-selected="true"] {
+	background-color: #291a46;
 }
 
 .unseen_count {
