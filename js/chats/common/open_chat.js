@@ -1,10 +1,13 @@
 $(document).ready(() => $(".chat:visible").on("click", openChat));
 
 function openChat(e, customName = false, customStatus = false) {
-	statusTimer();
-	canUpdate.chatsUpdater = false;
+	$('.chats header').attr("data-id", id);
+	$('.chat').removeAttr("aria-selected");
+	$(e.currentTarget).attr("aria-selected", true);
 
 	if (id === $(e.currentTarget).attr("data-id")) return;
+
+	canUpdate.chatsUpdater = false;
 
 	id = $(e.currentTarget).attr("data-id"); // base64 id value. Example: 1; group:11 (in base64)
 	statusBackend(`i=${id}&o=get`).then(res => {
@@ -12,16 +15,10 @@ function openChat(e, customName = false, customStatus = false) {
 		customStatus === false ? $(".chats header div div").eq(1).html(res) : $(".chats header div div").eq(1).html(customStatus);
 	});
 
-	$('[subject]').attr('style', 'background: #291a46');
-	$('.chats header div div').eq(0).attr("data-id", id);
-
-	$('.chat').css("background-color", ""); // Removing "selected" background from every other div
-	$(e.currentTarget).css("background-color", '#291a46'); // Setting background to a darker one, indicating "selected"
-
 	if ($('.chat_list').attr("hidden")) {
 		$(".chat_list").removeAttr("hidden");
 		$(".chat_result_list").attr("hidden", "");
-		$(`.chat_list .chat[data-id='${id}']`).css("background-color", "#291a46");
+		$(`.chat_list .chat[data-id='${id}']`).attr("aria-selected", true);
 	}
 
 	$('.choose_chat').css("display", "none"); // Removing "choose chat" balloon
@@ -55,5 +52,5 @@ function openChat(e, customName = false, customStatus = false) {
 		$('.chats header img').on("click", sendDoubts);
 	}
 
-	chatsUpdater(100);
+	chatsUpdater(50);
 }
