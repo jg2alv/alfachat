@@ -13,7 +13,8 @@
         header("Location: ../"); // If user isn't logged in
     } else {
         $sql = mysqli_fetch_assoc($sql);
-        if (!empty($_POST["cred"]) && $_POST["cred"] === $_SESSION["ra"] . ":" . $_SESSION["password"]) {
+        if (!empty($_POST["cred"])) {
+            unset($sql["password"], $sql["id"]);
             echo json_encode($sql);
             die();
         }
@@ -233,8 +234,13 @@
                             chat_list.innerHTML = xml.responseText;
 
                             if (chat_list.children.length !== $(".chat_list")[0].children.length || forceUpdate) {
+                                const selected = $(".chat[aria-selected='true']"),
+                                    chat_id = $(selected).attr("data-id"); 
+
                                 $(".chat_list").html(xml.responseText);
                                 $(".chat:visible").on("click", openChat);
+
+                                $(selected).length ? $(`.chat[data-id="${chat_id}"]`).attr("aria-selected", true) : closeChat();
                             }
 
                             $(document).remove(chat_list);
@@ -289,11 +295,9 @@
             const xml = new XMLHttpRequest();
             xml.open("POST", "./", true);
             xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xml.send("cred=<?php echo $_SESSION["ra"] . ":" . $_SESSION["password"] ?>");
+            xml.send("cred=1");
 
-            return new Promise(resolve => {
-                xml.onload = () => resolve(JSON.parse(xml.responseText));
-            });
+            return new Promise(resolve => xml.onload = () => resolve(JSON.parse(xml.responseText)));
         }
 
         const response = getSessionData().then(response => {
