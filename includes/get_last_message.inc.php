@@ -27,7 +27,7 @@
                 $file = $sql["file"];
                 $bio .= file_info($conn, $file);    
             
-            } else $bio .= " " . base64_decode($sql["content"]);
+            } else $bio .= " " . html_entity_decode(base64_decode($sql["content"]));
 
             $time = time() - $sql["time"];
             if ($time < date("G") * 3600)
