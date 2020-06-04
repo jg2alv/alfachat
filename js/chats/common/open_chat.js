@@ -1,17 +1,17 @@
 $(document).ready(() => $(".chat:visible").on("click", openChat));
 
-function openChat(e, customName = false, customStatus = false) {
+function openChat({ currentTarget }, customName = false, customStatus = false) {
 	$('.chats header').attr("data-id", id);
 	$('.chat').removeAttr("aria-selected");
-	$(e.currentTarget).attr("aria-selected", true);
+	$(currentTarget).attr("aria-selected", true);
 
-	if (id === $(e.currentTarget).attr("data-id")) return;
+	if (id === $(currentTarget).attr("data-id")) return;
 
 	canUpdate.chatsUpdater = false;
 
-	id = $(e.currentTarget).attr("data-id"); // base64 id value. Example: 1; group:11 (in base64)
+	id = $(currentTarget).attr("data-id"); // base64 id value. Example: 1; group:11 (in base64)
 	statusBackend(`i=${id}&o=get`).then(res => {
-		customName === false ? $(".chats header div div").eq(0).html(e.currentTarget.children[1].children[0].children[0].innerHTML) : $(".chats header div div").eq(0).html("Suporte de " + customName.innerHTML);
+		customName === false ? $(".chats header div div").eq(0).html(currentTarget.children[1].children[0].children[0].innerHTML) : $(".chats header div div").eq(0).html("Suporte de " + customName.innerHTML);
 		customStatus === false ? $(".chats header div div").eq(1).html(res) : $(".chats header div div").eq(1).html(customStatus);
 	});
 
