@@ -26,17 +26,17 @@ let forum_doubts = new Array();
 
 // Subject list
 const subjects = {
-    "Qu&iacute;mica": "Desce de revesgueio e cruza de robod&eacute;sio",
-    "F&iacute;sica": "Esse a&iacute; &eacute; meio emba&ccedil;adinho",
+    "Química": "Desce de revesgueio e cruza de robod&eacute;sio",
+    "Física": "Esse a&iacute; &eacute; meio emba&ccedil;adinho",
     "Biologia": "VOU CARIMBAR A SUA TESTA",
-    "Matem&aacute;tica": "X vezes cinco &eacute; igual a X vezes dez divido por dois",
-    "Portugu&ecirc;s": "",
-    "Ingl&ecirc;s": "",
+    "Matemática": "X vezes cinco &eacute; igual a X vezes dez divido por dois",
+    "Português": "",
+    "Inglês": "",
     "Geografia": "O Canad&aacute; &eacute; o pa&iacute;s com mais canadenses no mundo todo",
-    "Hist&oacute;ria": "O tempo ruge e a Sapoca&iacute; &eacute; grande",
+    "História": "O tempo ruge e a Sapoca&iacute; &eacute; grande",
     "Filosofia": "O n&atilde;o ser &eacute; e o ser n&atilde;o &eacute;",
     "Sociologia": "De acordo com Durkheim",
-    "Reda&ccedil;&atilde;o": "",
+    "Redação": "",
     "Literatura": "",
 
     draw: function (subject) {
@@ -959,7 +959,7 @@ let reply = 0,
     edit = 0;
 
 const scrollToMessage = (msg) => {
-    Math.abs($(msg).offset().top) !== $(msg).offset().top || $(msg).offset().top < $(msg).outerHeight() ? msg.scrollIntoView() : null;
+    $(msg).offset().top < 0 || $(msg).offset().top < $(msg).outerHeight() ? msg.scrollIntoView() : null;
     new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
