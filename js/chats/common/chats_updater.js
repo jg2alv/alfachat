@@ -11,6 +11,8 @@ function chatsUpdater(limit, force = false) {
 	xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	xml.send(`id=${id}&limit=${limit}`);
 	xml.onload = () => {
+		if (!canUpdate.chatsUpdater) return;
+
 		const response = xml.responseText ? JSON.parse(xml.responseText) : [],
 			observerOptions = { root: $(".message_area:visible")[0], rootMargin: "500%" },
 			observer = new IntersectionObserver(entries => entries.forEach(entry => !entry.isIntersecting ? $(entry.target).attr("data-src", $(entry.target).attr("src")).removeAttr("src") : $(entry.target).attr("src", $(entry.target).attr("data-src")).removeAttr("data-src")), observerOptions),
@@ -62,6 +64,12 @@ function chatsUpdater(limit, force = false) {
 				$("input[type='range']", element).off("input").on("input", e => $(e.currentTarget).siblings('audio')[0].currentTime = Number(e.currentTarget.value));
 				$(".reply", element).off("click").on("click", e => scrollToMessage($(`.message_area div[data-id='${$(e.currentTarget).attr("data-reply")}']`)[0]));
 				$(element).children().off("contextmenu").on("contextmenu", ContextMenu);
+				$("[data-subject-name]", element).off("click").on("click", e => showForum().then(() => $(`#forum main [subject] .info div:contains(${$(e.currentTarget).attr("data-subject-name")})`).click()));
+				$("[data-doubt]", element).off("click").on("click", e => showForum().then(async () => {
+					const data = atob($(e.currentTarget).attr("data-doubt")).split(":");
+					await openSubject({currentTarget: data[0]});
+					$(`.doubt[data-id="${data[1]}"]`).click();
+				}));
 			};
 
 		new Promise(resolve => {
@@ -74,7 +82,7 @@ function chatsUpdater(limit, force = false) {
 			$(".message_area").css("display", "block");
 
 			if (message_area.children.length === 0 || force) {
-				const messageObserver = new IntersectionObserver((entries, observer) => {
+				new IntersectionObserver((entries, observer) => {
 					entries.forEach(entry => {
 						if (!entry.isIntersecting)
 							return;
@@ -82,8 +90,7 @@ function chatsUpdater(limit, force = false) {
 						observer.unobserve(entry.target);
 						chatsUpdater(limit + 50);
 					});
-				}, observerOptions);
-				messageObserver.observe(chats.firstChild);
+				}, observerOptions).observe(chats.firstChild);
 
 				$(message_area).off("scroll").on("scroll", () => canScroll = false).html(chats.innerHTML);
 				prepareMedia(message_area);
