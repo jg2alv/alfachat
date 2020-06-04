@@ -2,7 +2,7 @@ function ContextMenu(e) {
     e.preventDefault();
     $(".context_menu").html("");
 
-    $("audio, video, img, a[download]", e.currentTarget).length ? $(".context_menu").html("<span>Responder</span><span>Selecionar</span>") : $(e.currentTarget.firstChild).attr("class").includes("mine") && !$("#forum main .message_area").length ? $(".context_menu").html("<span>Responder</span><span>Editar</span><span>Selecionar</span><span>Copiar</span><span>Deletar</span>") : $(".context_menu").html("<span>Responder</span><span>Selecionar</span><span>Copiar</span>");
+    $("audio, video, img:not(.profile_img), a[download]", e.currentTarget).length ? $(".context_menu").html("<span>Responder</span><span>Selecionar</span>") : $(e.currentTarget.firstChild).attr("class").includes("mine") && !$("#forum main .message_area").length ? $(".context_menu").html("<span>Responder</span><span>Editar</span><span>Selecionar</span><span>Copiar</span><span>Deletar</span>") : $(".context_menu").html(`<span>Responder</span><span>Selecionar</span><span>Copiar</span>${id && atob(id).indexOf("group") > -1 ? "<span>Responder em privado</span>" : ""}`);
 
     $(".context_menu").css({ "left": $(window).width() - e.originalEvent.clientX > Number($(".context_menu").css("min-width").slice(0, -2)) ? e.originalEvent.x + 5 : $(window).width() - Number($(".context_menu").css("min-width").slice(0, -2)), "top": e.originalEvent.y + 5 }).fadeIn(250).on("mouseout", hideMenu);
     setTimeout(() => $(".context_menu:hover").length ? null : $(".context_menu").fadeOut(), 2500);
@@ -42,21 +42,21 @@ function ContextMenu(e) {
                 doubts = doubt_list;
             }
             $(e.currentTarget).remove();
-        } else if (this.innerHTML === "Responder" || this.innerHTML === "Editar") {
+        } else if (this.innerHTML === "Responder" || this.innerHTML === "Editar" || this.innerHTML === "Responder em privado") {
             const modal = new Object();
             modal.content = (() => {
                 if ($("a .pic", e.currentTarget).length)
                     return "<img src='assets/icons/file.png' style='width: 25px; margin: 0 2.5px -2px -5px'>Arquivo";
                 else if ($(".audio_btns", e.currentTarget).length)
                     return "<img src='assets/icons/audio.png' style='width: 25px; margin: 0 -2.5px'>&Aacute;udio";
-                else if ($("img", e.currentTarget).length)
+                else if ($("img:not(.profile_img)", e.currentTarget).length)
                     return "<img src='assets/icons/camera.png' style='width: 15px; margin-right: 5px'>Foto";
                 else if ($("video", e.currentTarget).length)
                     return "<img src='assets/icons/play.png' style='width: 20px; margin: 0 2.5px 0 0'>V&iacute;deo";
                 else if (e.currentTarget.firstChild.className === "their")
-                    return e.currentTarget.firstChild.firstChild.children[1].textContent;
+                    return e.currentTarget.firstChild.firstChild.firstChild.childNodes[1].textContent;
                 else if (e.currentTarget.firstChild.firstChild.className === "reply")
-                    return e.currentTarget.firstChild.children[1].innerHTML;
+                    return e.currentTarget.firstChild.children[1].textContent;
                 else
                     return e.currentTarget.firstChild.firstChild.textContent;
             })();
@@ -67,7 +67,7 @@ function ContextMenu(e) {
                 $(".message_modal").css("display", "");
             });
 
-            if (this.innerHTML === "Responder") {
+            if (this.innerHTML === "Responder" || this.innerHTML === "Responder em privado") {
                 reply = modal;
 
                 reply.sender = (() => {
@@ -76,14 +76,23 @@ function ContextMenu(e) {
                     else if (id === undefined || atob(id).indexOf("doubt") > -1 || atob(id).indexOf("teacher") > -1)
                         return "Professor(a)";
                     else if (atob(id).indexOf("group") === -1)
-                        return $(".chat[style*='background-color: rgb(41, 26, 70);'] .info div div").html();
+                        return $(".chat[aria-selected='true'] .info div div").html();
                     else
-                        return e.currentTarget.firstChild.firstChild.firstChild.innerHTML;
+                        return e.currentTarget.firstChild.firstChild.firstChild.firstChild.innerHTML;
                 })()
 
-                $(".message_modal div div").eq(0).html(reply.sender);
-                $(".message_modal div div").eq(1).html(reply.content);
+                $(".message_modal div div").eq(0).text(reply.sender);
+                $(".message_modal div div").eq(1).text(reply.content);
                 reply.id = atob($(e.currentTarget).attr("data-id"));
+                if (this.innerHTML === "Responder em privado") {
+                    const sender = $(e.currentTarget).data("sender");
+
+                    reply.receiver = sender.id;
+                    canUpdate.chatListUpdater = canUpdate.chatsUpdater = false;
+
+                    !$(`.chat[data-id="${btoa(sender.id)}"]`).length ? $(".chat_list").children(".chat[aria-selected='true']").removeAttr("aria-selected").parent().prepend(`<div class="chat" data-id="${btoa(sender.id)}" aria-selected="true"><div class="pic"><img src="${sender.photo}"></div><div class="info"><div style="display: flex; justify-content: space-between"><div>${sender.name}</div></div><div style="display: flex; justify-content: space-between"><div>&nbsp;</div></div></div>`) : $(`[data-id="${btoa(sender.id)}"]`, ".chat_list").click();
+                    openChat({currentTarget: $(".chat[aria-selected='true']")[0]});
+                }
             } else {
                 modal.sender = decodeURIComponent(escape(atob(sessionStorage["bmFtZQ=="])));
                 modal.id = atob($(e.currentTarget).attr("data-id"));
