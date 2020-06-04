@@ -14,7 +14,8 @@
     $receiver = base64_decode($_POST["id"]); // ID of the person I'm talking to
     $time = time();
     $content = base64_encode(filter_input(INPUT_POST, "m", FILTER_SANITIZE_SPECIAL_CHARS));
-    $reply = $_POST["r"];
+    list($reply, $chat) = json_decode($_POST["r"]);
+    $reply = $chat ? "$chat.$reply" : $reply;
 
     /*
         $receiver can be:
