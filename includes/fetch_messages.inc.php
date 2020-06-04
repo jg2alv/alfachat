@@ -11,7 +11,7 @@
             }
 
             if ($msg["reply"]) {
-                $reply = $msg["reply"];
+                strpos($msg["reply"], ".") !== false ? list($chat, $reply) = explode(".", $msg["reply"]) : $reply = $msg["reply"];
                 $sql = "SELECT * FROM `messages` WHERE id = $reply";
                 $sql = mysqli_query($conn, $sql);
                 if (!mysqli_num_rows($sql))
@@ -34,6 +34,7 @@
                         $sql = mysqli_query($conn, $sql);
                         $msg["reply"]["sender"] = mysqli_fetch_assoc($sql)["name"];
                     }
+                    !empty($chat) ? $msg["reply"]["receiver"] = $chat : null;
                 }
             }
 
