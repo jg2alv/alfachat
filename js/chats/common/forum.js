@@ -8,19 +8,22 @@ function showForum() {
     $(".chats").css("display", "none");
     $("#forum main").css({ "display": "block", "padding": "0" }).html("<div class='subject_list'></div>");
     $("#forum header img:nth-of-type(2), #forum_menu").off("click").on("click", hideForum);
-    hideSideMenu().then(() => {
-        $("#forum_menu .pic img").attr("src", "assets/icons/home.png").attr("alt", "P&aacute;gina principal").css("max-width", "50%");
-        $("#forum_menu .info").html("P&aacute;gina principal");
-        $("#teacher_list").html("");
-        subjectList(".subject_list");
-        subjectList("#teacher_list");
+    return new Promise(resolve => {
+        hideSideMenu().then(() => {
+            $("#forum_menu .pic img").attr("src", "assets/icons/home.png").attr("alt", "P&aacute;gina principal").css("max-width", "50%");
+            $("#forum_menu .info").html("P&aacute;gina principal");
+            $("#teacher_list").html("");
+            subjectList(".subject_list");
+            subjectList("#teacher_list");
+        });
+
+        canUpdate.teacherListUpdater = false;
+        canUpdate.chatListUpdater = false;
+        canUpdate.chatsUpdater = false;
+
+        $("#forum header input").off("keyup").on("keyup", e => !e.target.value || e.target.value === " " ? $("#forum main .menu_icon").removeAttr("hidden") : $(`#forum main .menu_icon:not(:contains(${e.target.value}))`).attr("hidden", ""));
+        resolve();
     });
-
-    canUpdate.teacherListUpdater = false;
-    canUpdate.chatListUpdater = false;
-    canUpdate.chatsUpdater = false;
-
-    $("#forum header input").off("keyup").on("keyup", e => !e.target.value || e.target.value === " " ? $("#forum main .menu_icon").removeAttr("hidden") : $(`#forum main .menu_icon:not(:contains(${e.target.value}))`).attr("hidden", ""));
 }
 
 function hideForum() {
@@ -38,47 +41,37 @@ function hideForum() {
     canUpdate.chatListUpdater = true;
 }
 
-function openSubject(e) {
+async function openSubject({ currentTarget }) {
     hideSideMenu().then(() => {
         $("#forum header img").eq(2).css("display", "initial").off("click").on("click", function () {
             $("#forum main").css("grid-template-columns", "");
-            openSubject(e);
+            openSubject({ currentTarget: currentTarget });
         });
 
         $("#forum .input_area").remove();
         $("#forum").css("display", "flex");
-        $("#forum main").css({ "display": "grid", "padding": "0 5px", "box-sizing": "border-box" }).html("<div class='loading'>Carregando...</div>");
+        $("#forum main").css({ "display": "grid", "padding": "0 5px", "box-sizing": "border-box", "grid-template-columns": "" }).html("<div class='loading'>Carregando...</div>");
         $("#subjects_menu .menu_icon .pic img").css("border-radius", 0);
-        $("#teacher_list .menu_icon").on("click", e => hideSideMenu().then(() => openSubject(e)));
+        $("#teacher_list .menu_icon").on("click", ({ currentTarget }) => hideSideMenu().then(() => openSubject({ currentTarget: currentTarget })));
     });
 
     $("#forum header img").eq(1).off("click").on("click", showForum);
     $("#forum_menu").off("click").on("click", hideForum);
 
-    fetch_doubts($(e.currentTarget).attr("subject")).then(() => {
-        $("#forum main").html("").css("grid-template-columns", "repeat(3, 1fr)");
+    const loadConversation = function (ev, subject = false) {
+        const doubt = forum_doubts[$(this).attr("data-id") || subject];
+        subject = $(this).attr("data-id") || subject;
 
-        forum_doubts.forEach((doubt, index) => {
-            doubtArea = document.createElement("div");
-            $(doubtArea).attr("class", "doubt").attr("data-id", index);
-            $(doubtArea).html(`<div style="display: flex; flex-direction: column; height: 100%"><div style="border-bottom: 1px solid rgba(255, 255, 255, 0.3); padding-bottom: 10px; margin-bottom: 15px; flex: 1; font-size: 24px; text-transform: capitalize; font-weight: bolder">${doubt[1][0]}</div><div style="font-size: 18px; overflow: hidden; flex: 4; overflow-wrap: anywhere; flex-basis: 0">${doubt[0][0].content}</div><div style="flex: 3; color: #cccccc; font-size: 14px; padding-top: 15px">Autor: ${JSON.parse(doubt[0][0].sender).name}<br>Professor respons&aacute;vel: ${JSON.parse(doubt[0][0].receiver).name + ftags(doubt[1][1])}</div>`)
-            $("#forum main").append(doubtArea);
-        });
+        $("#forum header img").eq(1).off("click").on("click", openSubject.bind(window, { currentTarget: currentTarget }));
+        $("#forum main").css("display", "block").html("<div class='message_area' style='display: block; visibility: visible; background-color: unset'></div>");
 
-        if (!$("#forum main").html()) {
-            $("#forum main").css("grid-template-columns", "").html("<div class='loading'>N&atilde;o h&aacute; d&uacute;vidas para serem exibidas!</div>");
-            $("#forum header img").eq(1).off("click").on("click", showForum);
-            return;
-        }
-
-        const loadConversation = function (ev, subject = false) {
-            const doubt = forum_doubts[$(this).attr("data-id") || subject];
-            subject = $(this).attr("data-id") || subject;
-
-            $("#forum header img").eq(1).off("click").on("click", () => openSubject(e));
-            $("#forum main").css("display", "block").html("<div class='message_area' style='display: block; visibility: visible; background-color: unset'></div>");
-
-            doubt[0].forEach(msg => $("#forum main .message_area").append(new Message(msg, true).parse()));
+        new Promise(resolve => {
+            doubt[0].forEach(async msg => {
+                const message = await new Message(msg).parse();
+                $("#forum main .message_area").append(message);
+                msg === doubt[0][doubt.length - 1] ? resolve() : null;
+            });
+        }).then(() => {
             const mediaObserver = new IntersectionObserver(entries => { // Observer to lazy-load images/ videos
                 entries.forEach(entry => {
                     if (entry.target instanceof HTMLVideoElement) {
@@ -100,37 +93,48 @@ function openSubject(e) {
                         }
                     }
                 })
-            }, { root: $("#forum main .message_area")[0], rootMargin: "100%" }); // Getting global options
+            }, { root: $("#forum main .message_area")[0], rootMargin: "500%" }); // Getting global options
 
-            $("[data-src]").each((index, item) => { // For every image with data-src attr (images to be lazy loaded)
-                if (item instanceof HTMLSourceElement)
-                    mediaObserver.observe(item.parentElement);
-                else
-                    mediaObserver.observe(item);
-            });
+            $("[data-src]").each((index, item) => item instanceof HTMLSourceElement ? mediaObserver.observe(item.parentElement) : mediaObserver.observe(item));
 
             $(".message_area").children("div[style*='display: grid;']").off("contextmenu").on("contextmenu", ContextMenu);
             $(".reply").off("click").on("click", ev => scrollToMessage($(`.message_area div[data-id='${$(ev.currentTarget).attr("data-reply")}']`)[0]));
-
-            $("#forum .input_area").remove();
-            $("#forum").css("display", "grid").append("<form class='input_area' style='display: flex; width: 100%; background-color: #35215a; box-shadow: 0 130px 130px 100px #000'><input id='file_input' type='file' style='display: none' name='file_input' multiple><img src='assets/icons/file.png' alt='Carregar arquivo'><ul id='suggester' class='suggester'></ul><textarea placeholder='Escreva sua mensagem'></textarea><div class='audio_control' hidden></div><div class='audio_control' hidden></div><span class='countdown' hidden>00:00</span><ul class='suggester emoji'></ul><img src='assets/icons/emoji.png' alt='Enviar emoji'><img src='assets/icons/audio.png' alt='Gravar audio'></form>");
-            $("#forum .input_area .suggester.emoji").html($(".chats .input_area .suggester.emoji").html());
-            $("#forum .input_area textarea").off("input").on("input", resize).on("input", Suggester);
-            $("#forum header input").off("keyup", dsearch).on("keyup", e => !e.target.value || e.target.value === " " ? $("#forum main [data-message]").removeAttr("hidden") : $(`#forum main [data-message]:not(:contains(${e.target.value}))`).attr("hidden", ""));
-            $("#forum header img").eq(2).off("click").on("click", () => loadConversation(false, $(this).attr("data-id") || subject));
-
-            id = btoa(`doubt:${doubt[1][3]}`);
-            messageSender();
-        };
-
-        $(".doubt span").off("click").on("click", function () {
-            $("#forum header input").val($(this).html());
-            dsearch();
         });
 
-        $("#forum header input").off("keyup").on("keyup", dsearch);
-        $(".doubt").on("click", loadConversation);
+        $("#forum .input_area").remove();
+        $("#forum").css("display", "grid").append("<form class='input_area' style='display: flex; width: 100%; background-color: #35215a; box-shadow: 0 130px 130px 100px #000'><input id='file_input' type='file' style='display: none' name='file_input' multiple><img src='assets/icons/file.png' alt='Carregar arquivo'><ul id='suggester' class='suggester'></ul><textarea placeholder='Escreva sua mensagem'></textarea><div class='audio_control' hidden></div><div class='audio_control' hidden></div><span class='countdown' hidden>00:00</span><ul class='suggester emoji'></ul><img src='assets/icons/emoji.png' alt='Enviar emoji'><img src='assets/icons/audio.png' alt='Gravar audio'></form>");
+        $("#forum .input_area .suggester.emoji").html($(".chats .input_area .suggester.emoji").html());
+        $("#forum .input_area textarea").off("input").on("input", resize).on("input", Suggester);
+        $("#forum header input").off("keyup", dsearch).on("keyup", e => !e.target.value || e.target.value === " " ? $("#forum main [data-message]").removeAttr("hidden") : $(`#forum main [data-message]:not(:contains(${e.target.value}))`).attr("hidden", ""));
+        $("#forum header img").eq(2).off("click").on("click", loadConversation.bind(this, false, $(this).attr("data-id") || subject));
+
+        id = btoa(`doubt:${doubt[1][3]}`);
+        messageSender();
+    };
+
+    await fetch_doubts($(currentTarget).attr("subject"));
+    $("#forum main").html("").css("grid-template-columns", "repeat(3, 1fr)");
+
+    forum_doubts.forEach(doubt => {
+        doubtArea = document.createElement("div");
+        $(doubtArea).attr("class", "doubt").attr("data-id", doubt[1][3]);
+        $(doubtArea).html(`<div style="display: flex; flex-direction: column; height: 100%"><div style="border-bottom: 1px solid rgba(255, 255, 255, 0.3); padding-bottom: 10px; margin-bottom: 15px; flex: 1; font-size: 24px; text-transform: capitalize; font-weight: bolder">${doubt[1][0]}</div><div style="font-size: 18px; overflow: hidden; flex: 4; overflow-wrap: anywhere; flex-basis: 0">${doubt[0][0].content}</div><div style="flex: 3; color: #cccccc; font-size: 14px; padding-top: 15px">Autor: ${JSON.parse(doubt[0][0].sender).name}<br>Professor respons&aacute;vel: ${JSON.parse(doubt[0][0].receiver).name + ftags(doubt[1][1])}</div>`)
+        $("#forum main").append(doubtArea);
     });
+
+    if (!$("#forum main").html()) {
+        $("#forum main").css("grid-template-columns", "").html("<div class='loading'>N&atilde;o h&aacute; d&uacute;vidas para serem exibidas!</div>");
+        $("#forum header img").eq(1).off("click").on("click", showForum);
+        return;
+    }
+
+    $(".doubt span").off("click").on("click", function () {
+        $("#forum header input").val($(this).html());
+        dsearch();
+    });
+
+    $("#forum header input").off("keyup").on("keyup", dsearch);
+    $(".doubt").on("click", loadConversation);
 }
 
 function ftags(tags) {
