@@ -7,7 +7,7 @@
     if (empty($_POST["subject"]))
         $sql = "SELECT * FROM `doubts` WHERE public = 1 AND assignee IS NOT NULL ORDER BY time DESC";
     else {
-        $subject = addslashes(html_entity_decode(base64_decode($_POST["subject"])));
+        $subject = filter_input(INPUT_POST, "subject", FILTER_SANITIZE_SPECIAL_CHARS);
         $sql = "SELECT * FROM `doubts` WHERE subject = '$subject' AND public = 1 AND assignee IS NOT NULL ORDER BY time DESC";
     }
 
