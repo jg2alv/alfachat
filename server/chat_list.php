@@ -11,14 +11,9 @@
     $chats = array();
     $sql = "SELECT chats FROM `users` WHERE id = $id"; // Selecting logged user
     $sql = mysqli_query($conn, $sql);
-    $sql = mysqli_fetch_assoc($sql);
+    $sql = $chatlist = mysqli_fetch_assoc($sql)["chats"];
 
-    if (!empty($_POST["chats"])) {
-        echo base64_encode($sql["chats"]);
-        return;
-    }
-
-    $sql = explode(",", $sql["chats"]);
+    $sql = explode(",", $sql);
     foreach ($sql as $chat) {
         if (strpos($chat, ":") !== false) {
             $id = explode(":", $chat)[1];
@@ -30,7 +25,7 @@
                 $sql = explode(",", mysqli_fetch_assoc(mysqli_query($conn, $sql))["members"]);
                 $response = array();
                 foreach($sql as $member) {
-                    $sql = "SELECT name, photo, status FROM `users` WHERE id = $member";
+                    $sql = "SELECT id, name, photo, status FROM `users` WHERE id = $member";
                     $sql = mysqli_fetch_assoc(mysqli_query($conn, $sql));
                     array_push($response, $sql);
                 }
@@ -84,5 +79,5 @@
     }
 
     krsort($chats);
-    echo implode("", $chats);
+    echo json_encode(array(implode("", $chats), base64_encode($chatlist)));
 ?>
