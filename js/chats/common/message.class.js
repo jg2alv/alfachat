@@ -10,7 +10,7 @@ class Message {
 
         this.btn = $(".input_area img")[2];
         this.group = group;
-        this.message.sender = JSON.parse(this.message.sender);
+        this.message.sender = typeof this.message.sender !== "object" ? JSON.parse(this.message.sender) : this.message.sender;
 
         const d = new Date(Number(message.time) * 1000);
         this.time = `<div style="display: grid; margin: 10px 10px 10px 20px;"><div class="message_time">${Number(message.edited) ? "<span style='margin: 0 5px'>editado</span>" : ""}${d.getHours() > 12 ? addZero(d.getHours() - 12) + ":" + addZero(d.getMinutes()) + " PM" : addZero(d.getHours()) + ":" + addZero(d.getMinutes()) + " AM"}${message.sender.id === atob(sessionStorage["aWQ="]) ? Number(message.seen) === 1 ? "<div class='message_status' style='background-image: url(assets/icons/seen.png)'></div>" : Number(message.seen) === 0 ? "<div class='message_status' style='background-image: url(assets/icons/sent.png)'></div>" : Number(message.seen) === -1 ? "<div class='message_status' style='background-image: url(assets/icons/sending.png)'></div>" : "" : ""}</div></div>`;
@@ -22,10 +22,7 @@ class Message {
             const img = ["png", "jpg", "jpeg", "gif", "jfif"],
                 video = ["mp4", "webm"],
                 audio = ["mp3", "wav", "ogg"];
-
-            try {
-                this.message.file = JSON.parse(this.message.file);
-            } catch (e) { }
+            this.message.file = typeof this.message.file !== "object" ? JSON.parse(this.message.file) : this.message.file;            
 
             const parseFile = () => {
                 if (this.message.sender.id === atob(sessionStorage["aWQ="])) {
@@ -38,15 +35,15 @@ class Message {
                     else
                         return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message mine" style="margin-left: 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div></div>`;
                 } else {
-                    if (this.group || atob(id).indexOf("group") > -1) {
+                    if (this.group || (id && atob(id).indexOf("group") > -1)) {
                         if (img.includes(this.message.file.extension.toLowerCase()))
-                            return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div><img data-src="${atob(this.message.file.location)}"></div>${this.time}</div><img class="profile_img" src="${this.message.sender.photo}"></div></div>`;
+                            return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><script id="s_${this.message.time}">$(".message_area div script#s_${this.message.time}").parent().data("sender", JSON.parse('${JSON.stringify(this.message.sender)}')).children("script").remove()</script><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div><img data-src="${atob(this.message.file.location)}"></div>${this.time}</div><img class="profile_img" src="${this.message.sender.photo}"></div></div>`;
                         else if (video.includes(this.message.file.extension.toLowerCase()))
-                            return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div><video controls="" preload=""><source src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video></div>${this.time}</div><img class="profile_img" src="${this.message.sender.photo}"></div></div>`;
+                            return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><script id="s_${this.message.time}">$(".message_area div script#s_${this.message.time}").parent().data("sender", JSON.parse('${JSON.stringify(this.message.sender)}')).children("script").remove()</script><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div><video controls="" preload=""><source src="${atob(this.message.file.location)}" type="video/${this.message.file.extension}"></video></div>${this.time}</div><img class="profile_img" src="${this.message.sender.photo}"></div></div>`;
                         else if (audio.includes(this.message.file.extension.toLowerCase()))
-                            return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div></div>${this.time}</div><img class="profile_img" src="${this.message.photo}"></div></div>`;
+                            return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><script id="s_${this.message.time}">$(".message_area div script#s_${this.message.time}").parent().data("sender", JSON.parse('${JSON.stringify(this.message.sender)}')).children("script").remove()</script><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div><div style="display: flex;"><img class="audio_btns" src="assets/icons/play.png"><input type="range" value="0" max=""><audio preload="metadata"><source src="${atob(this.message.file.location)}" type="audio/${this.message.file.extension}"></audio><span class="audio_time"></span></div></div>${this.time}</div><img class="profile_img" src="${this.message.photo}"></div></div>`;
                         else
-                            return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div><img class="profile_img" src="${this.message.sender.photo}"></div></div>`;
+                            return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><script id="s_${this.message.time}">$(".message_area div script#s_${this.message.time}").parent().data("sender", JSON.parse('${JSON.stringify(this.message.sender)}')).children("script").remove()</script><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div><a style="display: flex" href="${atob(this.message.file.location)}" download=""><div class="pic" style="justify-content: start; margin-bottom: -2vh;"><img src="assets/icons/arrow.png" style="max-width: 60%; background-color: #291a46; border-radius: 50%"></div><div style="flex: 2;" class="info"><div>${this.message.file.name}</div><div style="color: #cccccc; font-size: 16px">${this.convertUnits(this.message.file.size)}</div></div></a></div>${this.time}</div><img class="profile_img" src="${this.message.sender.photo}"></div></div>`;
                     } else {
                         if (img.includes(this.message.file.extension.toLowerCase()))
                             return `<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message their">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><img data-src="${atob(this.message.file.location)}"></div>${this.time}</div></div>`;
@@ -76,37 +73,37 @@ class Message {
                 hashtags.forEach(hashtag => {
                     const value = hashtag.slice(1),
                         subject = {
-                            "qui": "Qu&iacute;mica",
-                            "quí": "Qu&iacute;mica",
-                            "quimica": "Qu&iacute;mica",
-                            "química": "Qu&iacute;mica",
+                            "qui": "Química",
+                            "quí": "Química",
+                            "quimica": "Química",
+                            "química": "Química",
 
-                            "fis": "F&iacute;sica",
-                            "fís": "F&iacute;sica",
-                            "fisica": "F&iacute;sica",
-                            "física": "F&iacute;sica",
+                            "fis": "Física",
+                            "fís": "Física",
+                            "fisica": "Física",
+                            "física": "Física",
 
                             "bio": "Biologia",
                             "biologia": "Biologia",
 
-                            "mat": "Matem&aacute;tica",
-                            "matemática": "Matem&aacute;tica",
-                            "matematica": "Matem&aacute;tica",
+                            "mat": "Matemática",
+                            "matemática": "Matemática",
+                            "matematica": "Matemática",
 
-                            "pt": "Portugu&ecirc;s",
-                            "português": "Portugu&ecirc;s",
-                            "portugues": "Portugu&ecirc;s",
+                            "pt": "Português",
+                            "português": "Português",
+                            "portugues": "Português",
 
-                            "ing": "Ingl&ecirc;s",
-                            "inglês": "Ingl&ecirc;s",
-                            "ingles": "Ingl&ecirc;s",
+                            "ing": "Inglês",
+                            "inglês": "Inglês",
+                            "ingles": "Inglês",
 
                             "geo": "Geografia",
                             "geografia": "Geografia",
 
-                            "hist": "Hist&oacute;ria",
-                            "história": "Hist&oacute;ria",
-                            "historia": "Hist&oacute;ria",
+                            "hist": "História",
+                            "história": "História",
+                            "historia": "História",
 
                             "fil": "Filosofia",
                             "filo": "Filosofia",
@@ -116,18 +113,18 @@ class Message {
                             "socio": "Sociologia",
                             "sociologia": "Sociologia",
 
-                            "red": "Reda&ccedil;&atilde;o",
-                            "redação": "Reda&ccedil;&atilde;o",
-                            "redacão": "Reda&ccedil;&atilde;o",
-                            "redaçao": "Reda&ccedil;&atilde;o",
-                            "redacao": "Reda&ccedil;&atilde;o",
+                            "red": "Redação",
+                            "redação": "Redação",
+                            "redacão": "Redação",
+                            "redaçao": "Redação",
+                            "redacao": "Redação",
 
                             "lit": "Literatura",
                             "literatura": "Literatura"
                         };
 
                     if (forum_doubts[value - 1])
-                        this.message.content = this.message.content.replace(hashtag, `<span style="color: rgb(51, 122, 183); cursor: pointer" data-doubt="${value}">${hashtag}</span>`);
+                        this.message.content = this.message.content.replace(hashtag, `<span style="color: rgb(51, 122, 183); cursor: pointer" data-doubt="${btoa(forum_doubts[value - 1][1][2] + ":" + value)}">${hashtag}</span>`);
                     else if (subject.hasOwnProperty(value.toLowerCase()))
                         this.message.content = this.message.content.replace(hashtag, `<span style="color: rgb(51, 122, 183); cursor: pointer" data-subject-name="${subject[value]}">${hashtag}</span>`);
                 });
@@ -165,14 +162,7 @@ class Message {
                 });
             })();
 
-            if (this.message.sender.id === atob(sessionStorage["aWQ="])) {
-                return new Promise(resolve => resolve(`<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message mine">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px">${this.message.content}</div>${this.time}</div></div>`));
-            } else {
-                if (this.group || atob(id).indexOf("group") > -1) {
-                    return new Promise(resolve => resolve(`<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div>${this.message.content}</div>${this.time}</div><img class="profile_img" src="${this.message.sender.photo}"></div></div>`));
-                } else
-                    return new Promise(resolve => resolve(`<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message their">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px">${this.message.content}</div>${this.time}</div></div>`));
-            }
+            return this.message.sender.id === atob(sessionStorage["aWQ="]) ? new Promise(resolve => resolve(`<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message mine">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px">${this.message.content}</div>${this.time}</div></div>`)) : this.group || (id && atob(id).indexOf("group") > -1) ? new Promise(resolve => resolve(`<div style="display: grid;" data-id="${btoa(this.message.id)}"><script id="s_${this.message.time}">$(".message_area div script#s_${this.message.time}").parent().data("sender", JSON.parse('${JSON.stringify(this.message.sender)}')).children("script").remove()</script><div class="their"><div class="message" style="border-bottom-left-radius: 0; padding: 5px 0;">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px"><div style="color: blueviolet; font-size: 18px; margin-bottom: 5px; font-weight: bold">${this.message.sender.name}</div>${this.message.content}</div>${this.time}</div><img class="profile_img" src="${this.message.sender.photo}"></div></div>`)) : new Promise(resolve => resolve(`<div style="display: grid;" data-id="${btoa(this.message.id)}"><div class="message their">${(() => this.message.reply != 0 ? "<div class='reply' data-reply='" + btoa(this.message.reply.id) + "'><div>" + this.message.reply.sender + "</div><div>" + this.message.reply.content + "</div></div>" : "")()}<div style="margin: 10px 35px 10px 20px">${this.message.content}</div>${this.time}</div></div>`));
         }
     }
 
@@ -195,6 +185,7 @@ class Message {
         canScroll = true;
         $(".input_area textarea")[0].value = "";
         $(".message_area").css("display", "block");
+        const response = reply.id && reply.receiver !== undefined ? JSON.stringify([reply.receiver, reply.id]) : 0;
 
         if (edit) {
             const msg = $(`.message_area div[data-id="${btoa(edit.id)}"]`);
@@ -211,7 +202,7 @@ class Message {
 
         this.xml.open("POST", "../server/message_sender.php", true);
         this.xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        this.xml.send(`m=${encodeURIComponent(this.message.content)}&id=${id}&r=${reply.id || 0}`); // XML content is user input
+        this.xml.send(`m=${encodeURIComponent(this.message.content)}&id=${id}&r=${response}`); // XML content is user input
 
         $(".message_area").scrollTop($(".message_area")[0].scrollHeight - $(".message_area")[0].clientHeight);
         this.message.sender.id = atob(sessionStorage["aWQ="]);
