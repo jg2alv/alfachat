@@ -11,7 +11,7 @@
             }
 
             if ($msg["reply"]) {
-                strpos($msg["reply"], ".") !== false ? list($chat, $reply) = explode(".", $msg["reply"]) : $reply = $msg["reply"];
+                $reply = $msg["reply"];
                 $sql = "SELECT * FROM `messages` WHERE id = $reply";
                 $sql = mysqli_query($conn, $sql);
                 if (!mysqli_num_rows($sql))
@@ -25,16 +25,18 @@
                     
                     } else $msg["reply"]["content"] = html_entity_decode(base64_decode($sql["content"]));
 
-                    $msg["reply"]["id"] = $sql["id"];
-                    if ($sql["sender"] == $_SESSION["id"])
+                    $msg["reply"]["id"] = base64_encode($sql["id"]);
+                    if ($sql["sender"] == $_SESSION["id"]) {
                         $msg["reply"]["sender"] = $_SESSION["name"];
-                    else {
+                        $msg["reply"]["receiver"] = base64_encode($sql["receiver"]);
+                    } else {
+                        $receiver = $sql["receiver"];
                         $sql = $sql["sender"];
-                        $sql = "SELECT * FROM `users` WHERE id = $sql";
+                        $sql = "SELECT name FROM `users` WHERE id = $sql";
                         $sql = mysqli_query($conn, $sql);
                         $msg["reply"]["sender"] = mysqli_fetch_assoc($sql)["name"];
+                        $msg["reply"]["receiver"] = base64_encode($receiver);
                     }
-                    !empty($chat) ? $msg["reply"]["receiver"] = $chat : null;
                 }
             }
 
