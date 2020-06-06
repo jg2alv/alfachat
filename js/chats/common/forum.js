@@ -1,32 +1,31 @@
 $(document).ready(() => $("#forum_menu").on("click", showForum));
 
 function showForum() {
-    $("#forum_menu").off("click").on("click", hideForum);
-
     $("#forum").css("display", "flex");
     $(".chat_selector").css("display", "none");
     $(".chats").css("display", "none");
     $("#forum main").css({ "display": "block", "padding": "0" }).html("<div class='subject_list'></div>");
-    $("#forum header img:nth-of-type(2), #forum_menu").off("click").on("click", hideForum);
+    subjectList(".subject_list");
+    subjectList("#teacher_list");
     return new Promise(resolve => {
         hideSideMenu().then(() => {
             $("#forum_menu .pic img").attr("src", "assets/icons/home.png").attr("alt", "P&aacute;gina principal").css("max-width", "50%");
             $("#forum_menu .info").html("P&aacute;gina principal");
             $("#teacher_list").html("");
-            subjectList(".subject_list");
-            subjectList("#teacher_list");
         });
 
-        canUpdate.teacherListUpdater = false;
-        canUpdate.chatListUpdater = false;
-        canUpdate.chatsUpdater = false;
+        const canUpdateBck = canUpdate;
+        for (let prop in canUpdate)
+            canUpdate[prop] = false;
 
         $("#forum header input").off("keyup").on("keyup", e => !e.target.value || e.target.value === " " ? $("#forum main .menu_icon").removeAttr("hidden") : $(`#forum main .menu_icon:not(:contains(${e.target.value}))`).attr("hidden", ""));
+        $("#forum header img:nth-of-type(2), #forum_menu").off("click").on("click", hideForum.bind(canUpdateBck));
+        $("#forum_menu").off("click").on("click", hideForum.bind(canUpdateBck));
         resolve();
     });
 }
 
-function hideForum() {
+function hideForum(canUpdateBck) {
     $("#forum").css("display", "none");
     $(".chat_selector").css("display", "block");
     $(".chats").css("display", "grid");
@@ -37,8 +36,7 @@ function hideForum() {
     });
 
     $("#forum_menu").off("click").on("click", showForum);
-    canUpdate.teacherListUpdater = true;
-    canUpdate.chatListUpdater = true;
+    canUpdate = canUpdateBck;
 }
 
 async function openSubject({ currentTarget }) {
@@ -56,7 +54,6 @@ async function openSubject({ currentTarget }) {
     });
 
     $("#forum header img").eq(1).off("click").on("click", showForum);
-    $("#forum_menu").off("click").on("click", hideForum);
 
     const loadConversation = function (ev, doubt_id = false) {
         const doubt = forum_doubts[$(this).attr("data-id") || doubt_id];
