@@ -228,16 +228,7 @@
                         ch.style.display = "none";
                         $(document.body).append(ch);
                         $(sel).removeAttr("aria-selected");
-                        if ($(".chat_list").html() !== ch.innerHTML && canUpdate.chatListUpdater || force) {
-                            const chat_id = $(sel).attr("data-id"); 
-
-                            $(".chat_list").html(response[0]).attr("data-chats", response[1]);
-                            $(".chat:visible").on("click", openChat);
-
-                            $(sel).length ? $(`.chat[data-id="${chat_id}"]`).attr("aria-selected", true) : closeChat();
-                        } else
-                            $(sel).attr("aria-selected", true);
-
+                        $(".chat_list").html() !== ch.innerHTML && canUpdate.chatListUpdater || force ? $(".chat_list").html(response[0]).attr("data-chats", response[1]).children(".chat:visible").on("click", openChat) : $(sel).attr("aria-selected", true);
                         $(ch).remove();
                         !force ? update(t0, "chatListUpdater") : null;
                         resolve();
