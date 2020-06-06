@@ -58,47 +58,79 @@ async function openSubject({ currentTarget }) {
     $("#forum header img").eq(1).off("click").on("click", showForum);
     $("#forum_menu").off("click").on("click", hideForum);
 
-    const loadConversation = function (ev, subject = false) {
-        const doubt = forum_doubts[$(this).attr("data-id") || subject];
-        subject = $(this).attr("data-id") || subject;
+    const loadConversation = function (ev, doubt_id = false) {
+        const doubt = forum_doubts[$(this).attr("data-id") || doubt_id];
+        doubt_id = $(this).attr("data-id") || doubt_id;
 
         $("#forum header img").eq(1).off("click").on("click", openSubject.bind(window, { currentTarget: currentTarget }));
         $("#forum main").css("display", "block").html("<div class='message_area' style='display: block; visibility: visible; background-color: unset'></div>");
 
         new Promise(resolve => {
             doubt[0].forEach(async msg => {
-                const message = await new Message(msg).parse();
+                const message = await new Message(msg, true).parse();
                 $("#forum main .message_area").append(message);
                 msg === doubt[0][doubt.length - 1] ? resolve() : null;
             });
         }).then(() => {
-            const mediaObserver = new IntersectionObserver(entries => { // Observer to lazy-load images/ videos
-                entries.forEach(entry => {
-                    if (entry.target instanceof HTMLVideoElement) {
-                        if (!entry.isIntersecting) {
-                            $(entry.target.firstChild).attr("data-src", $(entry.target.firstChild).attr("src"));
-                            $(entry.target.firstChild).removeAttr("src");
-                        } else {
-                            $(entry.target.firstChild).attr("src", $(entry.target.firstChild).attr("data-src"));
-                            $(entry.target.firstChild).removeAttr("data-src");
-                            entry.target.load();
-                        }
-                    } else {
-                        if (!entry.isIntersecting) {
-                            $(entry.target).attr("data-src", $(entry.target).attr("src"));
-                            $(entry.target).removeAttr("src");
-                        } else {
-                            $(entry.target).attr("src", $(entry.target).attr("data-src"));
-                            $(entry.target).removeAttr("data-src");
-                        }
-                    }
-                })
-            }, { root: $("#forum main .message_area")[0], rootMargin: "500%" }); // Getting global options
+            const observerOptions = { root: $(".message_area:visible")[0], rootMargin: "500%" },
+                observer = new IntersectionObserver(entries => entries.forEach(entry => !entry.isIntersecting ? $(entry.target).attr("data-src", $(entry.target).attr("src")).removeAttr("src") : $(entry.target).attr("src", $(entry.target).attr("data-src")).removeAttr("data-src")), observerOptions),
+                prepareMedia = element => {
+                    $("[data-src]", element).each(function () { observer.observe(this); }).off("click").on("click", MediaModal);
 
-            $("[data-src]").each((index, item) => item instanceof HTMLSourceElement ? mediaObserver.observe(item.parentElement) : mediaObserver.observe(item));
+                    $("audio", element).off("loadmetadata").on("loadmetadata", e => $(e.target).siblings("span").html(`00:00/${convertTime(Math.floor(e.target.duration))}`)).off("timeupdate").on("timeupdate", e => {
+                        const input = $(e.target).siblings("input[type='range']")[0],
+                            duration = Math.floor(e.target.duration);
 
-            $(".message_area").children("div[style*='display: grid;']").off("contextmenu").on("contextmenu", ContextMenu);
-            $(".reply").off("click").on("click", ev => scrollToMessage($(`.message_area div[data-id='${$(ev.currentTarget).attr("data-reply")}']`)[0]));
+                        input.max = e.target.duration;
+                        input.value = e.target.currentTime;
+
+                        $(input).siblings("span").html(`${convertTime(Math.floor(e.target.currentTime))}/${convertTime(duration)}`);
+
+                        if (Math.floor(input.value) === duration) {
+                            e.target.pause();
+                            $(input).siblings("img").attr("src", "assets/icons/play.png");
+                            e.target.currentTime = 0;
+                        }
+                    }).each(function () {
+                        this.volume = 0;
+                        this.play();
+                        setTimeout(() => {
+                            this.pause();
+                            this.volume = 1.0;
+                            this.currentTime = 0;
+                        }, 500);
+                    });
+
+                    $(".audio_btns", element).off("click").on("click", e => {
+                        const audio = $(e.currentTarget).siblings("audio")[0],
+                            input = $(e.currentTarget).siblings("input")[0];
+
+                        if (audio.paused) {
+                            $("audio").each(function () {
+                                this.pause();
+                                $(this).siblings("img")[0].src = "assets/icons/play.png";
+                            });
+                            audio.currentTime = Number(input.value)
+                            audio.play();
+                            e.currentTarget.src = "assets/icons/pause.png";
+                        } else {
+                            audio.pause();
+                            e.currentTarget.src = "assets/icons/play.png";
+                        }
+                    });
+
+                    $("input[type='range']", element).off("input").on("input", e => $(e.currentTarget).siblings('audio')[0].currentTime = Number(e.currentTarget.value));
+                    $(".reply", element).off("click").on("click", e => scrollToMessage($(e.currentTarget).attr("data-reply")));
+                    $(element).children().off("contextmenu").on("contextmenu", ContextMenu);
+                    $("[data-subject-name]", element).off("click").on("click", e => showForum().then(() => $(`#forum main [subject] .info div:contains(${$(e.currentTarget).attr("data-subject-name")})`).click()));
+                    $("[data-doubt]", element).off("click").on("click", e => showForum().then(async () => {
+                        const data = atob($(e.currentTarget).attr("data-doubt")).split(":");
+                        await openSubject({ currentTarget: data[0] });
+                        $(`.doubt[data-id="${data[1]}"]`).click();
+                    }));
+                };
+
+            prepareMedia($("#forum main .message_area")[0]);
         });
 
         $("#forum .input_area").remove();
@@ -106,7 +138,10 @@ async function openSubject({ currentTarget }) {
         $("#forum .input_area .suggester.emoji").html($(".chats .input_area .suggester.emoji").html());
         $("#forum .input_area textarea").off("input").on("input", resize).on("input", Suggester);
         $("#forum header input").off("keyup", dsearch).on("keyup", e => !e.target.value || e.target.value === " " ? $("#forum main [data-message]").removeAttr("hidden") : $(`#forum main [data-message]:not(:contains(${e.target.value}))`).attr("hidden", ""));
-        $("#forum header img").eq(2).off("click").on("click", loadConversation.bind(this, false, $(this).attr("data-id") || subject));
+        $("#forum header img").eq(2).off("click").on("click", () => {
+            loadConversation.call(this, false, $(this).attr("data-id") || doubt_id);
+            new Toast("Atualizando conversa...").show().destroy(2500);
+        });
 
         id = btoa(`doubt:${doubt[1][3]}`);
         messageSender();
@@ -117,7 +152,7 @@ async function openSubject({ currentTarget }) {
 
     forum_doubts.forEach(doubt => {
         doubtArea = document.createElement("div");
-        $(doubtArea).attr("class", "doubt").attr("data-id", doubt[1][3]);
+        $(doubtArea).attr("class", "doubt").attr("data-id", Number(doubt[1][3]) - 1);
         $(doubtArea).html(`<div style="display: flex; flex-direction: column; height: 100%"><div style="border-bottom: 1px solid rgba(255, 255, 255, 0.3); padding-bottom: 10px; margin-bottom: 15px; flex: 1; font-size: 24px; text-transform: capitalize; font-weight: bolder">${doubt[1][0]}</div><div style="font-size: 18px; overflow: hidden; flex: 4; overflow-wrap: anywhere; flex-basis: 0">${doubt[0][0].content}</div><div style="flex: 3; color: #cccccc; font-size: 14px; padding-top: 15px">Autor: ${JSON.parse(doubt[0][0].sender).name}<br>Professor respons&aacute;vel: ${JSON.parse(doubt[0][0].receiver).name + ftags(doubt[1][1])}</div>`)
         $("#forum main").append(doubtArea);
     });
