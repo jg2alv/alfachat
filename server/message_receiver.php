@@ -22,9 +22,9 @@
             $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
             echo json_encode(fetchMessages($conn, $sql)); // Returning it to JS
         } else if (strpos($chat, "doubt") !== false) {
-            mysqli_query($conn, "UPDATE `messages` SET seen = 1 WHERE receiver = '$user' AND doubt = $id AND seen = 0");
-
             $id = explode(":", $chat)[1];
+            mysqli_query($conn, "UPDATE `messages` SET seen = 1 WHERE receiver = '$user' AND doubt = $id AND seen = 0");
+            
             $sql = "(SELECT * FROM `messages` WHERE doubt = $id ORDER BY time DESC LIMIT $limit OFFSET $offset) ORDER BY time";
             $sql = mysqli_query($conn, $sql);
             $sql = mysqli_fetch_all($sql, MYSQLI_ASSOC);
