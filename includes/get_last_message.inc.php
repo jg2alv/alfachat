@@ -1,5 +1,5 @@
 <?php
-    function getLastMessage($conn, $where, $doubt = false) {
+    function getLastMessage($conn, $where) {
         global $chat;
         $id = $_SESSION["id"];
 
@@ -30,14 +30,27 @@
             } else $bio .= " " . html_entity_decode(base64_decode($sql["content"]));
 
             $time = time() - $sql["time"];
-            if ($time < date("G") * 3600)
+            if ($time < date("G") * 3600 + date("i") * 60 + date("s"))
                 $time = date("h:i A", $sql["time"]);
-            else if ($time > date("G") * 3600 && $time < (518400 + 3600 * date("G")))
+            else if ($time > date("G") * 3600 + date("i") * 60 + date("s") && $time < (518400 + 3600 * date("G") + date("i") * 60 + date("s")))
                 $time = date("D", $sql["time"]);
+            else if (date("Y") === date("Y", $sql["time"]))
+                $time = date("d/m", $sql["time"]);
             else
-                $time = date("d/m/Y");
+                $time = date("d/m/Y", $sql["time"]);
 
-            $sql1 = !$doubt ? "SELECT doubt FROM `messages` WHERE sender = '$chat' AND receiver = $id AND seen = 0" : "SELECT doubt FROM `messages` WHERE sender = '$chat' AND receiver = $id AND seen = 0 AND doubt <> 0";
+            if (strpos($chat, "group") !== false) {
+                $sql1 = "SELECT time FROM `user_logs` WHERE user = $id ORDER BY time DESC LIMIT 1";
+                $sql1 = mysqli_query($conn, $sql1);
+                $sql1 = mysqli_fetch_assoc($sql1);
+                $group_time = $sql1["time"];
+
+                $sql1 = "SELECT doubt FROM `messages` WHERE sender <> $id AND receiver = '$chat' AND time > $group_time";
+            } else if (strpos($chat, "doubt") !== false)
+                $sql1 = "SELECT doubt FROM `messages` WHERE sender = '$chat' AND receiver = $id AND seen = 0 AND doubt <> 0";
+            else
+                $sql1 = "SELECT doubt FROM `messages` WHERE sender = '$chat' AND receiver = $id AND seen = 0";
+
             $sql1 = mysqli_query($conn, $sql1);
             $sql1 = mysqli_num_rows($sql1) ? mysqli_num_rows($sql1) : "";
             return [$bio, $time, $sql1, $sql["time"]];

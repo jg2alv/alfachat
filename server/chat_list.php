@@ -53,7 +53,7 @@
 
                 $sql = mysqli_query($conn, $sql);
                 $name = mysqli_fetch_assoc($sql)["name"];
-                list($bio, $date, $unseen, $time) = getLastMessage($conn, "doubt = $id", true);
+                list($bio, $date, $unseen, $time) = getLastMessage($conn, "doubt = $id");
                 $photo = "assets/icons/doubt.png' style='border-radius: 0";
                 $type = "doubt:$id";
             }
