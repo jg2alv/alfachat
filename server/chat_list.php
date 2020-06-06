@@ -2,7 +2,7 @@
     if (empty($_SESSION))
         session_start();
 
-    require_once "../includes/remove_from_chatlist.inc.php";
+    require "../includes/remove_from_chatlist.inc.php";
     require "../includes/db.inc.php";
     require "../includes/get_last_message.inc.php";
     require "../includes/file_info.inc.php";
@@ -14,7 +14,7 @@
     $sql = $chatlist = mysqli_fetch_assoc($sql)["chats"];
 
     $sql = explode(",", $sql);
-    foreach ($sql as $chat) {
+    foreach ($sql as $index => $chat) {
         if (strpos($chat, ":") !== false) {
             $id = explode(":", $chat)[1];
 
