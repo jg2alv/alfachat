@@ -211,32 +211,35 @@
         <div class="chat_result_list" hidden></div>
         <div class="chat_list"><div class="loading">Carregando...</div></div>
         <script>
-            function chatListUpdater(forceUpdate = false) {
+            function chatListUpdater(force = false) {
                 const xml = new XMLHttpRequest(),
                     t0 = performance.now();
 
                 xml.open("POST", "../server/chat_list.php", true);
-                xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xml.send(null);
 
                 return new Promise(resolve => {
                     xml.onload = () => {
-                        const chat_list = document.createElement("div"),
-                            response = JSON.parse(xml.responseText);
+                        const response = JSON.parse(xml.responseText),
+                            ch = document.createElement("div"),
+                            sel = $(".chat[aria-selected='true']");
 
-                        chat_list.innerHTML = response[0];
-                        if ((chat_list.children.length !== $(".chat_list").children().length || forceUpdate) && canUpdate.chatListUpdater) {
-                            const selected = $(".chat[aria-selected='true']"),
-                                chat_id = $(selected).attr("data-id"); 
+                        ch.innerHTML = response[0];
+                        ch.style.display = "none";
+                        $(document.body).append(ch);
+                        $(sel).removeAttr("aria-selected");
+                        if ($(".chat_list").html() !== ch.innerHTML && canUpdate.chatListUpdater || force) {
+                            const chat_id = $(sel).attr("data-id"); 
 
                             $(".chat_list").html(response[0]).attr("data-chats", response[1]);
                             $(".chat:visible").on("click", openChat);
 
-                            $(selected).length ? $(`.chat[data-id="${chat_id}"]`).attr("aria-selected", true) : closeChat();
-                        }
+                            $(sel).length ? $(`.chat[data-id="${chat_id}"]`).attr("aria-selected", true) : closeChat();
+                        } else
+                            $(sel).attr("aria-selected", true);
 
-                        $(document).remove(chat_list);
-                        !forceUpdate ? update(t0, "chatListUpdater") : null;
+                        $(ch).remove();
+                        !force ? update(t0, "chatListUpdater") : null;
                         resolve();
                     };
                 });
