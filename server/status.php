@@ -1,5 +1,5 @@
 <?php
-    if (empty($_POST["o"]) || empty($_POST["i"])) { // Default safety measure
+    if (empty($_POST)) { // Default safety measure
         header("Location: ../");
     }
 
@@ -58,8 +58,10 @@
     function logout($conn) {
         session_start();
         $id = $_SESSION["id"];
-        $sql = "UPDATE `users` SET status = 'offline' WHERE id = $id";
-        mysqli_query($conn, $sql);
+        $time = time();
+
+        mysqli_query($conn, "INSERT INTO `user_logs` (type, user, time) VALUES (0, $id, $time)");
+        mysqli_query($conn, "UPDATE `users` SET status = 'offline' WHERE id = $id");
     }
 
     die();
