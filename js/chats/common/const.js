@@ -1,5 +1,5 @@
 // Time between message_area and chat_selector divs content update (in MS).
-const UPDATE_TIME = 500;
+const UPDATE_TIME = 1000;
 
 // JQuery reverse function. Available using $("*").reverse()
 jQuery.fn.reverse = function () { return this.pushStack(this.get().reverse(), arguments) };
@@ -941,31 +941,39 @@ const hideMenu = function (e) {
 
 // Function to manage any update-depending functions
 const update = (t0, callback, limit = false) => {
-	const diff = performance.now() - t0;
+    const diff = performance.now() - t0;
 
-	if (!canUpdate[callback])
-		return;
+    if (!canUpdate[callback]) return;
 
-	if (diff < UPDATE_TIME)
-		setTimeout(() => limit ? window[callback](limit) : window[callback](), UPDATE_TIME - diff);
-	else
-		limit ? window[callback](limit) : window[callback]();
-
-	return;
+    diff < UPDATE_TIME ? setTimeout(() => limit ? window[callback](limit) : window[callback](), UPDATE_TIME - diff) : limit ? window[callback](limit) : window[callback]();
 }
 
 // Message reply ID
 let reply = 0,
     edit = 0;
 
-const scrollToMessage = (msg) => {
-    $(msg).offset().top < 0 || $(msg).offset().top < $(msg).outerHeight() ? msg.scrollIntoView() : null;
-    new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                $(msg).fadeOut(100).fadeIn(100, function() { $(this).css("background-color", "rgba(255, 255, 255, 0.2)") }).fadeOut(100).fadeIn(100, function() { $(this).css("background-color", "rgba(255, 255, 255, 0.2)"); setTimeout(() => $(this).css("background-color", ""), 100); });
-                observer.unobserve(entry.target);
-            }
-        });
-    }).observe(msg);
+const scrollToMessage = reply => {
+    [reply, receiver] = atob(reply).split(".");
+
+    const scroll = () => {
+        const msg = $(`.message_area div[data-id="${reply}"]`);
+        $(msg).offset().top < 0 || $(msg).offset().top < $(msg).outerHeight() ? msg[0].scrollIntoView() : null;
+        new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    $(msg).fadeOut(100).fadeIn(100, function () { $(this).css("background-color", "rgba(255, 255, 255, 0.2)") }).fadeOut(100).fadeIn(100, function () { $(this).css("background-color", "rgba(255, 255, 255, 0.2)"); setTimeout(() => $(this).css("background-color", ""), 100); });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }).observe(msg[0]);
+    };
+
+    if (receiver !== id && !$("#forum main .message_area:visible").length) {
+        openChat({ currentTarget: $(`.chat[data-id="${receiver}"]`)[0] }).then(scroll);
+        canUpdate.chatsUpdater = canScroll = false;
+        setTimeout(() => {
+            canUpdate.chatsUpdater = true;
+            chatsUpdater(0, true);
+        }, 400);
+    } else scroll();
 }
