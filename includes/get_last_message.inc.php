@@ -1,6 +1,7 @@
 <?php
     function getLastMessage($conn, $where) {
         global $chat;
+        global $index;
         $id = $_SESSION["id"];
 
         date_default_timezone_set('America/Sao_Paulo');
@@ -8,7 +9,7 @@
 
         $sql = "SELECT sender, content, time, file FROM `messages` WHERE $where ORDER BY time DESC LIMIT 1";
         $sql = mysqli_query($conn, $sql);
-        if (!mysqli_num_rows($sql)) return "";
+        if (!mysqli_num_rows($sql)) return ["", "", $index, ""];
         else {
             $sql = mysqli_fetch_assoc($sql);
 
