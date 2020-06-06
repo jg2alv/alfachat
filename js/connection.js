@@ -1,12 +1,14 @@
 $(document).ready(() => {
     $(window).on("offline", () => {
-        canUpdate = false;
+        const canUpdateBck = canUpdate;
+        for (let prop in canUpdate)
+            canUpdate[prop] = false;
 
         const toast = new Toast("Conex&atilde;o perdida!", "background-color: #c80003;");
         toast.show();
 
         $(window).on("online", () => {
-            canUpdate = true;
+            canUpdate = canUpdateBck;
             $(window).off("online");
 
             toast.update("Online novamente!", "background-color: green; display: block;");
