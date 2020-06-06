@@ -85,13 +85,29 @@ function ContextMenu(e) {
                 $(".message_modal div div").eq(1).text(reply.content);
                 reply.id = atob($(e.currentTarget).attr("data-id"));
                 if (this.innerHTML === "Responder em privado") {
-                    const sender = $(e.currentTarget).data("sender");
+                    const sender = $(e.currentTarget).data("sender"),
+                        _id = id,
+                        _chatListUpdater = canUpdate.chatListUpdater;
 
                     reply.receiver = sender.id;
                     canUpdate.chatListUpdater = canUpdate.chatsUpdater = false;
 
-                    !$(`.chat[data-id="${btoa(sender.id)}"]`).length ? $(".chat_list").children(".chat[aria-selected='true']").removeAttr("aria-selected").parent().prepend(`<div class="chat" data-id="${btoa(sender.id)}" aria-selected="true"><div class="pic"><img src="${sender.photo}"></div><div class="info"><div style="display: flex; justify-content: space-between"><div>${sender.name}</div></div><div style="display: flex; justify-content: space-between"><div>&nbsp;</div></div></div>`) : $(`[data-id="${btoa(sender.id)}"]`, ".chat_list").click();
-                    openChat({currentTarget: $(".chat[aria-selected='true']")[0]});
+                    if (!$(`.chat[data-id="${btoa(sender.id)}"]`).length) {
+                        $(".chat_list").children(".chat[aria-selected='true']").removeAttr("aria-selected").parent().prepend(`<div role="private_reply" class="chat" data-id="${btoa(sender.id)}" aria-selected="true"><div class="pic"><img src="${sender.photo}"></div><div class="info"><div style="display: flex; justify-content: space-between"><div>${sender.name}</div></div><div style="display: flex; justify-content: space-between"><div>&nbsp;</div></div></div>`);
+                        $(".message_modal").children().eq(2).off("click").on("click", () => {
+                            openChat({currentTarget: $(`.chat[data-id="${_id}"]`)[0]});
+                            $(".chat[role='private_reply']").remove();
+                            canUpdate.chatListUpdater = _chatListUpdater;
+                        });
+
+                        openChat({currentTarget: $(".chat[aria-selected='true']")[0]});
+                        canUpdate.chatsUpdater = false;
+                        setTimeout(() => {
+                            canUpdate.chatsUpdater = true;
+                            chatsUpdater(0, true);
+                        }, 400);
+                    } else
+                        $(`.chat[data-id="${btoa(sender.id)}"]`).click();
                 }
             } else {
                 modal.sender = decodeURIComponent(escape(atob(sessionStorage["bmFtZQ=="])));
