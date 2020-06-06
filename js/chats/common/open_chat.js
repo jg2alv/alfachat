@@ -31,28 +31,29 @@ function openChat({ currentTarget }, customName = false, customStatus = false) {
 
 		if (atob(id).indexOf("teacher") === -1) {
 			canScroll = canUpdate.chatsUpdater = true;
-			$('.chats header img').attr("src", "assets/icons/advanced.png").removeAttr("title");
-			$('.chats header img').off("click");
-			// $('.chats header img').on('click', () => {
-			// 	if ($('#settings_menu_header_drop_down_2').css('display') === 'block') {
-			// 		$('#settings_menu_header_drop_down_2').fadeOut(200);
-			// 	}
-			// 	else {
-			// 		$('#settings_menu_header_drop_down_2').fadeIn(200, () => {
-			// 			setTimeout(() => {
-			// 				$('.chats header').click(() => {
-			// 					$('.chats header').off('click');
-			// 					$('#settings_menu_header_drop_down_2').fadeOut(200);
-			// 				});
-			// 			}, 50);
-			// 		});
-			// 	}
-			// });
+			$('.chats header img').attr("src", "assets/icons/advanced.png").removeAttr("title").off("click").on('click', () => $("#chats_header_drop_down").html("<span>Desabilitar notifica&ccedil;&otilde;es</span>").css("display", "block").off("mouseout").on("mouseout", hideMenu).append(atob(id).indexOf("group") > -1 ? "<span>Sair do grupo</span>" : "<span>Remover chat</span>").children().on("click", ({ currentTarget }) => {
+				const xml = new XMLHttpRequest();
+				//modal = new Modal();
+
+				if (currentTarget.innerHTML === "Remover chat" || currentTarget.innerHTML === "Sair do grupo") {
+					if (atob(id) === `group:${atob(sessionStorage["Y2xhc3M="])}`) {
+						new Toast("Voc&ecirc; n&atilde;o pode sair do grupo da turma!", "background-color: #c80003;").show().destroy(2500);
+						hideMenu({ relatedTarget: currentTarget.parentElement }, true)
+						return;
+					}
+					
+					// modal
+					xml.open("../server/remove_chat.php");
+					xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+					xml.send(`chat=${id}`);
+					xml.onload = chatListUpdater.bind(window, true);
+				}
+			}));
 		} else {
 			$('.chats header img').attr("src", "assets/icons/check.png").attr("title", "Começar atendimento");
 			$('.chats header img').on("click", sendDoubts);
 		}
 
-		await chatsUpdater(50).then(resolve);
+		id === undefined || atob(id).indexOf("teacher") > -1 ? resolve() : await chatsUpdater(50).then(resolve);
 	});
 }
