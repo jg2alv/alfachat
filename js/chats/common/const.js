@@ -933,10 +933,10 @@ const closeChat = () => {
 };
 
 // Function to hide any hover-depending menu
-const hideMenu = function (e) {
-    if (e.relatedTarget === null || e.relatedTarget.parentNode === this || e.relatedTarget === this) return;
-    $(this).hide();
-    $(this).off("mouseout");
+const hideMenu = function ({ relatedTarget }, force = false) {
+    if ((relatedTarget === null || relatedTarget.parentNode === this || relatedTarget === this) || !force) return;
+    $(relatedTarget).hide();
+    $(relatedTarget).off("mouseout");
 };
 
 // Function to manage any update-depending functions
