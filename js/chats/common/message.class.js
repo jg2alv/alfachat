@@ -22,7 +22,7 @@ class Message {
     }
 
     parse() {
-        if (this.message.file != 0) {
+        if (this.message.file !== "0" && this.message.file != null) {
             const img = ["png", "jpg", "jpeg", "gif", "jfif"],
                 video = ["mp4", "webm"],
                 audio = ["mp3", "wav", "ogg"];
