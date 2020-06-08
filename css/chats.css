@@ -151,7 +151,7 @@ input:focus, textarea:focus {
 	height: auto;
 }
 
-.menu_icon:not(.subjects_menu_active):hover {
+#forum .menu_icon:not(.subjects_menu_active):hover {
 	background-color: #35215a !important;
 }
 
@@ -416,23 +416,23 @@ input:focus, textarea:focus {
 	background-color: #291a46;
 }
 
-.settings_menu_user_area {
+.user_area {
 	display: flex;
 	flex: 2;
 	align-items: center;
 	padding-left: 25px;
 }
 
-.settings_menu_user_area .info {
+.user_area .info {
 	margin-left: 20px;
 	font-size: 18px;
 }
 
-.settings_menu_user_area .info div {
+.user_area .info div {
 	padding: 5px 0;
 }
 
-.settings_menu_user_area .pic img {
+.user_area .pic img {
 	max-width: 100%;
 }
 
@@ -443,7 +443,8 @@ input:focus, textarea:focus {
 }
 
 #settings_menu .edit_profile:hover,
-#settings_menu .settings_menu_icon:hover {
+#settings_menu .settings_menu_icon:hover,
+.member_list .menu_icon:hover {
 	background-color: #291a46 !important;
 }
 
@@ -665,6 +666,7 @@ input:focus, textarea:focus {
 	font-size: 20px;
 	border-bottom: 1px solid black;
 	justify-content: flex-start;
+	cursor: pointer;
 }
 
 .chats header div:nth-of-type(1) {
@@ -688,6 +690,10 @@ input:focus, textarea:focus {
 	cursor: pointer;
 	max-width: 3%;
 	margin-right: 5px;
+}
+
+.member_list {
+	overflow-y: auto;
 }
 
 .message_area {
@@ -788,12 +794,26 @@ input:focus, textarea:focus {
 }
 
 #suggester li:hover,
-#suggester li[aria-selected=true] {
+#suggester li[aria-selected=true],
+#suggester div:hover,
+#suggester div[aria-selected=true] {
 	background-color: #291a46;
 }
 
 #suggester li:last-of-type {
 	border: none;
+}
+
+#suggester .menu_icon {
+	padding: 0;
+}
+
+#suggester .menu_icon .info {
+	color: white;
+}
+
+#suggester .menu_icon .pic {
+	flex: 3;
 }
 
 div[data-message] {
