@@ -22,7 +22,7 @@ function showSideMenu() {
 function hideSideMenu() {
 	$(".side_menu_bg").off("click", hideSideMenu);
 	$(".chats").off("keypress", hideSideMenu);
-	$(".modal").css("display", "none");
+	$(".modal").remove();
 	$(".side_menu_visible").css("flex", "4 !important");
 
 	setTimeout(() => $(".chat_selector header img, #forum header img, #forum main .subject_list .menu_icon img, #forum .input_area img:first").css("visibility", "visible"), 150);
