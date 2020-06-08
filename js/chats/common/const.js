@@ -930,6 +930,7 @@ const closeChat = () => {
     $('.choose_chat').css("display", "flex");
     $('.chat').css('background: #35215a');
     canUpdate.chatsUpdater = false;
+    media = new Object();
 };
 
 // Function to hide any hover-depending menu
@@ -977,3 +978,5 @@ const scrollToMessage = reply => {
         }, 400);
     } else scroll();
 }
+
+let media = new Object();

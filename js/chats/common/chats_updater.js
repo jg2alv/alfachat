@@ -101,6 +101,12 @@ function chatsUpdater(limit, force = false) {
 					canUpdate.chatsUpdater ? $(message_area).append(new_messages) : null;
 				}
 
+				media.photos = $(".message_area div img:not([class])").length;
+				media.videos = $(".message_area div video").length;
+				media.links = $(".message_area div a:not([download])").length;
+				media.files = $(".message_area div a[download]").length;
+				media.audios = $(".message_area div audio").length;
+
 				message_area.scrollHeight - message_area.clientHeight <= message_area.scrollTop + 1 ? canScroll = true : null;
 				canScroll ? message_area.scrollTop = message_area.scrollHeight - message_area.clientHeight : null;
 				update(t0, "chatsUpdater", limit);
