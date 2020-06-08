@@ -25,7 +25,7 @@
                 $sql = explode(",", mysqli_fetch_assoc(mysqli_query($conn, $sql))["members"]);
                 $response = array();
                 foreach($sql as $member) {
-                    $sql = "SELECT id, name, photo, status FROM `users` WHERE id = $member";
+                    $sql = "SELECT name, photo, bio, status FROM `users` WHERE id = $member";
                     $sql = mysqli_fetch_assoc(mysqli_query($conn, $sql));
                     array_push($response, $sql);
                 }

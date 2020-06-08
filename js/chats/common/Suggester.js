@@ -2,6 +2,8 @@ $(document).ready(() => $(".input_area textarea").on("input", Suggester));
 fetch_doubts();
 
 function Suggester(e) {
+    let members = $(".chat[aria-selected='true']").data("members");
+
     const position = () => {
         const sizeSpan = document.createElement("span");
 
@@ -33,7 +35,7 @@ function Suggester(e) {
 
         if (e.type === "click" || e.keyCode === 13) { // Enter or Click
             $(".input_area").off("keydown");
-            $("#suggester li").off("click");
+            $("#suggester li, #suggester .menu_icon").off("click");
 
             $("#suggester").css("display", "none");
             $(".input_area:visible textarea").focus();
@@ -41,7 +43,7 @@ function Suggester(e) {
             const result = (() => {
                 let sel = this.selectionStart,
                     before = this.value.slice(0, sel).split(""),
-                    middle = e.type === "click" ? $(e.target).closest("li").attr("data-value") : $("#suggester li[aria-selected=true]").attr("data-value"),
+                    middle = e.type === "click" ? $(e.target).closest("li").attr("data-value") || $(e.currentTarget).attr("data-value") : $("#suggester li[aria-selected=true]").attr("data-value") || $("#suggester div[aria-selected=true]").attr("data-value"),
                     after = this.value.slice(sel);
                 sel--;
 
@@ -52,11 +54,11 @@ function Suggester(e) {
 
                 before = before.join("");
                 const result = addSpaces(before, after);
-                return this.value.lastIndexOf("#") > this.value.lastIndexOf(":") ? [result[0], `#${middle}`, result[1]] : [result[0], middle, result[1]];
+                return [result[0], middle, result[1]];
             })();
             $(this).val(new String(result[0] + result[1] + result[2]));
         } else if (e.keyCode === 38) { // Up
-            if ($("#suggester").css("display") === "grid") {
+            if ($("#suggester").attr("data-suggester") === ":") {
                 if ($(sel).index() >= 3) {
                     $(sel).removeAttr("aria-selected").prev().prev().prev().attr("aria-selected", true);
                     if (Math.ceil(((1 + $(sel).index()) / 3)) * $(sel).outerHeight(false) > $("#suggester").height())
@@ -64,9 +66,9 @@ function Suggester(e) {
                 } else {
                     $(sel).removeAttr("aria-selected");
                     $("#suggester li:last").attr("aria-selected", true);
-                    $("#suggester").scrollTop($("#suggester")[0].scrollHeight - $("#suggester").height());                    
+                    $("#suggester").scrollTop($("#suggester")[0].scrollHeight - $("#suggester").height());
                 }
-            } else {
+            } else if ($("#suggester").attr("data-suggester") === "#" || $("#suggester").attr("data-suggester") === "@") {
                 if (sel[0] !== $("#suggester li:first")[0])
                     $(sel).removeAttr("aria-selected").prev().attr("aria-selected", true);
                 else {
@@ -82,7 +84,7 @@ function Suggester(e) {
                 $("#suggester li:last").attr("aria-selected", true);
             }
         } else if (e.keyCode === 40) { // Down
-            if ($("#suggester").css("display") === "grid") {
+            if ($("#suggester").attr("data-suggester") === ":") {
                 if ($("#suggester li").length - $(sel).index() - 1 >= 3) {
                     $(sel).removeAttr("aria-selected").next().next().next().attr("aria-selected", true);
                     if (Math.ceil(((1 + $(sel).index()) / 3)) * $(sel).outerHeight(false) > $("#suggester").height())
@@ -90,9 +92,9 @@ function Suggester(e) {
                 } else {
                     $(sel).removeAttr("aria-selected");
                     $("#suggester li:first").attr("aria-selected", true);
-                    $("#suggester").scrollTop(0);                    
+                    $("#suggester").scrollTop(0);
                 }
-            } else {
+            } else if ($("#suggester").attr("data-suggester") === "#" || $("#suggester").attr("data-suggester") === "@") {
                 if (sel[0] !== $("#suggester li:last")[0])
                     $(sel).removeAttr("aria-selected").next().attr("aria-selected", true);
                 else {
@@ -105,7 +107,7 @@ function Suggester(e) {
                 $(sel).removeAttr("aria-selected").next().attr("aria-selected", true);
             } else {
                 $(sel).removeAttr("aria-selected");
-                $("#suggester li:first").attr("aria-selected", true);   
+                $("#suggester li:first").attr("aria-selected", true);
             }
         } else if (e.keyCode === 27) { // Esc
             $("#suggester").css("display", "none");
@@ -113,22 +115,30 @@ function Suggester(e) {
         }
     };
 
-    if (e.originalEvent.data === "#" || (this.value.slice(-2, -1) === ":" && this.value.slice(-1).match(/[A-z]/))) {
+    if (e.originalEvent.data === "#" || e.originalEvent.data === ":" || e.originalEvent.data === "@") {
         const size = position(),
             height = $(".input_area").height(),
             left = $("#forum .input_area:visible").length ? `calc(${height}px + ${$(this).css("padding-left")} + ${size}px)` : `calc(40vw + ${height}px + ${$(this).css("padding-left")} + ${size}px)`;
 
         if (e.originalEvent.data === "#") {
-            $("#suggester").html("").removeClass("emoji").css({ "display": "block", "bottom": `${height}px`, "left": left });
             forum_doubts.slice(Math.max(forum_doubts.length - 5, 0)).forEach(doubt => $("#suggester").append(`<li aria-selected="false" data-value="${doubt[1][3]}"><div style="font-size: 12px; color: #ccc">#${doubt[1][3]}</div><div style="display: flex; justify-content: space-between; box-sizing: border-box; align-items: center"><div style="padding: 5px 10px; white-space: nowrap; overflow-x: hidden">${doubt[1][0]}</div><div style="padding: 5px 10px; color: #ccc; font-size: 14px">${doubt[1][2]}</div></div></li>`));
-        } else
-            $("#suggester").html($(".suggester.emoji:not(#suggester)").html()).addClass("emoji").css({ "display": "grid", "bottom": `${height}px`, "left": left });
+            $("#suggester").html("").removeClass("emoji").show().attr("data-suggester", "#");
+        } else if (e.originalEvent.data === ":")
+            $("#suggester").html($(".suggester.emoji:not(#suggester)").html()).addClass("emoji").css("display", "grid").attr("data-suggester", ":");
+        else if (e.originalEvent.data === "@") {
+            let ats = "";
+
+            members.slice(Math.max(members.length - 5, 0)).forEach(member => ats += `<div data-value="@${member.name}" class="menu_icon"><div class="pic"><img src="${member.photo}"></div><div class="info"><div>${member.name}</div><div>${member.status}</div></div></div>`);
+            $("#suggester").html(members).show().attr("data-suggester", "@");
+        }
+
+        $("#suggester").css({ "bottom": `${height}px`, "left": left });
 
         $("#suggester li").eq(0).attr("aria-selected", true);
         $(".input_area").on("keydown", navigation);
-        $("#suggester li").on("click", navigation);
+        $("#suggester li, #suggester .menu_icon").on("click", navigation);
     } else if ($("#suggester:visible").length) {
-        if ($("#suggester").css("display") === "grid") {
+        if ($("#suggester").attr("data-suggester") === ":") {
             const content = this.value.split("");
 
             let emoji = new Array(),
@@ -142,59 +152,62 @@ function Suggester(e) {
             emoji = (emoji.reverse()).join("");
             $("#suggester").html("");
             $(".input_area").off("keydown");
-            $("#suggester li").off("click");
+            $("#suggester li, #suggester .menu_icon").off("click");
 
             if (!emoji || !JSON.stringify(emojies).includes(emoji)) {
                 $("#suggester").css("display", "none");
                 return;
             }
-            
+
             for (emote in emojies) {
                 if (!emote.includes(emoji))
                     continue;
                 let code;
                 try {
                     code = String.fromCodePoint(`0x${emojies[emote]}`);
-                } catch(e) {
+                } catch (e) {
                     continue;
                 }
-                $("#suggester").append(`<li data-value="${emote}">${code}</li>`)                  
+                $("#suggester").append(`<li data-value="${emote}">${code}</li>`)
             }
-        } else {
+        } else if ($("#suggester").attr("data-suggester") === "#" || $("#suggester").attr("data-suggester") === "@") {
             const content = this.value.split("");
 
-            let hashtag = new Array()
+            let result = new Array()
             num = this.selectionStart - 1;
 
             while (content[num] !== " " && content[num] !== undefined) {
-                hashtag.push(content[num]);
+                result.push(content[num]);
                 num--;
             }
 
-            hashtag = (hashtag.reverse()).join("").replace("#", "");
+            result = (result.reverse()).join("").replace("#", "").replace("@", "");
             $("#suggester").html("");
             $(".input_area").off("keydown");
-            $("#suggester li").off("click");
+            $("#suggester li, #suggester .menu_icon").off("click");
 
-            if (!hashtag) {
+            if (!result) {
                 $("#suggester").css("display", "none");
                 return;
             }
 
-            for (let doubt of forum_doubts) {
-                if (doubt[1][3].includes(hashtag) || doubt[1][0].includes(hashtag) || doubt[1][2].includes(hashtag))
-                    $("#suggester").append(`<li aria-selected="false" data-value="${doubt[1][3]}"><div style="font-size: 12px; color: #ccc">#${doubt[1][3]}</div><div style="display: flex; justify-content: space-between; box-sizing: border-box; align-items: center"><div style="padding: 5px 10px; white-space: nowrap; overflow-x: hidden">${doubt[1][0]}</div><div style="padding: 5px 10px; color: #ccc; font-size: 14px">${doubt[1][2]}</div></div></li>`);
+            if ($("#suggester").attr("data-suggester") === "#") {
+                for (let doubt of forum_doubts)
+                    doubt[1][3].includes(result) || doubt[1][0].includes(result) || doubt[1][2].includes(result) ? $("#suggester").append(`<li data-value="#${doubt[1][3]}"><div style="font-size: 12px; color: #ccc">#${doubt[1][3]}</div><div style="display: flex; justify-content: space-between; box-sizing: border-box; align-items: center"><div style="padding: 5px 10px; white-space: nowrap; overflow-x: hidden">${doubt[1][0]}</div><div style="padding: 5px 10px; color: #ccc; font-size: 14px">${doubt[1][2]}</div></div></li>`) : null;
+            } else {
+                for (let member of members)
+                    member.name.includes(result) ? $("#suggester").append(`<div data-value="@${member.name}" class="menu_icon"><div class="pic"><img src="${member.photo}"></div><div class="info"><div>${member.name}</div><div>${member.status}</div></div></div>`) : null;
             }
         }
 
         $("#suggester li").eq(0).attr("aria-selected", true);
         $("#suggester li:last").css("border", "none");
-        $("#suggester li").on("click", navigation);
+        $("#suggester li, #suggester .menu_icon").on("click", navigation);
         $(".input_area").on("keydown", navigation);
     } else {
         $("#suggester").css("display", "none");
         $(".input_area").off("keydown");
-        $("#suggester li").off("click");
+        $("#suggester li, #suggester .menu_icon").off("click");
         return;
     }
 }
