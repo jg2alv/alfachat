@@ -58,7 +58,7 @@
     <link rel='icon' type='image/png' href='../img/logo_short.png'>
     <link rel='stylesheet' type='text/css' href='../css/default.css'>
     <script src='../js/connection.js'></script>
-    <script src='../js/toast.class.js'></script>
+    <script src='../js/Toast.class.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
     <title>AlfaChat | Conversas</title>
 </head>
@@ -134,7 +134,7 @@
                     <img src="assets/icons/x.png" alt="X icon" style="width: 18%; margin-bottom: 3.5px">
                 </div>
             </div>
-            <div class="settings_menu_user_area">
+            <div class="user_area">
                 <div class="pic">
                     <img src="<?php echo $_SESSION["photo"]; ?>">
                 </div>
