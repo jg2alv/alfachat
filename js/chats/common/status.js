@@ -19,15 +19,15 @@ function statusTimer() {
         }
     }, 1000);
 
-    document.onmousemove = document.onkeypress = document.onclick = () => {
+    $(document).on("mousemove keypress click", () => {
         timer = 0;
         statusBackend("i=online&o=set"); // Setting MY status to online
-    };
+    });
 
-    window.onbeforeunload = () => {
+    window.addEventListener("beforeunload", () => {
         statusBackend("o=logout");
         return null;
-    };
+    });
 }
 
 function statusBackend(arg) {
