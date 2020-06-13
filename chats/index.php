@@ -78,6 +78,16 @@
                     if ($_SESSION["class"] > 0)
                         require "html/student/subject_list.html";
                 ?>
+                <div id="alfascrapbooks_menu" class="menu_icon" style="flex-direction: column; justify-content: center; padding: 0">
+                    <div style="display: flex; padding-left: 20px; min-height: 100%; min-width: 100%; box-sizing: border-box"><div class="pic"><img style="max-width: 50%"  src="assets/icons/play.png" alt="Professores"></div><div class="info" style="flex: 4">AlfaScrapBook</div></div>
+                    <div style="padding-top: 15px; height: auto; display: none; margin-bottom: 10px">
+                        <div style="padding-top: 15px; height: auto; margin-bottom: 10px;">
+                            <div class="menu_icon" style="padding-left: 50px"><div class="pic"><img style="border-radius: 0; max-width: 100%;" src="assets/icons/plus.png"></div><div class="info">Criar um AlfaScrapBook</div></div>
+                            <div class="menu_icon" style="padding-left: 50px"><div class="pic"><img style="border-radius: 0; max-width: 100%;" src="assets/icons/view.png"></div><div class="info">Abrir um AlfaScrapBook</div></div>
+                            <div class="menu_icon" style="padding-left: 50px"><div class="pic"><img style="border-radius: 0; max-width: 100%;" src="assets/icons/alfascrapbook_list.png"></div><div class="info">Meus AlfaScrapBooks</div></div>
+                        </div>
+                    </div>
+                </div>
             </main>
             <footer style="padding: 0; margin-top: 15px; padding-top: 10px">
                 <div id="config" class="menu_icon"><div class="pic"><img style="max-width: 50%" src="assets/icons/settings.png" alt="Config"></div><div class="info" style="flex: 4">Configura&ccedil;&otilde;es</div></div>
@@ -238,6 +248,22 @@
         </script>
     </div>
 
+    <div id="alfascrapbook">
+        <div class="alfascrapbook_btns alfascrapbook_btn_upper"></div>
+        <div class="alfascrapbook_btns alfascrapbook_btn_left"></div>
+        <div class="alfascrapbook_btns alfascrapbook_btn_right">
+            <label>Sensibilidade do pincel</label>
+            <input id="pointer_sens" type="number" min="0.5" max="2" step="0.5" value="1">
+
+            <label>Grossura do pincel</label>
+            <input id="pointer_width" type="number" max="100" value="1" min="1">
+
+            <label>Cor do pincel</label>
+            <input id="pointer_color" type="color" value="#000000">
+        </div>
+        <canvas></canvas>
+    </div>
+
     <div class="chats">
         <div class='choose_chat'>Escolha uma conversa para entrar</div>
         <header>
@@ -298,7 +324,7 @@
     </script>
 
     <script>
-	    statusBackend('i=online&o=set');
+        statusBackend('i=online&o=set');
 	    messageSender();
         chatListUpdater();
         statusTimer();
