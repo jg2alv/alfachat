@@ -1,9 +1,7 @@
 $(document).ready(() => $("#forum_menu").on("click", showForum));
 
 function showForum() {
-    $("#forum").css("display", "flex");
-    $(".chat_selector").css("display", "none");
-    $(".chats").css("display", "none");
+    advMenu("#forum");
     $("#forum main").css({ "display": "block", "padding": "0" }).html("<div class='subject_list'></div>");
     subjectList(".subject_list");
     subjectList("#teacher_list");
@@ -15,8 +13,7 @@ function showForum() {
         });
 
         const canUpdateBck = canUpdate;
-        for (let prop in canUpdate)
-            canUpdate[prop] = false;
+        falsify();
 
         $("#forum header input").off("keyup").on("keyup", e => !e.target.value || e.target.value === " " ? $("#forum main .menu_icon").removeAttr("hidden") : $(`#forum main .menu_icon:not(:contains(${e.target.value}))`).attr("hidden", ""));
         $("#forum header img:nth-of-type(2), #forum_menu").off("click").on("click", hideForum.bind(canUpdateBck));

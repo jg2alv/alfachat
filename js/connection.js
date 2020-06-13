@@ -1,8 +1,7 @@
 $(document).ready(() => {
     $(window).on("offline", () => {
         const canUpdateBck = canUpdate;
-        for (let prop in canUpdate)
-            canUpdate[prop] = false;
+        falsify();
 
         const toast = new Toast("Conex&atilde;o perdida!", "background-color: #c80003;");
         toast.show();
