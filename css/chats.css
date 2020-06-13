@@ -41,7 +41,8 @@ input:focus, textarea:focus {
 	margin-bottom: 20px;
 }
 
-#forum {
+#forum,
+#alfascrapbook {
 	width: 100vw;
 	height: 100vh;
 	display: none;
@@ -147,11 +148,12 @@ input:focus, textarea:focus {
 	box-sizing: border-box;
 }
 
-.subjects_menu_active {
+.drop_down_active {
 	height: auto;
 }
 
-#forum .menu_icon:not(.subjects_menu_active):hover {
+#forum .menu_icon:not(.drop_down_active):hover,
+.side_menu .menu_icon:not(.drop_down_active):hover {
 	background-color: #35215a !important;
 }
 
@@ -254,6 +256,8 @@ input:focus, textarea:focus {
 	display: flex;
 	justify-content: flex-end;
 	padding-bottom: 5px;
+	transition: 200ms background-color;
+	flex: 1;
 }
 
 .modal_btns * {
@@ -272,7 +276,6 @@ input:focus, textarea:focus {
 
 .modal_btns *:hover {
 	background-color: #291a46;
-	transition: 200ms all;
 }
 
 #version {
@@ -512,7 +515,7 @@ input:focus, textarea:focus {
 
 .chat_selector header input,
 #forum header input,
-#doubt_name {
+.modal input[type='text'] {
 	background: #291a46;
 	color: white;
 	width: 90%;
@@ -1033,4 +1036,123 @@ input[type=range]::-moz-range-thumb {
 	margin: 1px 5px;
 	background: center no-repeat;
 	background-size: contain;
+}
+
+#alfascrapbook {
+	background-color: #f2f2f2;
+}
+
+#alfascrapbook canvas {
+	justify-self: center;
+	align-self: center;
+}
+
+#alfascrapbook .alfascrapbook_btns {
+	position: absolute;
+	border-radius: 5px;
+	background-color: rgba(100, 100, 100, 0.8);
+	overflow-y: auto;
+	padding-right: 5px;
+	box-shadow: 0px 3px 30px 10px rgba(0, 0, 0, 0.2);
+}
+
+#alfascrapbook .alfascrapbook_btn_upper {
+	justify-self: center;
+	width: 70%;
+	height: 4vh;
+	top: 0;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	padding: 0 0 5px 0;
+}
+
+#alfascrapbook .alfascrapbook_btn_left,
+#alfascrapbook .alfascrapbook_btn_right {
+	align-self: center;
+	height: 55%;
+	padding: 10px;
+}
+
+#alfascrapbook .alfascrapbook_btn_left {
+	justify-self: left;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	width: 15%;
+	background-color: unset;
+}
+
+#alfascrapbook .alfascrapbook_btn_left > div {
+	display: flex;
+	height: 30%;
+	box-sizing: border-box;
+	margin: 5px 0;
+	border-radius: 5px;
+	padding: 10px;
+}
+
+
+#alfascrapbook .alfascrapbook_btn_left > div[aria-selected="true"] {
+	background-color: rgba(53, 33, 90, 0.7);
+}
+
+#alfascrapbook .alfascrapbook_btn_left .alfascrapbook_slide_count {
+	flex: 1;
+	font-size: 16px;
+	color: #303030;
+	font-weight: bolder;
+}
+
+#alfascrapbook .alfascrapbook_slide {
+	height: 100%;
+	border: 2px solid #ccc;
+	border-radius: 5px;
+	float: right;
+	flex: 10;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+#alfascrapbook .alfascrapbook_slide > div {
+	background: no-repeat center;
+	background-size: contain;
+	width: 100%;
+	height: 100%;
+}
+
+#alfascrapbook .alfascrapbook_slide:nth-of-type(1) {
+	margin-top: 0;
+}
+
+#alfascrapbook .alfascrapbook_slide:nth-last-of-type(1) {
+	margin-bottom: 10px;
+}
+
+#alfascrapbook .alfascrapbook_btn_right {
+	justify-self: right;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	width: 10%;
+	display: flex;
+	flex-direction: column;
+}
+
+#alfascrapbook .alfascrapbook_btn_right label {
+	font-weight: bold;
+	margin: 5px 0;
+}
+
+#alfascrapbook .alfascrapbook_btn_right input {
+	margin: 10px 0;
+}
+
+#alfascrapbook .alfascrapbook_btn_right input[type="color"] {
+	width: 100%;
+	cursor: pointer;
+}
+
+#alfascrapbook .alfascrapbook_btn_right input:not([type="color"]) {
+	padding: .25em .5em;
+  	border: 1px solid transparent;
+  	border-radius: .3em;
+  	outline: none;
 }
