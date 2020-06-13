@@ -195,8 +195,10 @@ function Suggester(e) {
                 for (let doubt of forum_doubts)
                     doubt[1][3].includes(result) || doubt[1][0].includes(result) || doubt[1][2].includes(result) ? $("#suggester").append(`<li data-value="#${doubt[1][3]}"><div style="font-size: 12px; color: #ccc">#${doubt[1][3]}</div><div style="display: flex; justify-content: space-between; box-sizing: border-box; align-items: center"><div style="padding: 5px 10px; white-space: nowrap; overflow-x: hidden">${doubt[1][0]}</div><div style="padding: 5px 10px; color: #ccc; font-size: 14px">${doubt[1][2]}</div></div></li>`) : null;
             } else {
+                let res = "";
                 for (let member of members)
-                    member.name.includes(result) ? $("#suggester").append(`<div data-value="@${member.name}" class="menu_icon"><div class="pic"><img src="${member.photo}"></div><div class="info"><div>${member.name}</div><div>${member.status}</div></div></div>`) : null;
+                    member.name.includes(result) ? res += `<div data-value="@${member.name}" class="menu_icon"><div class="pic"><img src="${member.photo}"></div><div class="info"><div>${member.name}</div><div>${member.status}</div></div></div>` : null;
+                $("#suggester").append(res);
             }
         }
 
