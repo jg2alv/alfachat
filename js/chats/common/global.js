@@ -962,7 +962,7 @@ const scrollToMessage = reply => {
         new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    $(msg).fadeOut(100).fadeIn(100, function () { $(this).css("background-color", "rgba(255, 255, 255, 0.2)") }).fadeOut(100).fadeIn(100, function () { $(this).css("background-color", "rgba(255, 255, 255, 0.2)"); setTimeout(() => $(this).css("background-color", ""), 100); });
+                    blink(msg);
                     observer.unobserve(entry.target);
                 }
             });
@@ -977,6 +977,38 @@ const scrollToMessage = reply => {
             chatsUpdater(0, true);
         }, 400);
     } else scroll();
-}
+};
 
 let media = new Object();
+
+const dropDownMenu = (menu, a_target) => {
+    $(menu).toggleClass("drop_down_active");
+    const icon = $("img", menu)[0];
+
+    if (!icon.style.transform) {
+        icon.style.transform = "rotate(90deg)";
+        a_target.slideDown();
+    } else {
+        icon.style.transform = "";
+        a_target.slideUp();
+    }
+};
+
+const falsify = () => {
+    for (let prop in canUpdate)
+        canUpdate[prop] = false;
+};
+
+const advMenu = (menu, display = "flex", show = true) => {
+    if (show) {
+        $(menu).css("display", display);
+        $(".chat_selector").css("display", "none");
+        $(".chats").css("display", "none");
+    } else {
+        $(menu).css("display", "none");
+        $(".chat_selector").css("display", "");
+        $(".chats").css("display", "");
+    }
+}
+
+const blink = element => $(element).fadeOut(100).fadeIn(100, function () { $(this).css("background-color", "rgba(255, 255, 255, 0.2)") }).fadeOut(100).fadeIn(100, function () { $(this).css("background-color", "rgba(255, 255, 255, 0.2)"); setTimeout(() => $(this).css("background-color", ""), 100); })
