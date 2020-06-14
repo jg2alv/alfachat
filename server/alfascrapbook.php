@@ -16,14 +16,9 @@
 
         $sql = mysqli_fetch_assoc($sql);
         $sql["files"] = array_values(array_diff(scandir("../chats/assets/alfascrapbooks/$_uri"), array(".", "..")));
-        $files = array();
-        foreach($sql["files"] as $index => $value) {
-            $files[$index] = array();
-            $files[$index][0] = "assets/alfascrapbooks/$_uri/" . $value;
-            $files[$index][1] = "data:image/" . pathinfo("../chats/" . $files[$index][0], PATHINFO_EXTENSION) . ";base64," . base64_encode(file_get_contents("../chats/" . $files[$index][0]));
-        }
+        foreach($sql["files"] as $index => $value)
+            $sql["files"][$index] = "data:image/" . pathinfo("../chats/assets/alfascrapbooks/$_uri/$value", PATHINFO_EXTENSION) . ";base64," . base64_encode(file_get_contents("../chats/assets/alfascrapbooks/$_uri/$value"));
 
-        $sql["files"] = $files;
         $sql["mine"] = $_SESSION["id"] === $sql["owner"] ? true : false;
         $sql["owner"] = mysqli_fetch_assoc(mysqli_query($conn, "SELECT name FROM `users` WHERE id = " . $sql["owner"]))["name"];
         if ($return) return json_encode($sql);
@@ -54,12 +49,13 @@
 
     function update() {
         global $conn, $uri;
-        $file = "../chats/assets/alfascrapbooks/$uri/" . $_FILES["slide"]["name"];
-        unlink($file);
 
-        move_uploaded_file($_FILES["slide"]["tmp_name"], $file);
-        echo load($uri, true);
+        $file = array_values(array_diff(scandir("../chats/assets/alfascrapbooks/$uri"), array(".", "..")))[intval($_FILES["file"]["name"])];
+        unlink("../chats/assets/alfascrapbooks/$uri/$file");
+
+        move_uploaded_file($_FILES["file"]["tmp_name"], "../chats/assets/alfascrapbooks/$uri/$file");
     }
 
     $_POST["op"]();
+    die();
 ?>

@@ -94,12 +94,13 @@ $(document).ready(() => {
                             const xml = new XMLHttpRequest();
 
                             const formData = new FormData();
-                            formData.append("slide", globalBlob, $("#alfascrapbook div[aria-selected='true']").data("path").split("/").slice(-1)[0]);
+                            formData.append("file", globalBlob, $("#alfascrapbook div[aria-selected='true']").index());
                             formData.append("uri", $("#alfascrapbook").attr("data-uri"));
                             formData.append("op", "update");
 
                             xml.open("POST", "../server/alfascrapbook.php", true);
                             xml.send(formData);
+                            xml.onload = () => console.log(xml.responseText)
 
                             return null;
                         },
@@ -118,7 +119,7 @@ $(document).ready(() => {
 
                     new Toast(`AlfaScrapBook "${response.name}" criado por ${response.mine === "true" ? "voc&ecirc;" : response.owner} na data ${day}/${month}/${year} (${diff === 0 ? "hoje" : diff === 1 ? "h&aacute; 1 dia" : "h&aacute; " + diff + "dias"})`).show().destroy(2500);
                     let res = "";
-                    response.files.forEach((file, index) => res += `<div><script id="s_${index}">$("#alfascrapbook .alfascrapbook_btn_left script#s_${index}").parent().data("path", "${file[0]}").children("script#s_${index}").remove();</script><div class="alfascrapbook_slide_count">${index + 1}</div><div class="alfascrapbook_slide"><div style="background-image: url('${file[1]}')"></div></div></div>`);
+                    response.files.forEach((file, index) => res += `<div><div class="alfascrapbook_slide_count">${index + 1}</div><div class="alfascrapbook_slide"><div style="background-image: url('${file}')"></div></div></div>`);
                     $("#alfascrapbook").attr("data-uri", response.uri).children(".alfascrapbook_btn_left").html(res).children().on("click", passSlide);
                     passSlide.bind($("#alfascrapbook .alfascrapbook_btn_left").children().eq(0)[0])().then(() => {
                         canvasResize();
